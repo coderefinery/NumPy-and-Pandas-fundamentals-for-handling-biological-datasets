@@ -74,7 +74,10 @@ Pandas for Bioinformatics ; 3 Hours
 
 * [Download Test dataset 1: Sample_group_info.csv](test_data/Sample_group_info.csv)
 
-* [count_matrix.csv](test_data/count_matrix.csv)
+* [Download Test dataset 2: count_matrix.csv](test_data/count_matrix.csv)
+* [Download Test dataset 3: sample_data.csv](test_data/sample_data.csv)
+* [Download Test dataset 3: sample_data.xlsx](test_data/sample_data.xlsx)
+* [Download Test dataset 3: sample_data.json](test_data/sample_data.json)
 
 ## Dependencies
 
