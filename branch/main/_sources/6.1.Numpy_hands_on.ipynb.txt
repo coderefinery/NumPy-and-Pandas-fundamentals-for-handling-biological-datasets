@@ -1,0 +1,833 @@
+{
+ "cells": [
+  {
+   "cell_type": "markdown",
+   "id": "b039adc4",
+   "metadata": {},
+   "source": [
+    "# Hands-on: RNA Expression Analysis - alternative method\n",
+    "\n",
+    "## Objective\n",
+    "\n",
+    "* Examine differential expression of immune-related genes between patient groups [previously classified as immunologically strong ('istrong') and immunologically weak ('iweak')](https://pubmed.ncbi.nlm.nih.gov/30393759/)\n",
+    "* Apply an alternative analytical approach using Z-ratio methodology to complement standard differential expression tools like DESeq\n",
+    "* Ranks immune-related genes based on their relative expression differences between the patient groups\n",
+    "\n",
+    "## Dataset description\n",
+    "\n",
+    "* `test_data/Sample_group_info.csv`\n",
+    "  * Patients were divided into `istrong` (immunity-strong) and `iweak` (immunity-weak) groups based on their Immunity score\n",
+    "  * The Immunity score was calculated by averaging the gene expression values of the 17 identified immune-genes\n",
+    "* `test_data/count_matrix.csv`: Gene expression raw counts\n",
+    "\n",
+    "## Steps\n",
+    "\n",
+    "1. Data Loading and visualization\n",
+    "   1. Load sample group information (`iweak` vs `istrong`)\n",
+    "   2. Load gene expression count matrix\n",
+    "   3. Examine array information\n",
+    "2. Sample Identification\n",
+    "   1. Filter samples by group (`iweak`/`istrong`)\n",
+    "   2. Match count matrix columns with sample IDs\n",
+    "3. Data Preprocessing\n",
+    "   1. Convert count matrix to numeric values\n",
+    "   2. Apply log2 transformation: log2(counts + 1)\n",
+    "4. Statistical Analysis\n",
+    "   1. Calculate mean and std for each gene within each group\n",
+    "   2. Compute Z-scores within each sample group\n",
+    "   3. Calculate Z-score differences between groups\n",
+    "   4. Compute standard deviation of all differences\n",
+    "5. Ranking Genes\n",
+    "   1. Calculate Z-ratio: difference / std_difference\n",
+    "   2. Rank genes by Z-ratio (highest to lowest)\n",
+    "\n",
+    "***Workflow:***\n",
+    "\n",
+    "```{mermaid}\n",
+    "flowchart TD\n",
+    "    A[Load Sample Group Info] --> B{Filter by Group}\n",
+    "    B -->|iweak| C[Identify iweak samples]\n",
+    "    B -->|istrong| D[Identify istrong samples]\n",
+    "    \n",
+    "    E[Load Count Matrix] --> F[Match columns with samples]\n",
+    "    \n",
+    "    F --> G[Convert to numeric]\n",
+    "    G --> H[Log2 transformation]\n",
+    "    \n",
+    "    C --> F\n",
+    "    D --> F\n",
+    "    \n",
+    "    H --> I1[Calculate iweak mean & std]\n",
+    "    H --> I2[Calculate istrong mean & std]\n",
+    "    \n",
+    "    I1 --> J1[Compute Z-scores for iweak]\n",
+    "    I2 --> J2[Compute Z-scores for istrong]\n",
+    "    \n",
+    "    J1 --> K[Calculate Z-score difference]\n",
+    "    J2 --> K\n",
+    "    \n",
+    "    K --> L[Calculate standard deviation]\n",
+    "    \n",
+    "    L --> M[Compute Z-ratio]\n",
+    "    \n",
+    "    M --> N[Rank genes by Z-ratio]\n",
+    "    \n",
+    "    classDef dataNode fill:#f9f9f9,stroke:#aaa,stroke-width:2px;\n",
+    "    classDef processNode fill:#e1f5fe,stroke:#01579b,stroke-width:2px;\n",
+    "    classDef resultNode fill:#e8f5e9,stroke:#2e7d32,stroke-width:2px;\n",
+    "    \n",
+    "    class A,E dataNode;\n",
+    "    class B,C,D,F,G,H,I1,I2,J1,J2,K,L,M processNode;\n",
+    "    class N resultNode;\n",
+    "```"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "1a51b94a",
+   "metadata": {},
+   "source": [
+    "## Step 1: Loading and inspecting data"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 1,
+   "id": "43f0d3ba",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "import numpy as np\n",
+    "from urllib.request import urlopen\n",
+    "\n",
+    "# Read the CSV file into a numpy array\n",
+    "## CSV file contains sample group information\n",
+    "sample_group_info_url= \"https://coderefinery.github.io/intermediate-python-ml/_downloads/b458a48eed87eb03931a8ce6efcdd351/Sample_group_info.csv\"\n",
+    "\n",
+    "data = np.genfromtxt(urlopen(sample_group_info_url), delimiter=',', dtype='str')"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 2,
+   "id": "b519e304",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# Print the numpy array information\n",
+    "\n",
+    "def print_array_info(array):\n",
+    "    # Get the shape of the array\n",
+    "    shape = array.shape\n",
+    "\n",
+    "    # Get the number of dimensions of the array\n",
+    "    ndim = array.ndim\n",
+    "\n",
+    "    # Get the data type of the array\n",
+    "    dtype = array.dtype\n",
+    "\n",
+    "    # Get the number of elements in the array\n",
+    "    size = array.size\n",
+    "\n",
+    "    print(f\"Shape: {shape} \\nNumber of dimensions: {ndim} \\nData type: {dtype} \\nSize: {size}\")"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 3,
+   "id": "2e76c703",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Shape: (303, 2) \n",
+      "Number of dimensions: 2 \n",
+      "Data type: <U12 \n",
+      "Size: 606\n"
+     ]
+    }
+   ],
+   "source": [
+    "print_array_info(data)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 4,
+   "id": "8df4f025",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Shape: (81, 483) \n",
+      "Number of dimensions: 2 \n",
+      "Data type: <U18 \n",
+      "Size: 39123\n"
+     ]
+    }
+   ],
+   "source": [
+    "# Read the CSV file into a numpy array with string dtype\n",
+    "## CSV file contains RNA count matrix\n",
+    "\n",
+    "count_matrix_url = \"https://coderefinery.github.io/intermediate-python-ml/_downloads/ab7de98031b77441be14a9d7ba21466c/count_matrix.csv\"\n",
+    "\n",
+    "count_matrix = np.genfromtxt(urlopen(count_matrix_url), delimiter=',',\n",
+    "                     dtype='str')\n",
+    "print_array_info(count_matrix)\n",
+    "\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 5,
+   "id": "a146a97d",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "[['SH_TS_BC_C1' 'SH_TS_BC_C11' 'SH_TS_BC_C15' 'SH_TS_BC_C3' 'SH_TS_BC01']\n",
+      " ['25' '559' '231' '44' '23']\n",
+      " ['173' '2475' '886' '320' '6']\n",
+      " ['114' '8806' '2781' '537' '47']\n",
+      " ['626' '7492' '2829' '564' '14']]\n",
+      "___\n",
+      "[[2.500e+01 5.590e+02 2.310e+02 4.400e+01 2.300e+01]\n",
+      " [1.730e+02 2.475e+03 8.860e+02 3.200e+02 6.000e+00]\n",
+      " [1.140e+02 8.806e+03 2.781e+03 5.370e+02 4.700e+01]\n",
+      " [6.260e+02 7.492e+03 2.829e+03 5.640e+02 1.400e+01]\n",
+      " [3.170e+02 5.949e+03 2.357e+03 2.750e+02 2.600e+01]]\n"
+     ]
+    }
+   ],
+   "source": [
+    "# Remove sample names from the count matrix (cm) - Delete the first row\n",
+    "## Convert the cm to a float32 array\n",
+    "print(count_matrix[0:5, 0:5])\n",
+    "print(\"___\")\n",
+    "cm = np.delete(count_matrix, 0, axis=0).astype(\"float32\")\n",
+    "print(cm[0:5, 0:5])"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "4cecfd95",
+   "metadata": {},
+   "source": [
+    "## Step 2: Sample Identification\n",
+    "\n",
+    "1. Filter samples by group (iweak/istrong)\n",
+    "2. Match count matrix columns with sample IDs\n",
+    "\n",
+    "![alt text](image-12.png)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 6,
+   "id": "9bb514e9",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "[['SH_TS_BC111' 'iweak']\n",
+      " ['SH_TS_BC112' 'iweak']\n",
+      " ['SH_TS_BC113' 'iweak']\n",
+      " ['SH_TS_BC119' 'istrong']\n",
+      " ['SH_TS_BC133' 'iweak']]\n"
+     ]
+    }
+   ],
+   "source": [
+    "# Print the first 5 rows and columns of the data\n",
+    "print(data[:5, :5])"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 7,
+   "id": "00d87bf1",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "(array([  0,   1,   2,   4,   5,   6,   7,   8,   9,  12,  14,  15,  16,\n",
+      "        17,  18,  21,  24,  25,  27,  31,  33,  34,  35,  38,  39,  41,\n",
+      "        43,  45,  47,  49,  50,  51,  53,  54,  55,  56,  59,  60,  61,\n",
+      "        63,  64,  65,  67,  69,  71,  72,  73,  74,  75,  78,  80,  81,\n",
+      "        84,  86,  92,  93,  94,  97, 102, 106, 108, 111, 112, 114, 122,\n",
+      "       123, 126, 131, 132, 133, 139, 142, 145, 146, 148, 149, 150, 151,\n",
+      "       160, 161, 163, 164, 166, 168, 170, 171, 173, 176, 177, 180, 186,\n",
+      "       188, 192, 195, 196, 197, 200, 203, 206, 207, 212, 214, 215, 216,\n",
+      "       217, 219, 223, 225, 226, 227, 228, 230, 235, 244, 248, 249, 252,\n",
+      "       256, 258, 260, 262, 263, 265, 266, 269, 270, 271, 275, 276, 278,\n",
+      "       279, 280, 282, 283, 285, 286, 287, 288, 289, 291, 292, 293, 294,\n",
+      "       295, 296, 298, 299, 300, 302]),)\n",
+      "Shape: (149,) \n",
+      "Number of dimensions: 1 \n",
+      "Data type: int64 \n",
+      "Size: 149\n"
+     ]
+    }
+   ],
+   "source": [
+    "# Access indices of the array where the second column is 'iweak'\n",
+    "iweak_index = np.where(data[:, 1] == 'iweak')\n",
+    "print(iweak_index)\n",
+    "print_array_info(iweak_index[0])"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 8,
+   "id": "350ad061",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Index\n",
+      " [0 1 2 4 5] \n",
+      "Data\n",
+      " [['SH_TS_BC111' 'iweak']\n",
+      " ['SH_TS_BC112' 'iweak']\n",
+      " ['SH_TS_BC113' 'iweak']\n",
+      " ['SH_TS_BC133' 'iweak']\n",
+      " ['SH_TS_BC134' 'iweak']]\n",
+      "Shape: (149,) \n",
+      "Number of dimensions: 1 \n",
+      "Data type: int64 \n",
+      "Size: 149\n"
+     ]
+    }
+   ],
+   "source": [
+    "# Access indices of the array where the second column is 'iweak'\n",
+    "iweak_index = np.where(data[:, 1] == 'iweak')[0]\n",
+    "print(\"Index\\n\", iweak_index[:5], \"\\nData\\n\", data[iweak_index][:5,])\n",
+    "print_array_info(iweak_index)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 9,
+   "id": "9b12391d",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "[['SH_TS_BC_C1' 'SH_TS_BC_C11' 'SH_TS_BC_C15' 'SH_TS_BC_C3' 'SH_TS_BC01']\n",
+      " ['25' '559' '231' '44' '23']\n",
+      " ['173' '2475' '886' '320' '6']\n",
+      " ['114' '8806' '2781' '537' '47']\n",
+      " ['626' '7492' '2829' '564' '14']]\n"
+     ]
+    }
+   ],
+   "source": [
+    "# View the first column of the count matrix where the sample group is 'iweak'\n",
+    "print(count_matrix[0:5, 0:5])"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 10,
+   "id": "4834bd17",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "[False False False False False False False False False False False False\n",
+      " False False False False False False False False False False False False\n",
+      " False  True  True  True False False]\n"
+     ]
+    }
+   ],
+   "source": [
+    "# Create a boolean mask to find if the columns in the count matrix where the sample group is 'iweak'\n",
+    "cm_iweak_mask = np.isin(count_matrix[0, :], data[iweak_index, 0])\n",
+    "print(cm_iweak_mask[:30])\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 11,
+   "id": "67225df6",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "[ 25  26  27  36  37  38  40  41  42  46  48  49  51  52  53  56  64  65\n",
+      "  67  71  73  74  75  79  80  83  85  88  91  93  94  95  97  98  99 100\n",
+      " 103 104 105 108 109 110 112 114 116 117 118 119 120 124 126 128 131 133]\n",
+      "Shape: (54,) \n",
+      "Number of dimensions: 1 \n",
+      "Data type: int64 \n",
+      "Size: 54\n"
+     ]
+    }
+   ],
+   "source": [
+    "# Find the indices of the columns in the count matrix where the sample group is 'iweak'\n",
+    "cm_weak_cols = np.where(cm_iweak_mask)[0]\n",
+    "print(cm_weak_cols)\n",
+    "print_array_info(cm_weak_cols)\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 12,
+   "id": "e2676a98",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "[  3  10  11  13  19  20  22  23  26  28  29  30  32  36  37  40  42  44\n",
+      "  46  48  52  57  58  62  66  68  70  76  77  79  82  83  85  87  88  89\n",
+      "  90  91  95  96  98  99 100 101 103 104 105 107 109 110 113 115 116 117\n",
+      " 118 119 120 121 124 125 127 128 129 130 134 135 136 137 138 140 141 143\n",
+      " 144 147 152 153 154 155 156 157 158 159 162 165 167 169 172 174 175 178\n",
+      " 179 181 182 183 184 185 187 189 190 191 193 194 198 199 201 202 204 205\n",
+      " 208 209 210 211 213 218 220 221 222 224 229 231 232 233 234 236 237 238\n",
+      " 239 240 241 242 243 245 246 247 250 251 253 254 255 257 259 261 264 267\n",
+      " 268 272 273 274 277 281 284 290 297 301]\n",
+      "Shape: (154,) \n",
+      "Number of dimensions: 1 \n",
+      "Data type: int64 \n",
+      "Size: 154\n"
+     ]
+    }
+   ],
+   "source": [
+    "# Access indices of the array where the second column is 'istrong'\n",
+    "## Assign the indices to a istrong_index (not the tuple returned by np.where)\n",
+    "istrong_index = np.where(data[:, 1] == 'istrong')[0]\n",
+    "print(istrong_index)\n",
+    "print_array_info(istrong_index)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 13,
+   "id": "6eba34cc",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "[ 33  44  45  47  54  55  58  63  66  68  69  70  72  76  78  81  84  86\n",
+      "  89  92  96 101 102 107 111 113 115 121 122 125 129 130 132 134 136 137\n",
+      " 138]\n",
+      "Shape: (37,) \n",
+      "Number of dimensions: 1 \n",
+      "Data type: int64 \n",
+      "Size: 37\n"
+     ]
+    }
+   ],
+   "source": [
+    "# Find the indices of the columns in the count matrix where the sample group is 'istrong'\n",
+    "cm_strong_cols = np.where(np.isin(count_matrix[0, :], data[istrong_index, 0]))[0]\n",
+    "print(cm_strong_cols)\n",
+    "print_array_info(cm_strong_cols)\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 14,
+   "id": "39901d4b",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "(81, 483)"
+      ]
+     },
+     "execution_count": 14,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "count_matrix.shape"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "01f7ddb7",
+   "metadata": {},
+   "source": [
+    "## Step 3: Data Preprocessing\n",
+    "\n",
+    "* Convert count matrix to numeric values\n",
+    "* Apply log2 transformation: log2(counts + 1)\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 15,
+   "id": "61a23be5",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "[['SH_TS_BC_C1' 'SH_TS_BC_C11' 'SH_TS_BC_C15' 'SH_TS_BC_C3' 'SH_TS_BC01']\n",
+      " ['25' '559' '231' '44' '23']\n",
+      " ['173' '2475' '886' '320' '6']\n",
+      " ['114' '8806' '2781' '537' '47']\n",
+      " ['626' '7492' '2829' '564' '14']]\n",
+      "___\n",
+      "[[2.500e+01 5.590e+02 2.310e+02 4.400e+01 2.300e+01]\n",
+      " [1.730e+02 2.475e+03 8.860e+02 3.200e+02 6.000e+00]\n",
+      " [1.140e+02 8.806e+03 2.781e+03 5.370e+02 4.700e+01]\n",
+      " [6.260e+02 7.492e+03 2.829e+03 5.640e+02 1.400e+01]\n",
+      " [3.170e+02 5.949e+03 2.357e+03 2.750e+02 2.600e+01]]\n"
+     ]
+    }
+   ],
+   "source": [
+    "# Remove sample names from the count matrix (cm) - Delete the first row\n",
+    "print(count_matrix[0:5, 0:5])\n",
+    "print(\"___\")\n",
+    "## Convert the cm to a float32 array\n",
+    "\n",
+    "cm = np.delete(count_matrix, 0, axis=0).astype(\"float32\")\n",
+    "print(cm[0:5, 0:5])\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 16,
+   "id": "36b3363d",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "[[ 4.70044    9.129283   7.857981  ...  0.         6.5999126  7.936638 ]\n",
+      " [ 7.4429436 11.273795   9.79279   ...  6.794416   9.865733  11.2842455]\n",
+      " [ 6.84549   13.104435  11.441907  ...  9.187352  10.403012  11.279611 ]\n",
+      " ...\n",
+      " [10.675957  13.7911625 12.428099  ... 10.456354  11.276706  12.22581  ]\n",
+      " [ 4.857981   8.169925   7.491853  ...  8.948367   4.5849624  8.204571 ]\n",
+      " [ 9.432542  12.378024  10.899357  ... 10.82893   13.397273  14.26415  ]]\n",
+      "Shape: (80, 483) \n",
+      "Number of dimensions: 2 \n",
+      "Data type: float32 \n",
+      "Size: 38640\n"
+     ]
+    }
+   ],
+   "source": [
+    "# Convert cm to log scale\n",
+    "cm = np.log2(cm + 1)\n",
+    "print(cm)\n",
+    "print_array_info(cm)\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 17,
+   "id": "8f48c224",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "iweak_mean [7.8603177 8.870119  8.839295  9.873015  8.818066 ] (80,)\n",
+      "iweak_std [1.9773906 1.5399547 2.0553062 1.1807643 2.1794095] (80,)\n"
+     ]
+    }
+   ],
+   "source": [
+    "# Calculate mean and STD of each gene in iweak samples\n",
+    "iweak_mean = cm[:, cm_weak_cols].mean(1)    ## Mean of iweak samples\n",
+    "iweak_std = cm[:, cm_weak_cols].std(1)      ## STD of iweak samples\n",
+    "print(\"iweak_mean\", iweak_mean[:5], iweak_mean.shape)\n",
+    "print(\"iweak_std\", iweak_std[:5], iweak_std.shape)\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 18,
+   "id": "8397193a",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "istrong_mean [ 6.9949713  6.953521  10.527761   9.192108   9.029262 ] (80,)\n",
+      "istrong_std [2.2878554 2.8049028 1.3030388 2.2123892 1.9921837] (80,)\n"
+     ]
+    }
+   ],
+   "source": [
+    "# Calculate mean and STD of each gene in istrong samples\n",
+    "istrong_mean = cm[:,cm_strong_cols].mean(1) ## Mean of istrong disease samples\n",
+    "istrong_std = cm[:,cm_strong_cols].std(1)   ## STD of istrong samples\n",
+    "\n",
+    "print(\"istrong_mean\", istrong_mean[:5], istrong_mean.shape)\n",
+    "print(\"istrong_std\", istrong_std[:5], istrong_std.shape)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "6c55caf8",
+   "metadata": {},
+   "source": [
+    "## Step 4: Statistical Analysis\n",
+    "\n",
+    "1. Calculate mean and std for each gene within each group\n",
+    "2. Compute Z-scores within each sample group\n",
+    "3. Calculate Z-score differences between groups\n",
+    "4. Compute standard deviation of all differences"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "f6e1fd76",
+   "metadata": {},
+   "source": [
+    "\n",
+    "**Z-scores:**\n",
+    "\n",
+    "* Gene expression measurements (counts) can have vastly different scales across different samples due to technical variations\n",
+    "* The Z-score transformation standardizes these measurements\n",
+    "\n",
+    "$$ Z_{G} = \\frac{(Count_G - \\mu_{Count_{group}})}{\\sigma_{Count_{group}}} $$\n",
+    "\n",
+    "\n",
+    "$$ Z_{G} : Z-score\\ for\\ a\\ gene\\ G$$\n",
+    "$$ Count_G: Log10\\ count\\ of\\ gene\\ G\\ in\\ a\\ given\\ sample$$\n",
+    "$$ \\mu_{Count_{group}}: The\\ overall\\ average\\ across\\ all\\ samples\\ in\\ the\\ given\\ group\\ for\\ each\\ gene$$\n",
+    "$$ \\sigma_{Count_{group}}: Standard\\ deviation\\ all\\ samples\\ in\\ the\\ given\\ group\\ for\\ each\\ gene$$\n",
+    "\n",
+    "![alt text](image-16.png)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "0c276417",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "(80, 483) (80,) (80,)\n",
+      "cm_iweak_z [[-0.8058757  -0.7423927  -0.9294824   0.4624626  -0.95228404]\n",
+      " [-1.1998737  -2.0764856   0.16326085  0.22980079 -5.1106176 ]\n",
+      " [-4.3007193   0.31064132 -0.57465094  0.26697835 -1.5138254 ]\n",
+      " [-1.1198412  -1.3803278   0.17033552  1.1318417  -2.3681269 ]\n",
+      " [-4.04608    -0.28826228 -0.18751603  0.5879035  -1.0315684 ]]\n",
+      "Shape: (80, 54) \n",
+      "Number of dimensions: 2 \n",
+      "Data type: float32 \n",
+      "Size: 4320\n"
+     ]
+    }
+   ],
+   "source": [
+    "# Calculate Z-scores of each gene in iweak samples (vectorized)\n",
+    "print(cm.shape, iweak_mean.shape, iweak_std.shape)\n",
+    "\n",
+    "## use .reshape(-1, 1) to convert the mean and std to column vectors\n",
+    "## This is necessary for vectorized operations to work correctly\n",
+    "cm_iweak_z = (cm[:, cm_weak_cols] - iweak_mean.reshape(-1, 1)) / iweak_std.reshape(-1, 1)\n",
+    "## The reshape is necessary because you want to subtract/divide row-wise, but NumPy's default broadcasting for 1D arrays applies column-wise.\n",
+    "print(\"cm_iweak_z\", cm_iweak_z[:5, :5])\n",
+    "print_array_info(cm_iweak_z)\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 20,
+   "id": "d9e2bab7",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "cm_istrong_z [[ 0.2545867   0.7559668   0.47983187  1.1538492   0.3143879 ]\n",
+      " [ 0.97684896 -0.04753883  0.8586477   1.0635368   0.32466918]\n",
+      " [ 0.13716765  0.28922623  1.1129626   1.229808    0.77283007]\n",
+      " [ 0.4442336   0.6031446   0.74163324  0.75332576  0.71388024]\n",
+      " [ 0.29755822  1.1648388   1.0060126   0.3692481  -0.07359705]]\n",
+      "Shape: (80, 37) \n",
+      "Number of dimensions: 2 \n",
+      "Data type: float32 \n",
+      "Size: 2960\n"
+     ]
+    }
+   ],
+   "source": [
+    "# Calculate Z-scores of each gene in istrong samples (vectorized)\n",
+    "cm_istrong_z = (cm[:, cm_strong_cols] - istrong_mean.reshape(-1, 1)) / istrong_std.reshape(-1, 1)\n",
+    "print(\"cm_istrong_z\", cm_istrong_z[:5, :5])\n",
+    "print_array_info(cm_istrong_z)\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "de0519cb",
+   "metadata": {},
+   "source": [
+    "**Z-ratio = Z-score difference (per gene):**\n",
+    "\n",
+    "* The Z-ratio provides a standardized measure of the difference between conditions for each gene\n",
+    "* This accounts for the overall variability in the experiment\n",
+    "* A gene showing a difference of, say, 0.5 in average Z-score\n",
+    "  * might be highly significant if most genes show very little difference (small Z-score difference - SD),\n",
+    "  * but not significant if many genes show large differences (large Z-score difference - SD)\n",
+    "* It puts the individual gene's change in the context of the overall experimental variation\n",
+    "\n",
+    "\n",
+    "$$ Z.score_{Diff_{gene}} = \\bar{Z}_{Gene, istring} - \\bar{Z}_{Gene, iweak} $$\n",
+    "\n",
+    "$$ Z_{Ratio, Gene} = \\frac{Z.score_{Diff_{gene}}}{SD_{Z.score_{Diff_{gene}}}} $$\n",
+    "\n",
+    "![alt text](image-17.png)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 21,
+   "id": "28574973",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Shape: (80,) \n",
+      "Number of dimensions: 1 \n",
+      "Data type: float32 \n",
+      "Size: 80\n",
+      "[-0.43179178 -1.5044755   1.247218    0.22787355  0.64381164  0.83408666\n",
+      "  0.96931595  2.2225075   2.1141531   0.49432233]\n"
+     ]
+    }
+   ],
+   "source": [
+    "diff_z_scores = cm_istrong_z.mean(1) - cm_iweak_z.mean(1)\n",
+    "std_diff = diff_z_scores.std()\n",
+    "\n",
+    "### z-score ratio for each gene\n",
+    "## Divide Z-Ratio differences by the Z-Ratio differences SD\n",
+    "z_score_ratios = diff_z_scores / std_diff\n",
+    "print_array_info(z_score_ratios)\n",
+    "print(z_score_ratios[:10])"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "b3c2370e",
+   "metadata": {},
+   "source": [
+    "## Step5: Rank genes according to the Z score ratio:\n",
+    "\n",
+    "* Sort z_score_ratio in descending order and access indices\n",
+    "* Rank genes using indices\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 22,
+   "id": "8a0d7d75",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "gene_list = [\"ACTR3B\", \"ANLN\", \"APOBEC3G\", \"AURKA\", \"BAG1\", \"BCL2\", \"BIRC5\", \"BLVRA\", \"CCL5\", \"CCNB1\", \"CCNE1\", \"CCR2\", \"CD2\", \"CD27\", \"CD3D\", \"CD52\", \"CD68\", \"CDC20\", \"CDC6\", \"CDH3\", \"CENPF\", \"CEP55\", \"CORO1A\", \"CTSL2\", \"CXCL9\", \"CXXC5\", \"EGFR\", \"ERBB2\", \"ESR1\", \"EXO1\", \"FGFR4\", \"FOXA1\", \"FOXC1\", \"GAPDH\", \"GPR160\", \"GRB7\", \"GSTM1\", \"GUSB\", \"GZMA\", \"GZMK\", \"HLA-DMA\", \"IL2RG\", \"KIF2C\", \"KRT14\", \"KRT17\", \"KRT5\", \"LCK\", \"MAPT\", \"MDM2\", \"MELK\", \"MIA\", \"MKI67\", \"MLPH\", \"MMP11\", \"MRPL19\", \"MYBL2\", \"MYC\", \"NAT1\", \"NDC80\", \"NUF2\", \"ORC6\", \"PGR\", \"PHGDH\", \"PRKCB\", \"PSMC4\", \"PTPRC\", \"PTTG1\", \"RRM2\", \"SCUBE2\", \"SF3A1\", \"SFRP1\", \"SH2D1A\", \"SLC39A6\", \"TFRC\", \"TMEM45B\", \"TP53\", \"TYMS\", \"UBE2C\", \"UBE2T\", \"VEGFA\"]\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 23,
+   "id": "7476640c",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Genes ranked according to Z-score ratio:\n",
+      "['PSMC4' 'FOXC1' 'TP53' 'BLVRA' 'CCL5' 'CD68' 'PTPRC' 'GRB7' 'APOBEC3G'\n",
+      " 'MRPL19' 'CENPF' 'BIRC5' 'UBE2C' 'PHGDH' 'ERBB2' 'TFRC' 'BCL2' 'GUSB'\n",
+      " 'MDM2' 'KRT5' 'BAG1' 'FOXA1' 'CCNB1' 'KRT17' 'CEP55' 'KRT14' 'NDC80'\n",
+      " 'AURKA' 'CXCL9' 'TMEM45B' 'SLC39A6' 'GZMK' 'PTTG1' 'GPR160' 'IL2RG'\n",
+      " 'GZMA' 'MYC' 'EXO1' 'MKI67' 'TYMS' 'PGR' 'SH2D1A' 'CD27' 'PRKCB' 'CCR2'\n",
+      " 'NUF2' 'RRM2' 'MIA' 'MELK' 'ESR1' 'SF3A1' 'UBE2T' 'EGFR' 'CCNE1' 'MAPT'\n",
+      " 'KIF2C' 'MMP11' 'HLA-DMA' 'NAT1' 'CTSL2' 'MLPH' 'CXXC5' 'CD2' 'ACTR3B'\n",
+      " 'CORO1A' 'SFRP1' 'FGFR4' 'CD3D' 'ORC6' 'LCK' 'CD52' 'CDH3' 'GSTM1'\n",
+      " 'VEGFA' 'SCUBE2' 'CDC6' 'ANLN' 'MYBL2' 'CDC20' 'GAPDH']\n"
+     ]
+    }
+   ],
+   "source": [
+    "### `np.argsort()` returns indices of the array that would sort in ascending order\n",
+    "### slicing syntax [start:stop:step] with step -1 returns a reversed array\n",
+    "\n",
+    "gene_ranks = np.argsort(z_score_ratios)[::-1]\n",
+    "print(\"Genes ranked according to Z-score ratio:\")\n",
+    "print(np.array(gene_list)[gene_ranks])"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "83d6b37a",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": ".venv",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.13.2"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 5
+}

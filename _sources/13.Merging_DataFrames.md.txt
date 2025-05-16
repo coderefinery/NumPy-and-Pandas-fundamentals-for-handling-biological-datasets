@@ -1,0 +1,291 @@
+# Merging DataFrames in Pandas
+
+:::{objectives}
+
+* Illustrate how to concatenate DataFrames using `pd.concat()` and understand its applications.
+* Explain database-style joins with the `merge()` function and illustrate the different join types (inner, outer, left, * right).
+:::
+
+:::{exercise} Time
+8 Minutes
+:::
+
+* In real-world data analysis, you rarely have all the data you need in a single file or table.
+* Combining data from multiple sources is a fundamental data wrangling skill.
+* Pandas gives us two main approaches: stacking data (concatenation) and joining data on common keys (merging)
+
+* **Concatenation**: Stacking similar datasets (vertically or horizontally)
+* **Merging/Joining**: Combining related datasets based on common keys
+
+## Concatenation with pd.concat()
+
+| Parameter | Purpose | Common Values |
+|-----------|---------|---------------|
+| `objs` | List of DataFrames | `[df1, df2, ...]` |
+| `axis` | Direction | `0` (vertical, default), `1` (horizontal) |
+
+:::{demo}
+
+* Vertical concatenation (stacking)
+* Horizontal concatenation (side by side)
+
+```python
+import pandas as pd
+
+# Create sample DataFrames
+df1 = pd.DataFrame({
+    'A': ['A0', 'A1', 'A2'],
+    'B': ['B0', 'B1', 'B2']
+}, index=['K0', 'K1', 'K2'])
+
+df2 = pd.DataFrame({
+    'A': ['A3', 'A4', 'A5'],
+    'B': ['B3', 'B4', 'B5']
+}, index=['K3', 'K4', 'K5'])
+
+df3 = pd.DataFrame({
+    'C': ['C6', 'C7', 'C8'],
+    'D': ['D6', 'D7', 'D8']
+}, index=['K6', 'K7', 'K8'])
+
+# Vertical concatenation (stacking)
+result1 = pd.concat([df1, df2])
+print("1. Vertical concatenation (stacking)")
+print(result1)
+
+# Horizontal concatenation (side by side)
+result2 = pd.concat([df1, df3], axis=1)
+print("2. Horizontal concatenation (side by side)")
+print(result2)
+```
+
+Output
+
+```none
+1. Vertical concatenation (stacking)
+     A   B
+K0  A0  B0
+K1  A1  B1
+K2  A2  B2
+K3  A3  B3
+K4  A4  B4
+K5  A5  B5
+2. Horizontal concatenation (side by side)
+      A    B    C    D
+K0   A0   B0  NaN  NaN
+K1   A1   B1  NaN  NaN
+K2   A2   B2  NaN  NaN
+K6  NaN  NaN   C6   D6
+K7  NaN  NaN   C7   D7
+K8  NaN  NaN   C8   D8
+```
+
+:::{discussion}
+
+* Concatenation is like stacking datasets either vertically (axis=0) or horizontally (axis=1).
+* Vertical concatenation is useful when you have data from different dataframes in the same format.
+* Horizontal concatenation is useful when you have different features for the same observations
+* Use `ignore_index=True` when original indices aren't meaningful after combining
+  * e.g., `pd.concat([df1, df2], ignore_index=True)`
+:::
+
+## Database-Style Joins with merge()
+
+### Key Parameters for pd.merge()
+
+| Parameter | Purpose | Common Values |
+|-----------|---------|---------------|
+| `left`, `right` | DataFrames to merge | DataFrame objects |
+| `how` | Type of join | `'inner'` (default), `'outer'`, `'left'`, `'right'` |
+| `on` | Column(s) to join on | Column name or list of names |
+| `left_on`, `right_on` | Column(s) when names differ | Column name(s) for each DataFrame |
+| `suffixes` | For duplicate columns | Tuple of strings, default `('_x', '_y')` |
+
+### Basic Merge Examples
+
+:::{demo}
+
+* Inner join (default) - only matching rows (intersect)
+* Left join - keep all rows from left DataFrame
+* Right join - keep all rows from right DataFrame
+* Outer join - keep all rows from both DataFrames (union)
+
+```python
+# Create sample DataFrames for merging
+employees = pd.DataFrame({
+    'employee_id': [1, 2, 3, 4, 5],
+    'name': ['Alice', 'Bob', 'Charlie', 'David', 'Eva'],
+    'department_id': [101, 102, 101, 103, 102]
+})
+print("Original dataframe")
+print(employees)
+
+departments = pd.DataFrame({
+    'department_id': [101, 102, 103, 104],
+    'department_name': ['HR', 'Engineering', 'Finance', 'Marketing'],
+    'location': ['New York', 'San Francisco', 'Chicago', 'Boston']
+})
+print("Original dataframe")
+print(departments)
+
+# Inner join (default) - only matching rows
+inner_merge = pd.merge(employees, departments, on='department_id')
+print("1. Inner join (default) - only matching rows")
+print(inner_merge)
+
+# Left join - keep all rows from left DataFrame
+left_merge = pd.merge(employees, departments, on='department_id', how='left')
+print("2. Left join - keep all rows from left DataFrame")
+print(left_merge)
+
+# Right join - keep all rows from right DataFrame
+right_merge = pd.merge(employees, departments, on='department_id', how='right')
+print("3. Right join - keep all rows from right DataFrame")
+print(right_merge)
+
+# Outer join - keep all rows from both DataFrames
+outer_merge = pd.merge(employees, departments, on='department_id', how='outer')
+print("4. Outer join - keep all rows from both DataFrames")
+print(outer_merge)
+```
+
+Output
+
+```none
+Original dataframe
+   employee_id     name  department_id
+0            1    Alice            101
+1            2      Bob            102
+2            3  Charlie            101
+3            4    David            103
+4            5      Eva            102
+
+Original dataframe
+   department_id department_name       location
+0            101              HR       New York
+1            102     Engineering  San Francisco
+2            103         Finance        Chicago
+3            104       Marketing         Boston
+
+1. Inner join (default) - only matching rows
+   employee_id     name  department_id department_name       location
+0            1    Alice            101              HR       New York
+1            3  Charlie            101              HR       New York
+2            2      Bob            102     Engineering  San Francisco
+3            5      Eva            102     Engineering  San Francisco
+4            4    David            103         Finance        Chicago
+
+2. Left join - keep all rows from left DataFrame
+   employee_id     name  department_id department_name       location
+0            1    Alice            101              HR       New York
+1            2      Bob            102     Engineering  San Francisco
+2            3  Charlie            101              HR       New York
+3            4    David            103         Finance        Chicago
+4            5      Eva            102     Engineering  San Francisco
+
+3. Right join - keep all rows from right DataFrame
+   employee_id     name  department_id department_name       location
+0          1.0    Alice            101              HR       New York
+1          3.0  Charlie            101              HR       New York
+2          2.0      Bob            102     Engineering  San Francisco
+3          5.0      Eva            102     Engineering  San Francisco
+4          4.0    David            103         Finance        Chicago
+5          NaN      NaN            104       Marketing         Boston
+
+4. Outer join - keep all rows from both DataFrames
+   employee_id     name  department_id department_name       location
+0          1.0    Alice            101              HR       New York
+1          3.0  Charlie            101              HR       New York
+2          2.0      Bob            102     Engineering  San Francisco
+3          5.0      Eva            102     Engineering  San Francisco
+4          4.0    David            103         Finance        Chicago
+5          NaN      NaN            104       Marketing         Boston
+```
+
+:::
+
+:::{discussion}
+
+* The `merge()` function is modeled after SQL joins and is used to combine DataFrames based on common columns or indices.
+* The 'how' parameter determines which rows to keep: 'inner' (matching rows only), 'left' (all left rows), 'right' (all right rows), or 'outer' (all rows).
+* You can merge on multiple columns by passing lists to 'on', 'left_on', or 'right_on'.
+* When merging on indices instead of columns, use 'left_index=True' and/or 'right_index=True'.
+* Merging is a powerful way to enrich your dataset with additional information from other sources.
+
+:::
+
+## 3. Handling Duplicate Columns
+
+When merging DataFrames with overlapping column names, you need to handle duplicates:
+
+* Default behavior adds `_x` and `_y` suffixes or
+* Add custom suffixes
+
+```python
+# DataFrames with overlapping column names
+df_a = pd.DataFrame({
+    'key': ['K0', 'K1', 'K2'],
+    'A': ['A0', 'A1', 'A2'],
+    'B': ['B0', 'B1', 'B2']
+})
+
+df_b = pd.DataFrame({
+    'key': ['K0', 'K2', 'K3'],
+    'B': ['B3', 'B4', 'B5'],
+    'C': ['C3', 'C4', 'C5']
+})
+
+# Default behavior adds _x and _y suffixes
+merged_default = pd.merge(df_a, df_b, on='key')
+print("1. Default behavior adds _x and _y suffixes")
+print(merged_default)
+
+# Custom suffixes
+merged_custom = pd.merge(df_a, df_b, on='key', suffixes=('_left', '_right'))
+print("2. Custom suffixes")
+print(merged_custom)
+
+```
+
+Output
+
+```none
+1. Default behavior adds _x and _y suffixes
+  key   A B_x B_y   C
+0  K0  A0  B0  B3  C3
+1  K2  A2  B2  B4  C4
+
+2. Custom suffixes
+  key   A B_left B_right   C
+0  K0  A0     B0      B3  C3
+1  K2  A2     B2      B4  C4
+```
+
+:::{discussion}
+
+* When merging DataFrames with duplicate column names, Pandas adds suffixes to make them unique.
+* You can customize these suffixes to make the result more readable.
+* Another approach is to select only the columns you need, either before or after merging
+* Duplicate indices can cause unexpected behavior, especially with joins.
+  * Be careful with duplicate values in join keys - each duplicate in one DataFrame will join with all matches in the other DataFrame, potentially creating many rows.
+* Always inspect the result after merging, especially checking the row count to ensure it matches expectations.
+:::
+
+## Key Takeaways
+
+:::{Keypoints}
+
+1. **Concatenation vs. Merging:**
+   * Use concatenation for stacking similar data
+   * Use merging for combining related data on keys
+
+2. **Join Types:**
+   * `inner`: Keep only matching data (default)
+   * `outer`: Keep everything
+   * `left`/`right`: Keep all rows from one DataFrame
+
+3. **Best Practices:**
+   * Clean join keys before merging
+   * Handle duplicate columns with suffixes or column selection
+   * Always verify the shape of the result
+:::
