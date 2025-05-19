@@ -76,8 +76,8 @@ Pandas for Bioinformatics ; 3 Hours
 
 * [Download Test dataset 2: count_matrix.csv](test_data/count_matrix.csv)
 * [Download Test dataset 3: sample_data.csv](test_data/sample_data.csv)
-* [Download Test dataset 3: sample_data.xlsx](test_data/sample_data.xlsx)
-* [Download Test dataset 3: sample_data.json](test_data/sample_data.json)
+* [Download Test dataset 4: sample_data.xlsx](test_data/sample_data.xlsx)
+* [Download Test dataset 5: sample_data.json](test_data/sample_data.json)
 
 ## Dependencies
 
@@ -86,26 +86,7 @@ Pandas for Bioinformatics ; 3 Hours
 
 ### Setup Python environment
 
-1. Install Python3
-2. Create a work-folder for the course exercises and hands-on sessions (e.g. `biont_module1`)
-3. Move the `biont_module1` workfolder and download the `requirements.txt` file
-4. Follow steps below
-
-```bash
-# work-folder: ~/playground/biont_module1
-
-# Create Python environment (use python v.3.11 or above)
-python -m venv venv
-
-# Activate Python environment
-source venv/bin/activate
-
-# Upgrade pip (not mandatory)
-pip install --upgrade pip
-
-# Install dependencies
-pip install -r requirements.txt
-```
+Follow installation instructions in document [linked here.](https://biont.biobyte.de/s/41S8lA8Uc)
 
 ## Credits
 
