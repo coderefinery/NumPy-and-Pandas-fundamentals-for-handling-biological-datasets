@@ -64,10 +64,10 @@ Pandas for Bioinformatics ; 3 Hours
 9.Pandas_data_import_export.md
 10.DataFrame_Manipulation.md
 11.Pandas_indexing_slicing.md
-12.Handling_Missing_Data.md
-13.Merging_DataFrames.md
 14.Pandas_summary_stats.md
 15.Hands-on_expression_count_analysis.ipynb
+12.Handling_Missing_Data.md
+13.Merging_DataFrames.md
 ```
 
 ## Datasets
