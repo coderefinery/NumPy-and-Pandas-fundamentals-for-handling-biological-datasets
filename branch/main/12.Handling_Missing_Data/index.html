@@ -1,0 +1,603 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bonus Lesson 1: Handling Missing Data in Pandas &mdash; NumPy and Pandas for biological data handling  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+      <link rel="stylesheet" type="text/css" href="../_static/sphinx_lesson.css?v=e9df6548" />
+      <link rel="stylesheet" type="text/css" href="../_static/term_role_formatting.css?v=4194e21c" />
+      <link rel="stylesheet" type="text/css" href="../_static/sphinx_rtd_theme_ext_color_contrast.css?v=8e8ea19f" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=187304be"></script>
+      <script src="../_static/doctools.js?v=9a2dae69"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../_static/copybutton.js?v=35a8b989"></script>
+      <script src="../_static/minipres.js?v=a0d29692"></script>
+      <script>let toggleHintShow = 'Click to show';</script>
+      <script>let toggleHintHide = 'Click to hide';</script>
+      <script>let toggleOpenOnPrint = 'true';</script>
+      <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+      <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+      <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex/" />
+    <link rel="search" title="Search" href="../search/" />
+    <link rel="next" title="Bonus Lesson 2: Merging DataFrames in Pandas" href="../13.Merging_DataFrames/" />
+    <link rel="prev" title="Hands-on: RNA Expression Analysis - alternative method" href="../15.Hands-on_expression_count_analysis/" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../" class="icon icon-home">
+            NumPy and Pandas for biological data handling
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search/" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Numpy for handling biological datasets</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../0.Numpy_for_bioinformatics/">Lesson plan</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1.numpy_intro/">Introduction to NumPy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../2.NumPy_Data_Types/">NumPy Data Types</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3.Indexing_and_Slicing/">Array Indexing and Slicing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../4.Advance_indexing_filtering/">NumPy Boolean Masking and Filtering</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../5.Essential_array_operations/">Essential Array Operations with NumPy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../6.Vectorized_Operations_in_NumPy/">Vectorized Operations in NumPy: Beyond Python Loops</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../6.1.Numpy_hands_on/">Hands-on: RNA Expression Analysis - alternative method</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Pandas for handling biological datasets</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../7.Pandas_lesson plan/">Lesson plan</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8.Introduction_to_pandas/">Introduction to Pandas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../9.Pandas_data_import_export/">Data Import and Export in Pandas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../10.DataFrame_Manipulation/">DataFrame Manipulation &amp; Sorting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../11.Pandas_indexing_slicing/">Indexing, Selection &amp; Slicing in Pandas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../14.Pandas_summary_stats/">Summary Statistics &amp; Aggregations in Pandas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../15.Hands-on_expression_count_analysis/">Hands-on: RNA Expression Analysis - alternative method</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Bonus Lesson 1: Handling Missing Data in Pandas</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#detecting-missing-values">Detecting Missing Values</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#key-methods-for-finding-missing-data">Key Methods for Finding Missing Data</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#dropping-missing-data">Dropping Missing Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#key-takeaways">Key Takeaways</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../13.Merging_DataFrames/">Bonus Lesson 2: Merging DataFrames in Pandas</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../">NumPy and Pandas for biological data handling</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Bonus Lesson 1: Handling Missing Data in Pandas</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/coderefinery/content/blob/main/content/12.Handling_Missing_Data.md" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="bonus-lesson-1-handling-missing-data-in-pandas">
+<h1>Bonus Lesson 1: Handling Missing Data in Pandas<a class="headerlink" href="#bonus-lesson-1-handling-missing-data-in-pandas" title="Link to this heading"></a></h1>
+<div class="admonition-objectives objectives admonition" id="objectives-0">
+<p class="admonition-title">Objectives</p>
+<ul class="simple">
+<li><p>Identify missing values in DataFrames using <code class="docutils literal notranslate"><span class="pre">isna()</span></code> and methods.</p></li>
+<li><p>Strategize the filling of missing values with <code class="docutils literal notranslate"><span class="pre">fillna()</span></code> and interpolation methods tailored to scenario needs.</p></li>
+<li><p>Demonstrate how to drop missing data with <code class="docutils literal notranslate"><span class="pre">dropna()</span></code> and discuss various strategies for handling missing data.</p></li>
+</ul>
+</div>
+<div class="admonition-instructor-note instructor-note admonition" id="instructor-note-0">
+<p class="admonition-title">Instructor note</p>
+<ul class="simple">
+<li><p>This lesson is not intended to cover in live session</p></li>
+<li><p>Lesson material is available only for the course participants to follow on their own time</p></li>
+</ul>
+</div>
+<ul class="simple">
+<li><p>Missing data is ubiquitous in real-world datasets</p></li>
+<li><p>Pandas represents missing values as <code class="docutils literal notranslate"><span class="pre">NaN</span></code> (Not a Number)</p></li>
+<li><p>Proper handling of missing values is critical for accurate analysis</p></li>
+<li><p>We’ll focus on the three most essential operations: detecting, filling, and dropping missing data</p></li>
+</ul>
+<section id="detecting-missing-values">
+<h2>Detecting Missing Values<a class="headerlink" href="#detecting-missing-values" title="Link to this heading"></a></h2>
+<section id="key-methods-for-finding-missing-data">
+<h3>Key Methods for Finding Missing Data<a class="headerlink" href="#key-methods-for-finding-missing-data" title="Link to this heading"></a></h3>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Method</p></th>
+<th class="head"><p>Returns</p></th>
+<th class="head"><p>Purpose</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">isna()</span></code> &amp; <code class="docutils literal notranslate"><span class="pre">isnull()</span></code></p></td>
+<td><p>Boolean mask (True where missing)</p></td>
+<td><p>Identify missing values</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">notna()</span></code> &amp; <code class="docutils literal notranslate"><span class="pre">notnull()</span></code></p></td>
+<td><p>Boolean mask (True where not missing)</p></td>
+<td><p>Identify non-missing values</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">isna().sum()</span></code></p></td>
+<td><p>Count of missing values per column</p></td>
+<td><p>Quantify missing data</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">isna().any()</span></code></p></td>
+<td><p>Whether any value is missing per column</p></td>
+<td><p>Quick presence check</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Detecting Missing Values:</strong></p>
+<div class="admonition-demo demo admonition" id="demo-0">
+<p class="admonition-title">Demo</p>
+<ul class="simple">
+<li><p>Detect missing values with <code class="docutils literal notranslate"><span class="pre">isna()</span></code></p>
+<ul>
+<li><p>consistent interface for detecting missing values with <code class="docutils literal notranslate"><span class="pre">isna()</span></code> and <code class="docutils literal notranslate"><span class="pre">notna()</span></code></p></li>
+</ul>
+</li>
+<li><p>Count missing values per column</p></li>
+<li><p>Count total missing values</p></li>
+</ul>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+<span class="c1"># Create a DataFrame with different types of missing values</span>
+<span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;A&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">8</span><span class="p">],</span>
+    <span class="s1">&#39;B&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">6</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="mi">15</span><span class="p">],</span>
+    <span class="s1">&#39;C&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="mi">14</span><span class="p">,</span> <span class="mi">20</span><span class="p">],</span>
+    <span class="s1">&#39;D&#39;</span><span class="p">:</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="mi">15</span><span class="p">],</span>
+    <span class="s1">&#39;E&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="s1">&#39;d&#39;</span><span class="p">,</span> <span class="s1">&#39;e&#39;</span><span class="p">,</span> <span class="s1">&#39;h&#39;</span><span class="p">]</span>  <span class="c1"># None also represents missing value</span>
+<span class="p">}</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;DataFrame with missing values:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+
+<span class="c1"># Detect missing values with isna()</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">1. Boolean mask of missing values:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">isna</span><span class="p">())</span>  <span class="c1"># True where values are missing</span>
+
+<span class="c1"># Count missing values per column</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">2. Count of missing values per column:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">isna</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">))</span>
+
+<span class="c1"># Count total missing values</span>
+<span class="n">total_missing</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">isna</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">3. Total missing values in DataFrame: </span><span class="si">{</span><span class="n">total_missing</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># Filter rows with any missing value</span>
+<span class="n">rows_with_missing</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">isna</span><span class="p">()</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">rows_with_any_missing</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">rows_with_missing</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">4. Rows with any missing value:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">rows_with_any_missing</span><span class="p">)</span>
+
+<span class="c1"># Filter rows with no missing values</span>
+<span class="c1">## Boolean masks generated by `isna()` or `notna()`  can be used directly for filtering</span>
+<span class="n">row_without_missing</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">notna</span><span class="p">()</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">complete_rows</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">row_without_missing</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">5. Rows with no missing values:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">complete_rows</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="admonition-output solution important dropdown admonition" id="solution-0">
+<p class="admonition-title">Output</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>1. Boolean mask of missing values:
+       A      B      C      D      E
+0  False  False  False   True  False
+1  False   True  False   True  False
+2   True  False  False   True   True
+3  False  False   True   True  False
+4  False   True  False   True  False
+5  False  False  False  False  False
+
+2. Count of missing values per column:
+A    1
+B    2
+C    1
+D    5
+E    1
+dtype: int64
+
+3. Total missing values in DataFrame: 10
+
+4. Rows with any missing value:
+     A    B     C   D     E
+0  1.0  6.0  10.0 NaN     a
+1  2.0  NaN  11.0 NaN     b
+2  NaN  8.0  12.0 NaN  None
+3  4.0  9.0   NaN NaN     d
+4  5.0  NaN  14.0 NaN     e
+
+5. Rows with no missing values:
+     A     B     C     D  E
+5  8.0  15.0  20.0  15.0  h
+</pre></div>
+</div>
+</div>
+</div>
+<div class="docutils">
+<p class="rubric" id="filling-missing-values">Filling Missing Values</p>
+<p><strong>Most Common Fill Strategies:</strong></p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Method</p></th>
+<th class="head"><p>Purpose</p></th>
+<th class="head"><p>Key Parameters</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">fillna(value)</span></code></p></td>
+<td><p>Replace with specific value</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">value</span></code>, <code class="docutils literal notranslate"><span class="pre">inplace</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">ffill()</span></code></p></td>
+<td><p>Forward fill (use previous value)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">bfill()</span></code></p></td>
+<td><p>Backward fill (use next value)</p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric" id="basic-fill-methods">Basic Fill Methods</p>
+<div class="admonition-demo demo admonition" id="demo-1">
+<p class="admonition-title">Demo</p>
+<ul class="simple">
+<li><p>Fill all missing values with a single value <code class="docutils literal notranslate"><span class="pre">fillna(value)</span></code></p></li>
+<li><p>Fill with different values for each column <code class="docutils literal notranslate"><span class="pre">fillna(dict)</span></code></p></li>
+</ul>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>
+<span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;A&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">8</span><span class="p">],</span>
+    <span class="s1">&#39;B&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">6</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="mi">15</span><span class="p">],</span>
+    <span class="s1">&#39;C&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="mi">14</span><span class="p">,</span> <span class="mi">20</span><span class="p">],</span>
+    <span class="s1">&#39;D&#39;</span><span class="p">:</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="mi">15</span><span class="p">],</span>
+    <span class="s1">&#39;E&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="s1">&#39;d&#39;</span><span class="p">,</span> <span class="s1">&#39;e&#39;</span><span class="p">,</span> <span class="s1">&#39;h&#39;</span><span class="p">]</span>  <span class="c1"># None also represents missing value</span>
+<span class="p">}</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+
+<span class="c1"># Original DataFrame</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Original DataFrame:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+
+<span class="c1"># 1. Fill all missing values with a single value</span>
+<span class="n">df_filled</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">1. Fill all missing values with 0:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df_filled</span><span class="p">)</span>
+
+<span class="c1"># 2. Fill numeric columns with their means</span>
+<span class="n">df_mean</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">df_mean</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="n">df_mean</span><span class="o">.</span><span class="n">select_dtypes</span><span class="p">(</span><span class="n">include</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;number&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">mean</span><span class="p">(),</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">2. Fill numeric columns with their means:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df_mean</span><span class="p">)</span>
+
+<span class="c1">## The select_dtypes() method is specifically designed to filter columns based on their data types</span>
+<span class="c1">## The parameter include=[&#39;number&#39;] tells pandas to keep only columns whose data type falls under the &quot;number&quot; category,</span>
+<span class="c1">##   which encompasses both integers and floating-point numbers</span>
+
+<span class="c1">## The fillna() method replaces all NaN/missing values in the dataframe</span>
+<span class="c1">## When you pass a Series as its argument (which is what we&#39;re doing with the means),</span>
+<span class="c1">##   pandas does something clever: it matches column names between the dataframe and the Series,</span>
+<span class="c1">##   and only fills values in columns that exist in both.</span>
+
+<span class="c1">## String columns remain untouched since no means will be calculated for them</span>
+<span class="c1">## df_mean[&quot;E&quot;] = df_mean[&quot;E&quot;].ffill() # Fills string column</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="admonition-output solution important dropdown admonition" id="solution-1">
+<p class="admonition-title">Output</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Original DataFrame:
+     A     B     C     D     E
+0  1.0   6.0  10.0   NaN     a
+1  2.0   NaN  11.0   NaN     b
+2  NaN   8.0  12.0   NaN  None
+3  4.0   9.0   NaN   NaN     d
+4  5.0   NaN  14.0   NaN     e
+5  8.0  15.0  20.0  15.0     h
+
+1. Fill all missing values with 0:
+     A     B     C     D  E
+0  1.0   6.0  10.0   0.0  a
+1  2.0   0.0  11.0   0.0  b
+2  0.0   8.0  12.0   0.0  0
+3  4.0   9.0   0.0   0.0  d
+4  5.0   0.0  14.0   0.0  e
+5  8.0  15.0  20.0  15.0  h
+
+2. Fill numeric columns with their means:
+     A     B     C     D     E
+0  1.0   6.0  10.0  15.0     a
+1  2.0   9.5  11.0  15.0     b
+2  4.0   8.0  12.0  15.0  None
+3  4.0   9.0  13.4  15.0     d
+4  5.0   9.5  14.0  15.0     e
+5  8.0  15.0  20.0  15.0     h
+
+</pre></div>
+</div>
+</div>
+<div class="admonition-more-info instructor-note admonition" id="instructor-note-1">
+<p class="admonition-title">More info</p>
+<details>
+<summary>Additional info</summary>
+<p><strong><code class="docutils literal notranslate"><span class="pre">ffill()</span></code> and <code class="docutils literal notranslate"><span class="pre">bfill()</span></code>:</strong></p>
+<ul class="simple">
+<li><p>Forward fill (propagate last valid observation forward)</p></li>
+<li><p>Fill numeric columns with their means</p></li>
+</ul>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 2. Fill with different values for each column</span>
+<span class="n">fill_values</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;A&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;B&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;C&#39;</span><span class="p">:</span> <span class="mi">999</span><span class="p">,</span> <span class="s1">&#39;D&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;E&#39;</span><span class="p">:</span> <span class="s1">&#39;missing&#39;</span><span class="p">}</span>
+<span class="n">df_custom_fill</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="n">fill_values</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">1. Fill with custom values per column:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df_custom_fill</span><span class="p">)</span>
+
+<span class="c1"># 3. Forward fill (propagate last valid observation forward)</span>
+<span class="n">df_ffill</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">ffill</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">2. Forward fill (ffill):&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df_ffill</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Output</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>1. Fill with custom values per column:
+     A     B      C     D        E
+0  1.0   6.0   10.0   0.0        a
+1  2.0  -1.0   11.0   0.0        b
+2  0.0   8.0   12.0   0.0  missing
+3  4.0   9.0  999.0   0.0        d
+4  5.0  -1.0   14.0   0.0        e
+5  8.0  15.0   20.0  15.0        h
+
+2. Forward fill (ffill):
+     A     B     C     D  E
+0  1.0   6.0  10.0   NaN  a
+1  2.0   6.0  11.0   NaN  b
+2  2.0   8.0  12.0   NaN  b
+3  4.0   9.0  12.0   NaN  d
+4  5.0   9.0  14.0   NaN  e
+5  8.0  15.0  20.0  15.0  h
+
+</pre></div>
+</div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<ul class="simple">
+<li><p>The choice of fill method should be based on the nature of your data and the analysis you’re conducting.</p></li>
+<li><p>Forward fill and backward fill are especially useful for time series when you want to carry values forward or backward.</p></li>
+<li><p>Statistical measures like mean, median, or mode are common choices for filling numeric data.</p></li>
+<li><p>Remember that filling is modifying your data - it’s important to document your approach and consider its impact on analysis.</p></li>
+<li><p>For categorical data, consider whether a missing value has meaning before deciding how to fill it.</p></li>
+</ul>
+</div>
+</details>
+</section>
+</section>
+<section id="dropping-missing-data">
+<h2>Dropping Missing Data<a class="headerlink" href="#dropping-missing-data" title="Link to this heading"></a></h2>
+<p><strong>Key Parameters for dropna():</strong></p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Parameter</p></th>
+<th class="head"><p>Purpose</p></th>
+<th class="head"><p>Values</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">axis</span></code></p></td>
+<td><p>Specify rows or columns</p></td>
+<td><p>0 for rows, 1 for columns</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">how</span></code></p></td>
+<td><p>Condition for dropping</p></td>
+<td><p>‘any’ (default) or ‘all’</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">thresh</span></code></p></td>
+<td><p>Minimum non-NaN values to keep</p></td>
+<td><p>integer</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">subset</span></code></p></td>
+<td><p>Columns to consider</p></td>
+<td><p>list of column names</p></td>
+</tr>
+</tbody>
+</table>
+<div class="admonition-demo demo admonition" id="demo-2">
+<p class="admonition-title">Demo</p>
+<p><strong>Dropping Rows and Columns:</strong></p>
+<ul class="simple">
+<li><p>Drop rows with any missing values (any missing values)</p></li>
+<li><p>Drop columns with any missing values</p></li>
+<li><p>Drop columns where all values are missing</p></li>
+<li><p>Keep rows with at least <code class="docutils literal notranslate"><span class="pre">n</span></code> non-NaN values</p></li>
+<li><p>Drop rows with missing values in specific columns</p></li>
+</ul>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;A&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">],</span>
+    <span class="s1">&#39;B&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">6</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">],</span>
+    <span class="s1">&#39;C&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="mi">14</span><span class="p">],</span>
+    <span class="s1">&#39;D&#39;</span><span class="p">:</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">],</span>
+    <span class="s1">&#39;E&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="s1">&#39;d&#39;</span><span class="p">,</span> <span class="s1">&#39;e&#39;</span><span class="p">,]</span>  <span class="c1"># None also represents missing value</span>
+<span class="p">}</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+
+<span class="c1"># Original DataFrame</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Original DataFrame:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+
+<span class="c1"># 1. Drop rows with any missing values</span>
+<span class="n">df_drop_rows</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">dropna</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">1. After dropping rows with any missing values:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df_drop_rows</span><span class="p">)</span>
+
+<span class="c1"># 2. Drop columns with any missing values</span>
+<span class="c1">## In filtering/dropping, axis=0 means &quot;operate on the 0-axis (rows)&quot;</span>
+<span class="n">df_drop_cols</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">2. After dropping columns with any missing values:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df_drop_cols</span><span class="p">)</span>
+<span class="c1">## In aggregations: axis specifies the axis to collapse/operate along</span>
+
+<span class="c1"># 3. Drop columns where all values are missing</span>
+<span class="n">df_drop_all_na_cols</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s1">&#39;all&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">3. After dropping columns where all values are missing:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df_drop_all_na_cols</span><span class="p">)</span>
+
+<span class="c1"># 4. Keep rows with at least 3 non-NaN values</span>
+<span class="n">df_thresh</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">thresh</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">4. Keep rows with at least 3 non-NaN values:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df_thresh</span><span class="p">)</span>
+
+<span class="c1"># 5. Drop rows with missing values in specific columns</span>
+<span class="n">df_subset</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">subset</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="s1">&#39;C&#39;</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">5. Drop rows with NaN in columns A or C:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df_subset</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="admonition-output solution important dropdown admonition" id="solution-2">
+<p class="admonition-title">Output</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Original DataFrame:
+     A    B     C   D     E
+0  1.0  6.0  10.0 NaN     a
+1  2.0  NaN  11.0 NaN     b
+2  NaN  8.0  12.0 NaN  None
+3  4.0  9.0   NaN NaN     d
+4  5.0  NaN  14.0 NaN     e
+
+2. After dropping columns with any missing values:
+Empty DataFrame
+Columns: []
+Index: [0, 1, 2, 3, 4, 5]
+
+3. After dropping columns where all values are missing:
+     A    B     C     E
+0  1.0  6.0  10.0     a
+1  2.0  NaN  11.0     b
+2  NaN  8.0  12.0  None
+3  4.0  9.0   NaN     d
+4  5.0  NaN  14.0     e
+
+4. Keep rows with at least 3 non-NaN values:
+     A    B     C   D  E
+0  1.0  6.0  10.0 NaN  a
+1  2.0  NaN  11.0 NaN  b
+3  4.0  9.0   NaN NaN  d
+4  5.0  NaN  14.0 NaN  e
+
+5. Drop rows with NaN in columns A or C:
+     A    B     C   D  E
+0  1.0  6.0  10.0 NaN  a
+1  2.0  NaN  11.0 NaN  b
+4  5.0  NaN  14.0 NaN  e
+</pre></div>
+</div>
+</div>
+</div>
+<div class="docutils">
+<div class="admonition-more-info instructor-note admonition" id="instructor-note-2">
+<p class="admonition-title">More info</p>
+<details>
+<summary>Additional info</summary>
+<ul class="simple">
+<li><p>Dropping is the simplest strategy, but it can lead to data loss - use cautiously.</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">how</span></code> parameter is critical - ‘any’ is much more restrictive than ‘all’.</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">thresh</span></code> parameter lets you keep rows with a minimum amount of data.</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">subset</span></code> parameter allows targeted dropping based on specific columns.</p></li>
+<li><p>Dropping is often appropriate when missing values are rare, or when you need a complete dataset for specific analyses.</p></li>
+<li><p>Be aware of potential bias introduced by dropping - if missing data correlates with certain characteristics, dropping can skew results.</p></li>
+</ul>
+<p>Additional reading -  <a class="reference external" href="https://jakevdp.github.io/PythonDataScienceHandbook/03.04-missing-values.html">Python Data Science Handbook</a></p>
+</div>
+</div>
+</section>
+<section id="key-takeaways">
+<h2>Key Takeaways<a class="headerlink" href="#key-takeaways" title="Link to this heading"></a></h2>
+<div class="admonition-keypoints keypoints admonition" id="keypoints-0">
+<p class="admonition-title">Keypoints</p>
+<ol class="arabic simple">
+<li><p><strong>Always detect first:</strong> Understand the pattern and extent of missing values before taking action</p></li>
+<li><p><strong>Choose the right strategy:</strong></p>
+<ul class="simple">
+<li><p>Fill when you can reasonably infer values or need to preserve data</p></li>
+<li><p>Drop when missing data is minimal or would introduce bias if filled</p></li>
+</ul>
+</li>
+<li><p><strong>Document your approach:</strong> Your handling choices affect analysis results</p></li>
+</ol>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../15.Hands-on_expression_count_analysis/" class="btn btn-neutral float-left" title="Hands-on: RNA Expression Analysis - alternative method" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../13.Merging_DataFrames/" class="btn btn-neutral float-right" title="Bonus Lesson 2: Merging DataFrames in Pandas" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025 Norwegian Ai Cloud.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

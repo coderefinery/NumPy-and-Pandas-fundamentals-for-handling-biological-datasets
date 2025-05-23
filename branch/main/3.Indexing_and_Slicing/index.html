@@ -1,0 +1,534 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Array Indexing and Slicing &mdash; NumPy and Pandas for biological data handling  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+      <link rel="stylesheet" type="text/css" href="../_static/sphinx_lesson.css?v=e9df6548" />
+      <link rel="stylesheet" type="text/css" href="../_static/term_role_formatting.css?v=4194e21c" />
+      <link rel="stylesheet" type="text/css" href="../_static/sphinx_rtd_theme_ext_color_contrast.css?v=8e8ea19f" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=187304be"></script>
+      <script src="../_static/doctools.js?v=9a2dae69"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../_static/copybutton.js?v=35a8b989"></script>
+      <script src="../_static/minipres.js?v=a0d29692"></script>
+      <script>let toggleHintShow = 'Click to show';</script>
+      <script>let toggleHintHide = 'Click to hide';</script>
+      <script>let toggleOpenOnPrint = 'true';</script>
+      <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+      <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+      <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex/" />
+    <link rel="search" title="Search" href="../search/" />
+    <link rel="next" title="NumPy Boolean Masking and Filtering" href="../4.Advance_indexing_filtering/" />
+    <link rel="prev" title="NumPy Data Types" href="../2.NumPy_Data_Types/" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../" class="icon icon-home">
+            NumPy and Pandas for biological data handling
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search/" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Numpy for handling biological datasets</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../0.Numpy_for_bioinformatics/">Lesson plan</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1.numpy_intro/">Introduction to NumPy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../2.NumPy_Data_Types/">NumPy Data Types</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Array Indexing and Slicing</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#introduction">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#numpy-arrays-in-bioinformatics">NumPy Arrays in Bioinformatics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#d-array-operations">1D Array Operations</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#d-array-slicing">1D Array Slicing</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#real-world-significance-in-bioinformatics">Real-world significance in bioinformatics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#key-takeaways">Key Takeaways</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../4.Advance_indexing_filtering/">NumPy Boolean Masking and Filtering</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../5.Essential_array_operations/">Essential Array Operations with NumPy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../6.Vectorized_Operations_in_NumPy/">Vectorized Operations in NumPy: Beyond Python Loops</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../6.1.Numpy_hands_on/">Hands-on: RNA Expression Analysis - alternative method</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Pandas for handling biological datasets</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../7.Pandas_lesson plan/">Lesson plan</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8.Introduction_to_pandas/">Introduction to Pandas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../9.Pandas_data_import_export/">Data Import and Export in Pandas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../10.DataFrame_Manipulation/">DataFrame Manipulation &amp; Sorting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../11.Pandas_indexing_slicing/">Indexing, Selection &amp; Slicing in Pandas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../14.Pandas_summary_stats/">Summary Statistics &amp; Aggregations in Pandas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../15.Hands-on_expression_count_analysis/">Hands-on: RNA Expression Analysis - alternative method</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../12.Handling_Missing_Data/">Bonus Lesson 1: Handling Missing Data in Pandas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../13.Merging_DataFrames/">Bonus Lesson 2: Merging DataFrames in Pandas</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../">NumPy and Pandas for biological data handling</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Array Indexing and Slicing</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/coderefinery/content/blob/main/content/3.Indexing_and_Slicing.md" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="array-indexing-and-slicing">
+<h1>Array Indexing and Slicing<a class="headerlink" href="#array-indexing-and-slicing" title="Link to this heading"></a></h1>
+<div class="admonition-objectives objectives admonition" id="objectives-0">
+<p class="admonition-title">Objectives</p>
+<ul class="simple">
+<li><p>Define and distinguish between indexing and slicing operations in NumPy arrays</p></li>
+<li><p>Demonstrate proper syntax for accessing individual elements in 1D and 2D arrays using indexing</p></li>
+<li><p>Extract ranges of elements using slicing techniques, including with negative indices and step parameters</p></li>
+<li><p>Recognize and avoid common pitfalls when working with arrays, such as off-by-one errors and unintended modifications to original data</p></li>
+</ul>
+</div>
+<div class="admonition-instructor-note instructor-note admonition" id="instructor-note-0">
+<p class="admonition-title">Instructor note</p>
+<ul class="simple">
+<li><p>Teaching : 10 min</p></li>
+<li><p>Demo: 5 min</p></li>
+</ul>
+</div>
+<section id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Link to this heading"></a></h2>
+<p>What is Indexing and Slicing?</p>
+<ul class="simple">
+<li><p>Indexing is the process of accessing specific individual elements within a data structure</p>
+<ul>
+<li><p>Uses square brackets with a single index value: <code class="docutils literal notranslate"><span class="pre">array[0]</span></code></p></li>
+<li><p>Most programming languages use zero-based indexing (first element is at position 0)</p></li>
+</ul>
+</li>
+<li><p>Slicing is the process of extracting a subset or range of elements</p>
+<ul>
+<li><p>Uses square brackets with a range specification: <code class="docutils literal notranslate"><span class="pre">array[start:stop:step]</span></code></p></li>
+<li><p>Creates a view of the original data (changes to the slice affect the original array)</p></li>
+</ul>
+</li>
+</ul>
+<p>Why Indexing Matters in Bioinformatics:</p>
+<ul class="simple">
+<li><p>Bioinformatics deals with large, complex biological datasets:</p>
+<ul>
+<li><p>DNA/RNA sequences (can be millions of nucleotides long)</p></li>
+<li><p>Protein sequences</p></li>
+<li><p>Gene expression matrices (thousands of genes × dozens/hundreds of samples)</p></li>
+<li><p>Phylogenetic trees</p></li>
+<li><p>Molecular structures</p></li>
+</ul>
+</li>
+<li><p>Efficient data access is crucial for:</p>
+<ul>
+<li><p>Sequence alignment and comparison</p></li>
+<li><p>Identifying motifs or patterns</p></li>
+<li><p>Analyzing specific regions of interest (e.g., genes, domains, binding sites)</p></li>
+<li><p>Processing large-scale genomic or proteomic data</p></li>
+<li><p>Statistical analysis across experimental conditions</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="numpy-arrays-in-bioinformatics">
+<h2>NumPy Arrays in Bioinformatics<a class="headerlink" href="#numpy-arrays-in-bioinformatics" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>Common bioinformatics applications:</p>
+<ul>
+<li><p>Storing sequence data as numeric arrays</p></li>
+<li><p>Representing position weight matrices</p></li>
+<li><p>Managing alignment scores</p></li>
+<li><p>Handling gene expression matrices</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="d-array-operations">
+<h2>1D Array Operations<a class="headerlink" href="#d-array-operations" title="Link to this heading"></a></h2>
+<div class="admonition-demo demo admonition" id="demo-0">
+<p class="admonition-title">Demo</p>
+<p class="rubric" id="d-array-indexing">1D Array Indexing</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Example: String sequence converted to numerical representation</span>
+<span class="c1"># A=0, C=1, G=2, T=3</span>
+<span class="n">dna_seq</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">])</span>  <span class="c1"># &quot;ACGTAACG&quot;</span>
+
+<span class="c1"># Single element access through indexing</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Original array&quot;</span><span class="p">,</span> <span class="n">dna_seq</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;First element (0th index)&quot;</span><span class="p">,</span> <span class="n">dna_seq</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>    <span class="c1"># First nucleotide (0 = A)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Fourth element&quot;</span><span class="p">,</span> <span class="n">dna_seq</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span>    <span class="c1"># Fourth nucleotide (3 = T)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Last element&quot;</span><span class="p">,</span><span class="n">dna_seq</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>   <span class="c1"># Last nucleotide (2 = G) using negative indexing</span>
+</pre></div>
+</div>
+<div class="admonition-output solution important dropdown admonition" id="solution-0">
+<p class="admonition-title">Output</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Original array [0 1 2 3 0 0 1 2]
+First element (0th index) 0
+Fourth element 3
+Last element 2
+</pre></div>
+</div>
+</div>
+</div>
+<section id="d-array-slicing">
+<h3>1D Array Slicing<a class="headerlink" href="#d-array-slicing" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Original array&quot;</span><span class="p">,</span> <span class="n">dna_seq</span><span class="p">)</span>
+
+<span class="c1"># Slicing * extracting subsequences</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;From second to fourth&quot;</span><span class="p">,</span> <span class="n">dna_seq</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="mi">4</span><span class="p">])</span>  <span class="c1"># From second to fourth nucleotide: array([1, 2, 3]) = &quot;CGT&quot;</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;First three nucleotides&quot;</span><span class="p">,</span> <span class="n">dna_seq</span><span class="p">[:</span><span class="mi">3</span><span class="p">])</span>   <span class="c1"># First three nucleotides: array([0, 1, 2]) = &quot;ACG&quot;</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;From sixth nucleotide to the end&quot;</span><span class="p">,</span> <span class="n">dna_seq</span><span class="p">[</span><span class="mi">5</span><span class="p">:])</span>   <span class="c1"># From sixth nucleotide to the end: array([0, 1, 2]) = &quot;ACG&quot;</span>
+
+<span class="c1"># Slicing with negative indices</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Last three nucleotides&quot;</span><span class="p">,</span> <span class="n">dna_seq</span><span class="p">[</span><span class="o">-</span><span class="mi">3</span><span class="p">:])</span>  <span class="c1"># Last three nucleotides: array([0, 1, 2]) = &quot;ACG&quot;</span>
+
+<span class="c1"># Slicing with step</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Every second nucleotide&quot;</span><span class="p">,</span> <span class="n">dna_seq</span><span class="p">[::</span><span class="mi">2</span><span class="p">])</span>  <span class="c1"># Every second nucleotide: array([0, 2, 0, 1]) = &quot;AGAC&quot;</span>
+
+<span class="c1"># Reverse array</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Every second nucleotide&quot;</span><span class="p">,</span> <span class="n">dna_seq</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span> 
+</pre></div>
+</div>
+<div class="admonition-solution solution important dropdown admonition" id="solution-1">
+<p class="admonition-title">Solution</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Original array [0 1 2 3 0 0 1 2]
+From second to fourth [1 2 3]
+First three nucleotides [0 1 2]
+From sixth nucleotide to the end [0 1 2]
+Last three nucleotides [0 1 2]
+Every second nucleotide [0 2 0 1]
+Every second nucleotide [2 1 0 0 3 2 1 0]
+</pre></div>
+</div>
+</div>
+<div class="docutils">
+<p><strong>Real-world significance in bioinformatics:</strong></p>
+<ul class="simple">
+<li><p>Indexing:</p>
+<ul>
+<li><p>Accessing specific nucleotide positions of interest</p></li>
+<li><p>Retrieving expression values for particular genes</p></li>
+<li><p>Referencing elements in position-specific scoring matrices</p></li>
+</ul>
+</li>
+<li><p>Slicing:</p>
+<ul>
+<li><p>Extracting specific regions like promoters, exons, or binding sites</p></li>
+<li><p>Identifying sequence motifs (e.g., restriction sites, protein domains)</p></li>
+<li><p>Analyzing k-mers (subsequences of length k)</p></li>
+<li><p>Creating sliding windows along DNA/protein sequences</p></li>
+</ul>
+</li>
+</ul>
+<div class="admonition-more-info instructor-note admonition" id="instructor-note-1">
+<p class="admonition-title">More info</p>
+<details>
+<summary>Additional notes: 2D Array Operations</summary>
+<p><strong>2D Array Operations:</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Example: Gene expression matrix</span>
+<span class="c1"># Rows = genes, Columns = experimental conditions</span>
+<span class="n">gene_expr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span>
+    <span class="p">[</span><span class="mf">12.5</span><span class="p">,</span> <span class="mf">10.2</span><span class="p">,</span> <span class="mf">33.4</span><span class="p">,</span> <span class="mf">7.8</span><span class="p">],</span>  <span class="c1"># Gene 1 expression across 4 conditions</span>
+    <span class="p">[</span><span class="mf">45.1</span><span class="p">,</span> <span class="mf">43.8</span><span class="p">,</span> <span class="mf">29.2</span><span class="p">,</span> <span class="mf">22.1</span><span class="p">],</span> <span class="c1"># Gene 2 expression</span>
+    <span class="p">[</span><span class="mf">8.7</span><span class="p">,</span>  <span class="mf">9.2</span><span class="p">,</span>  <span class="mf">12.3</span><span class="p">,</span> <span class="mf">10.5</span><span class="p">],</span> <span class="c1"># Gene 3 expression</span>
+    <span class="p">[</span><span class="mf">67.2</span><span class="p">,</span> <span class="mf">70.3</span><span class="p">,</span> <span class="mf">68.7</span><span class="p">,</span> <span class="mf">71.9</span><span class="p">]</span>  <span class="c1"># Gene 4 expression</span>
+<span class="p">])</span>
+</pre></div>
+</div>
+<p><strong>2D Array Indexing:</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Single element access * specific element at row, column</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">gene_expr</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">])</span>    <span class="c1"># Expression of Gene 2 in condition 3: 29.2</span>
+
+<span class="c1"># Row indexing * accessing specific row</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">gene_expr</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>       <span class="c1"># Gene 1 across all conditions: array([12.5, 10.2, 33.4, 7.8])</span>
+</pre></div>
+</div>
+<p><strong>2D Array Slicing:</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Row slicing * expression profile of one gene across all conditions</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">gene_expr</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">:])</span>    <span class="c1"># Gene 1 across all conditions: array([12.5, 10.2, 33.4, 7.8])</span>
+
+<span class="c1"># Column slicing * expression of all genes in a specific condition</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">gene_expr</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">])</span>    <span class="c1"># All genes in condition 2: array([10.2, 43.8, 9.2, 70.3])</span>
+
+<span class="c1"># Sub-matrix slicing * subset of genes in subset of conditions</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">gene_expr</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">:</span><span class="mi">4</span><span class="p">])</span>
+<span class="c1"># First 2 genes in conditions 3 and 4:</span>
+<span class="c1"># array([[33.4,  7.8],</span>
+<span class="c1">#        [29.2, 22.1]])</span>
+
+<span class="c1"># Strided slicing * every other gene, first two conditions</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">gene_expr</span><span class="p">[::</span><span class="mi">2</span><span class="p">,</span> <span class="p">:</span><span class="mi">2</span><span class="p">])</span>
+<span class="c1"># Genes 1 &amp; 3, conditions 1 &amp; 2:</span>
+<span class="c1"># array([[12.5, 10.2],</span>
+<span class="c1">#        [8.7,  9.2]])</span>
+</pre></div>
+</div>
+</div>
+</div>
+</details>
+</section>
+</section>
+<section id="real-world-significance-in-bioinformatics">
+<h2>Real-world significance in bioinformatics<a class="headerlink" href="#real-world-significance-in-bioinformatics" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>Indexing:</p>
+<ul>
+<li><p>Retrieving expression value for a specific gene in a specific condition</p></li>
+<li><p>Accessing specific positions in sequence alignments</p></li>
+<li><p>Finding interaction pairs in protein-protein interaction matrices</p></li>
+</ul>
+</li>
+<li><p>Slicing:</p>
+<ul>
+<li><p>Comparing gene expression profiles across different tissues or time points</p></li>
+<li><p>Analyzing subsets of genes after clustering</p></li>
+<li><p>Extracting data for specific experiments or replicates</p></li>
+<li><p>Processing sections of alignment score matrices</p></li>
+<li><p>Analyzing specific regions in protein contact maps</p></li>
+<li><p>Extracting protein domains from structure coordinate arrays</p></li>
+</ul>
+</li>
+</ul>
+<div class="admonition-additional-exercises instructor-note admonition" id="instructor-note-2">
+<p class="admonition-title">Additional exercises</p>
+<details>
+<summary>Additional notes: Exercises</summary>
+<div class="admonition-exercise exercise important admonition" id="exercise-0">
+<p class="admonition-title">Exercise</p>
+<p>Exercise 1: DNA Sequence Analysis (2-3 minutes)</p>
+<p>Given a DNA sequence represented as an array of numerical values (A=0, C=1, G=2, T=3):</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="n">dna_seq</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>  <span class="c1"># &quot;ACGTAACGTTGCAGT&quot;</span>
+</pre></div>
+</div>
+<p><strong>Tasks:</strong></p>
+<ol class="arabic simple">
+<li><p>Extract the first 5 nucleotides</p></li>
+<li><p>Extract the last 4 nucleotides</p></li>
+<li><p>Extract every third nucleotide starting from the first position</p></li>
+<li><p>Extract the subsequence from position 6 to position 10 (inclusive)</p></li>
+</ol>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 1. First 5 nucleotides</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;First 5 nucleotides:&quot;</span><span class="p">,</span> <span class="n">dna_seq</span><span class="p">[:</span><span class="mi">5</span><span class="p">])</span>
+
+<span class="c1"># 2. Last 4 nucleotides</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Last 4 nucleotides:&quot;</span><span class="p">,</span> <span class="n">dna_seq</span><span class="p">[</span><span class="o">-</span><span class="mi">4</span><span class="p">:])</span>
+
+<span class="c1"># 3. Every third nucleotide</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Every third nucleotide:&quot;</span><span class="p">,</span> <span class="n">dna_seq</span><span class="p">[::</span><span class="mi">3</span><span class="p">])</span>
+
+<span class="c1"># 4. Subsequence from position 6 to 10</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Subsequence pos 6-10:&quot;</span><span class="p">,</span> <span class="n">dna_seq</span><span class="p">[</span><span class="mi">6</span><span class="p">:</span><span class="mi">11</span><span class="p">])</span>
+<span class="c1"># Note: Upper bound is exclusive in slicing, so we use 11 to include position 10</span>
+</pre></div>
+</div>
+<p>Output</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>First 5 nucleotides: [0 1 2 3 0]
+Last 4 nucleotides: [0 0 2 3]
+Every third nucleotide: [0 3 1 3 0 3]
+Subsequence pos 6-10: [1 2 3 3 2]
+</pre></div>
+</div>
+<p class="rubric" id="exercise-2-gene-expression-analysis-2-3-minutes">Exercise 2: Gene Expression Analysis (2-3 minutes)</p>
+<p>Given a gene expression matrix where rows represent genes and columns represent conditions:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="n">gene_expr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span>
+    <span class="p">[</span><span class="mf">15.2</span><span class="p">,</span> <span class="mf">21.5</span><span class="p">,</span> <span class="mf">18.9</span><span class="p">,</span> <span class="mf">11.8</span><span class="p">,</span> <span class="mf">25.3</span><span class="p">],</span>  <span class="c1"># Gene 1</span>
+    <span class="p">[</span><span class="mf">42.3</span><span class="p">,</span> <span class="mf">38.1</span><span class="p">,</span> <span class="mf">29.6</span><span class="p">,</span> <span class="mf">33.2</span><span class="p">,</span> <span class="mf">19.7</span><span class="p">],</span>  <span class="c1"># Gene 2</span>
+    <span class="p">[</span><span class="mf">8.4</span><span class="p">,</span>  <span class="mf">7.5</span><span class="p">,</span>  <span class="mf">9.2</span><span class="p">,</span>  <span class="mf">8.1</span><span class="p">,</span>  <span class="mf">10.5</span><span class="p">],</span>  <span class="c1"># Gene 3</span>
+    <span class="p">[</span><span class="mf">31.6</span><span class="p">,</span> <span class="mf">29.8</span><span class="p">,</span> <span class="mf">27.5</span><span class="p">,</span> <span class="mf">34.9</span><span class="p">,</span> <span class="mf">36.2</span><span class="p">],</span>  <span class="c1"># Gene 4</span>
+    <span class="p">[</span><span class="mf">17.3</span><span class="p">,</span> <span class="mf">19.8</span><span class="p">,</span> <span class="mf">22.5</span><span class="p">,</span> <span class="mf">21.3</span><span class="p">,</span> <span class="mf">18.2</span><span class="p">]</span>   <span class="c1"># Gene 5</span>
+<span class="p">])</span>
+</pre></div>
+</div>
+<p><strong>Tasks:</strong></p>
+<ol class="arabic simple">
+<li><p>Extract the expression values for Gene 3</p></li>
+<li><p>Extract the expression values for all genes under fifth column</p></li>
+<li><p>Extract a sub-matrix containing Genes 2-4 under columns 2-3</p></li>
+<li><p>Find the expression value for Gene 5 under columns 2</p></li>
+</ol>
+<p><strong>Exercise 2 -Solution:</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 1. Expression values for Gene 3</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Gene 3 expression:&quot;</span><span class="p">,</span> <span class="n">gene_expr</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+<span class="c1"># Alternative: gene_expr[2, :]</span>
+
+<span class="c1"># 2. Expression values for all genes under column 5</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Condition 4 expression:&quot;</span><span class="p">,</span> <span class="n">gene_expr</span><span class="p">[:,</span> <span class="mi">4</span><span class="p">])</span> 
+
+<span class="c1"># 3. Sub-matrix of Genes 2-4 under columns 2-3</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Sub-matrix (Genes 2-4, columns 2-3):&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">gene_expr</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">:</span><span class="mi">3</span><span class="p">])</span>
+<span class="c1"># array([[38.1, 29.6],</span>
+<span class="c1">#        [7.5,  9.2],</span>
+<span class="c1">#        [29.8, 27.5]])</span>
+
+<span class="c1"># 4. Expression value for Gene 5 under columns 2</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Gene 5, columns 2:&quot;</span><span class="p">,</span> <span class="n">gene_expr</span><span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span> 
+</pre></div>
+</div>
+<p>Output</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Gene 3 expression: [ 8.4  7.5  9.2  8.1 10.5]
+Condition 4 expression: [25.3 19.7 10.5 36.2 18.2]
+Sub-matrix (Genes 2-4, columns 2-3):
+[[38.1 29.6]
+ [ 7.5  9.2]
+ [29.8 27.5]]
+Gene 5, columns 2: 19.8
+</pre></div>
+</div>
+<p class="rubric" id="exercise-3-multi-sequence-alignment-analysis-2-3-minutes">Exercise 3: Multi-sequence Alignment Analysis (2-3 minutes)</p>
+<p>Consider a simplified alignment scoring matrix where each row represents a match (1) or mismatch (0) and each column represents a position in the alignment:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="n">alignment_scores</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span>
+    <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>  <span class="c1"># Sequence 1</span>
+    <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>  <span class="c1"># Sequence 2</span>
+    <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>  <span class="c1"># Sequence 3</span>
+    <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>   <span class="c1"># Sequence 4</span>
+<span class="p">])</span>  <span class="c1"># 1 = match, 0 = mismatch</span>
+</pre></div>
+</div>
+<p><strong>Tasks:</strong></p>
+<ol class="arabic simple">
+<li><p>Find positions where all sequences match (all rows having 1s in a column - use <code class="docutils literal notranslate"><span class="pre">np.all</span></code> with a mask)</p></li>
+<li><p>Extract scores for positions 3-7 for all sequences</p></li>
+<li><p>Find the matching pattern (positions with value 1) for Sequence 3</p></li>
+<li><p>Extract a sub-alignment of the first two sequences for the last five positions</p></li>
+</ol>
+<p><strong>Exercise 3 -Solution:</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 1. Positions where all sequences match</span>
+<span class="n">all_match</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">alignment_scores</span> <span class="o">==</span> <span class="mi">1</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Positions where all sequences match:&quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">all_match</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span> 
+
+<span class="c1"># 2. Scores for positions 3-7 for all sequences</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Positions 3-7 scores:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">alignment_scores</span><span class="p">[:,</span> <span class="mi">3</span><span class="p">:</span><span class="mi">8</span><span class="p">])</span>
+
+<span class="c1"># 3. Matching pattern for Sequence 3</span>
+<span class="n">seq3_matches</span> <span class="o">=</span> <span class="n">alignment_scores</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Sequence 3 match positions:&quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">seq3_matches</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span>
+
+<span class="c1"># 4. Sub-alignment of first two sequences for last five positions</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Sub-alignment (Seq 1-2, last 5 positions):&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">alignment_scores</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">:])</span>
+</pre></div>
+</div>
+<p>Output</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Positions where all sequences match: [3]
+Positions 3-7 scores:
+[[1 0 1 0 0]
+ [1 0 0 1 1]
+ [1 1 0 0 1]
+ [1 1 1 0 0]]
+Sequence 3 match positions: [1 2 3 4 7]
+Sub-alignment (Seq 1-2, last 5 positions):
+[[1 0 0 1 1]
+ [0 1 1 0 1]]
+</pre></div>
+</div>
+</div>
+</div>
+</details>
+</section>
+<section id="key-takeaways">
+<h2>Key Takeaways<a class="headerlink" href="#key-takeaways" title="Link to this heading"></a></h2>
+<div class="admonition-keypoints keypoints admonition" id="keypoints-0">
+<p class="admonition-title">Keypoints</p>
+<ul class="simple">
+<li><p>Efficient indexing and slicing are crucial for bioinformatics workflows</p></li>
+<li><p>Key takeaways:</p>
+<ul>
+<li><p>Indexing for accessing individual elements</p></li>
+<li><p>Slicing for extracting regions of interest</p></li>
+<li><p>Leverage both for efficient data manipulation in matrices (gene × condition, position × sequence, etc.)</p></li>
+<li><p>Combine with boolean operations for filtering</p></li>
+<li><p>Remember zero-based indexing</p></li>
+</ul>
+</li>
+<li><p>Common pitfalls:</p>
+<ul>
+<li><p>Off-by-one errors (especially when converting between biology’s 1-based and programming’s 0-based systems)</p></li>
+<li><p>Overlooking the exclusive upper bound in slicing (end index is not included)</p></li>
+<li><p>Forgetting that modifying slices can modify the original array (use .copy() when needed)</p></li>
+<li><p>Confusing row-major vs. column-major operations</p></li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../2.NumPy_Data_Types/" class="btn btn-neutral float-left" title="NumPy Data Types" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../4.Advance_indexing_filtering/" class="btn btn-neutral float-right" title="NumPy Boolean Masking and Filtering" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025 Norwegian Ai Cloud.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

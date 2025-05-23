@@ -1,0 +1,926 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Summary Statistics &amp; Aggregations in Pandas &mdash; NumPy and Pandas for biological data handling  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+      <link rel="stylesheet" type="text/css" href="../_static/sphinx_lesson.css?v=e9df6548" />
+      <link rel="stylesheet" type="text/css" href="../_static/term_role_formatting.css?v=4194e21c" />
+      <link rel="stylesheet" type="text/css" href="../_static/sphinx_rtd_theme_ext_color_contrast.css?v=8e8ea19f" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=187304be"></script>
+      <script src="../_static/doctools.js?v=9a2dae69"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../_static/copybutton.js?v=35a8b989"></script>
+      <script src="../_static/minipres.js?v=a0d29692"></script>
+      <script>let toggleHintShow = 'Click to show';</script>
+      <script>let toggleHintHide = 'Click to hide';</script>
+      <script>let toggleOpenOnPrint = 'true';</script>
+      <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+      <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+      <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex/" />
+    <link rel="search" title="Search" href="../search/" />
+    <link rel="next" title="Hands-on: RNA Expression Analysis - alternative method" href="../15.Hands-on_expression_count_analysis/" />
+    <link rel="prev" title="Indexing, Selection &amp; Slicing in Pandas" href="../11.Pandas_indexing_slicing/" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../" class="icon icon-home">
+            NumPy and Pandas for biological data handling
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search/" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Numpy for handling biological datasets</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../0.Numpy_for_bioinformatics/">Lesson plan</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1.numpy_intro/">Introduction to NumPy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../2.NumPy_Data_Types/">NumPy Data Types</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3.Indexing_and_Slicing/">Array Indexing and Slicing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../4.Advance_indexing_filtering/">NumPy Boolean Masking and Filtering</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../5.Essential_array_operations/">Essential Array Operations with NumPy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../6.Vectorized_Operations_in_NumPy/">Vectorized Operations in NumPy: Beyond Python Loops</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../6.1.Numpy_hands_on/">Hands-on: RNA Expression Analysis - alternative method</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Pandas for handling biological datasets</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../7.Pandas_lesson plan/">Lesson plan</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8.Introduction_to_pandas/">Introduction to Pandas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../9.Pandas_data_import_export/">Data Import and Export in Pandas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../10.DataFrame_Manipulation/">DataFrame Manipulation &amp; Sorting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../11.Pandas_indexing_slicing/">Indexing, Selection &amp; Slicing in Pandas</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Summary Statistics &amp; Aggregations in Pandas</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#basic-descriptive-statistics">Basic Descriptive Statistics</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#built-in-statistical-methods">Built-in Statistical Methods</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#aggregation-functions">Aggregation Functions</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../15.Hands-on_expression_count_analysis/">Hands-on: RNA Expression Analysis - alternative method</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../12.Handling_Missing_Data/">Bonus Lesson 1: Handling Missing Data in Pandas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../13.Merging_DataFrames/">Bonus Lesson 2: Merging DataFrames in Pandas</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../">NumPy and Pandas for biological data handling</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Summary Statistics &amp; Aggregations in Pandas</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/coderefinery/content/blob/main/content/14.Pandas_summary_stats.md" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="summary-statistics-aggregations-in-pandas">
+<h1>Summary Statistics &amp; Aggregations in Pandas<a class="headerlink" href="#summary-statistics-aggregations-in-pandas" title="Link to this heading"></a></h1>
+<div class="admonition-objectives objectives admonition" id="objectives-0">
+<p class="admonition-title">Objectives</p>
+<ul class="simple">
+<li><p>We’ve learned how to load, clean, and combine data in Pandas, now we’ll explore how to extract insights from that data.</p></li>
+<li><p>Explore the use of summary statistics and aggregation operations to transform raw data into actionable information</p></li>
+<li><p>Implement methods with Pandas’ intuitive syntax.</p></li>
+</ul>
+</div>
+<div class="admonition-instructor-note instructor-note admonition" id="instructor-note-0">
+<p class="admonition-title">Instructor note</p>
+<ul class="simple">
+<li><p>Teaching : 5 min</p></li>
+<li><p>Demo: 25 min</p></li>
+</ul>
+</div>
+<ul class="simple">
+<li><p>Data collection and cleaning are just the beginning</p></li>
+<li><p>The real value comes from extracting meaningful insights</p></li>
+<li><p>Summary statistics reduce complex data into understandable metrics</p></li>
+<li><p>Aggregations allow us to analyze data at different levels of granularity</p></li>
+<li><p>These operations form the foundation of data analysis (these methods connect directly to statistical concepts)</p></li>
+<li><p>i.e., These techniques allow us to answer questions like</p>
+<ul>
+<li><p>‘What’s the average customer spending?’ or</p></li>
+<li><p>‘How do sales compare across different regions?’”</p></li>
+</ul>
+</li>
+</ul>
+<section id="basic-descriptive-statistics">
+<h2>Basic Descriptive Statistics<a class="headerlink" href="#basic-descriptive-statistics" title="Link to this heading"></a></h2>
+<section id="built-in-statistical-methods">
+<h3>Built-in Statistical Methods<a class="headerlink" href="#built-in-statistical-methods" title="Link to this heading"></a></h3>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Method</p></th>
+<th class="head"><p>Purpose</p></th>
+<th class="head"><p>Returns</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">describe()</span></code></p></td>
+<td><p>Comprehensive summary</p></td>
+<td><p>DataFrame with count, mean, std, min, quartiles, max</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">mean()</span></code>, <code class="docutils literal notranslate"><span class="pre">median()</span></code></p></td>
+<td><p>Central tendency</p></td>
+<td><p>Series or scalar</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">min()</span></code>, <code class="docutils literal notranslate"><span class="pre">max()</span></code></p></td>
+<td><p>Range boundaries</p></td>
+<td><p>Series or scalar</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">std()</span></code>, <code class="docutils literal notranslate"><span class="pre">var()</span></code></p></td>
+<td><p>Dispersion/spread</p></td>
+<td><p>Series or scalar</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">quantile([0.25,</span> <span class="pre">0.75])</span></code></p></td>
+<td><p>Distribution points</p></td>
+<td><p>Series or DataFrame</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">count()</span></code></p></td>
+<td><p>Non-null count</p></td>
+<td><p>Series or scalar</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">sum()</span></code></p></td>
+<td><p>Sum of values</p></td>
+<td><p>Series or scalar</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Basic Statistical Methods:</strong></p>
+<div class="admonition-demo demo admonition" id="demo-0">
+<p class="admonition-title">Demo</p>
+<ul class="simple">
+<li><p>Comprehensive statistical summary</p></li>
+<li><p>Include all columns (even non-numeric)</p></li>
+<li><p>Basic statistical methods</p>
+<ul>
+<li><p>Mean, Median, Minimum, Maximum, Standard deviation</p></li>
+</ul>
+</li>
+</ul>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+<span class="c1"># Create a sample gene expression DataFrame</span>
+<span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>  <span class="c1"># For reproducibility</span>
+
+<span class="c1"># Generate 15 sample genes</span>
+<span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;Gene_ID&#39;</span><span class="p">:</span> <span class="p">[</span><span class="sa">f</span><span class="s1">&#39;GENE</span><span class="si">{</span><span class="n">i</span><span class="si">:</span><span class="s1">03d</span><span class="si">}</span><span class="s1">&#39;</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">16</span><span class="p">)],</span>
+    <span class="s1">&#39;Expression_Level&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">lognormal</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">15</span><span class="p">)</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span>  <span class="c1"># Draw random samples Log-normal distribution for expression values</span>
+    <span class="s1">&#39;Log2_Fold_Change&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">15</span><span class="p">)</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span>  <span class="c1"># Draw random samples from normal distribution for log2 fold changes</span>
+    <span class="s1">&#39;P_Value&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">beta</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">15</span><span class="p">)</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">4</span><span class="p">),</span>  <span class="c1"># Draw random samples Beta distribution for p-values</span>
+    <span class="s1">&#39;Tissue_Type&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">([</span><span class="s1">&#39;Brain&#39;</span><span class="p">,</span> <span class="s1">&#39;Liver&#39;</span><span class="p">,</span> <span class="s1">&#39;Kidney&#39;</span><span class="p">,</span> <span class="s1">&#39;Heart&#39;</span><span class="p">,</span> <span class="s1">&#39;Lung&#39;</span><span class="p">],</span> <span class="mi">15</span><span class="p">),</span>
+    <span class="s1">&#39;Chromosome&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">([</span><span class="s1">&#39;chr1&#39;</span><span class="p">,</span> <span class="s1">&#39;chr2&#39;</span><span class="p">,</span> <span class="s1">&#39;chr3&#39;</span><span class="p">,</span> <span class="s1">&#39;chr4&#39;</span><span class="p">,</span> <span class="s1">&#39;chrX&#39;</span><span class="p">,</span> <span class="s1">&#39;chrY&#39;</span><span class="p">],</span> <span class="mi">15</span><span class="p">)</span>
+<span class="p">}</span>
+
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+
+<span class="c1"># Add some missing values for realism</span>
+<span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="s1">&#39;P_Value&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">9</span><span class="p">,</span> <span class="s1">&#39;Log2_Fold_Change&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+
+<span class="c1"># Add a column for significance based on P_Value and Log2_Fold_Change</span>
+<span class="n">df</span><span class="p">[</span><span class="s1">&#39;Is_Significant&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">((</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;P_Value&#39;</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mf">0.05</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;Log2_Fold_Change&#39;</span><span class="p">])</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">))</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Sample Gene Expression DataFrame:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+
+<span class="c1"># 1. Comprehensive statistical summary</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">1. Comprehensive statistical summary with describe():&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">describe</span><span class="p">())</span>
+
+<span class="c1"># 2. Include all columns (even non-numeric)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">2. Describing all columns (including non-numeric):&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">describe</span><span class="p">(</span><span class="n">include</span><span class="o">=</span><span class="s1">&#39;all&#39;</span><span class="p">))</span>
+
+<span class="c1"># 3. Basic statistical methods</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">3. Basic statistical methods:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Mean expression level: </span><span class="si">{</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;Expression_Level&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Median log2 fold change: </span><span class="si">{</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;Log2_Fold_Change&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">median</span><span class="p">()</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Minimum p-value: </span><span class="si">{</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;P_Value&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">min</span><span class="p">()</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Number of significant genes: </span><span class="si">{</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;Is_Significant&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Standard deviation of expression: </span><span class="si">{</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;Expression_Level&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">std</span><span class="p">()</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># 4. Multiple statistics at once</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">4. Multiple statistics for Expression Level:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;Expression_Level&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">agg</span><span class="p">([</span><span class="s1">&#39;min&#39;</span><span class="p">,</span> <span class="s1">&#39;max&#39;</span><span class="p">,</span> <span class="s1">&#39;mean&#39;</span><span class="p">,</span> <span class="s1">&#39;median&#39;</span><span class="p">,</span> <span class="s1">&#39;std&#39;</span><span class="p">]))</span>
+
+<span class="c1"># 5. Quantiles/percentiles</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">5. Expression level quartiles:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;Expression_Level&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">quantile</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.25</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.75</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">]))</span>
+</pre></div>
+</div>
+<div class="admonition-output solution important dropdown admonition" id="solution-0">
+<p class="admonition-title">Output</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Sample Gene Expression DataFrame:
+    Gene_ID  Expression_Level  Log2_Fold_Change  P_Value Tissue_Type Chromosome  Is_Significant
+0   GENE001             89.72             -1.12   0.1445        Lung       chr4           False
+1   GENE002             47.55             -2.03   0.0038      Kidney       chrY            True
+2   GENE003            104.34              0.63   0.0458       Brain       chrX           False
+3   GENE004            250.39             -1.82   0.0555        Lung       chrX           False
+4   GENE005             43.20             -2.82      NaN       Liver       chr3           False
+5   GENE006             43.20              2.93   0.0073      Kidney       chrX            True
+6   GENE007            264.86             -0.45   0.0067       Brain       chr4           False
+7   GENE008            117.62              0.14   0.2418       Liver       chrX           False
+8   GENE009             34.14             -2.85   0.0479       Liver       chr3            True
+9   GENE010             93.93               NaN   0.0076       Heart       chr3           False
+10  GENE011             34.35              0.22   0.1132        Lung       chrY           False
+11  GENE012             34.27             -2.30   0.1041      Kidney       chr4           False
+12  GENE013             69.54              0.75   0.0723       Brain       chr2           False
+13  GENE014              8.06             -1.20   0.0268       Heart       chr2            True
+14  GENE015              9.73             -0.58   0.0947        Lung       chrX           False
+
+2. Describing all columns (including non-numeric):
+        Gene_ID  Expression_Level  Log2_Fold_Change    P_Value Tissue_Type Chromosome Is_Significant
+count        15         15.000000         14.000000  14.000000          15         15             15
+unique       15               NaN               NaN        NaN           5          5              2
+top     GENE001               NaN               NaN        NaN        Lung       chrX          False
+freq          1               NaN               NaN        NaN           4          5             11
+mean        NaN         82.993333         -0.750000   0.069429         NaN        NaN            NaN
+std         NaN         78.207700          1.611707   0.066835         NaN        NaN            NaN
+min         NaN          8.060000         -2.850000   0.003800         NaN        NaN            NaN
+25%         NaN         34.310000         -1.977500   0.012400         NaN        NaN            NaN
+50%         NaN         47.550000         -0.850000   0.051700         NaN        NaN            NaN
+75%         NaN         99.135000          0.200000   0.101750         NaN        NaN            NaN
+max         NaN        264.860000          2.930000   0.241800         NaN        NaN            NaN
+
+3. Basic statistical methods:
+Mean expression level: 82.99
+Median log2 fold change: -0.85
+Minimum p-value: 0.0038
+Number of significant genes: 4
+Standard deviation of expression: 78.21
+
+4. Multiple statistics for Expression Level:
+min         8.060000
+max       264.860000
+mean       82.993333
+median     47.550000
+std        78.207700
+Name: Expression_Level, dtype: float64
+
+5. Expression level quartiles:
+0.00      8.060
+0.25     34.310
+0.50     47.550
+0.75     99.135
+1.00    264.860
+Name: Expression_Level, dtype: float64
+</pre></div>
+</div>
+</div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<ul class="simple">
+<li><p>The <code class="docutils literal notranslate"><span class="pre">describe()</span></code> method gives you a quick overview of your data’s distribution.</p></li>
+<li><p>Notice how Pandas handles missing values in statistical calculations - they’re automatically excluded.</p></li>
+<li><p>You can compute multiple statistics at once with the <code class="docutils literal notranslate"><span class="pre">agg()</span></code> method, which we’ll explore further.</p></li>
+<li><p>Statistical methods can be combined with grouping to compare metrics across categories.</p></li>
+<li><p>Remember that these methods only make sense for numerical data - Pandas will ignore or handle non-numeric data differently.</p></li>
+</ul>
+</div>
+</section>
+</section>
+<section id="aggregation-functions">
+<h2>Aggregation Functions<a class="headerlink" href="#aggregation-functions" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>Aggregation functions help perform beyond Built-in Statistics</p></li>
+</ul>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Approach</p></th>
+<th class="head"><p>Use Case</p></th>
+<th class="head"><p>Method</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Built-in aggregations</p></td>
+<td><p>Common statistics</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">.agg(['mean',</span> <span class="pre">'median'])</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>Lambda functions</p></td>
+<td><p>Simple custom calculations</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">.agg(lambda</span> <span class="pre">x:</span> <span class="pre">x.max()</span> <span class="pre">-</span> <span class="pre">x.min())</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>Named functions</p></td>
+<td><p>Complex custom calculations</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">.agg(custom_function)</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>Dictionary approach</p></td>
+<td><p>Different aggs per column</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">.agg({'A':</span> <span class="pre">'sum',</span> <span class="pre">'B':</span> <span class="pre">'mean'})</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>Multiple aggregations</p></td>
+<td><p>Comprehensive analysis</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">.agg(['count',</span> <span class="pre">'mean',</span> <span class="pre">custom_func])</span></code></p></td>
+</tr>
+</tbody>
+</table>
+<div class="admonition-demo demo admonition" id="demo-1">
+<p class="admonition-title">Demo</p>
+<ul class="simple">
+<li><p>Define a custom function and use <code class="docutils literal notranslate"><span class="pre">agg</span></code></p></li>
+<li><p>Different aggregations for different columns</p></li>
+</ul>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>
+<span class="c1"># Create a sample gene expression DataFrame</span>
+<span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>  <span class="c1"># For reproducibility</span>
+
+<span class="c1"># Generate 15 sample genes</span>
+<span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;Gene_ID&#39;</span><span class="p">:</span> <span class="p">[</span><span class="sa">f</span><span class="s1">&#39;GENE</span><span class="si">{</span><span class="n">i</span><span class="si">:</span><span class="s1">03d</span><span class="si">}</span><span class="s1">&#39;</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">16</span><span class="p">)],</span>
+    <span class="s1">&#39;Expression_Level&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">lognormal</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">15</span><span class="p">)</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span>  <span class="c1"># Log-normal for expression values</span>
+    <span class="s1">&#39;Log2_Fold_Change&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">15</span><span class="p">)</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span>  <span class="c1"># Normal distribution for log2 fold changes</span>
+    <span class="s1">&#39;P_Value&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">beta</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">15</span><span class="p">)</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">4</span><span class="p">),</span>  <span class="c1"># Beta distribution for p-values</span>
+    <span class="s1">&#39;Tissue_Type&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">([</span><span class="s1">&#39;Brain&#39;</span><span class="p">,</span> <span class="s1">&#39;Liver&#39;</span><span class="p">,</span> <span class="s1">&#39;Kidney&#39;</span><span class="p">,</span> <span class="s1">&#39;Heart&#39;</span><span class="p">,</span> <span class="s1">&#39;Lung&#39;</span><span class="p">],</span> <span class="mi">15</span><span class="p">),</span>
+    <span class="s1">&#39;Chromosome&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">([</span><span class="s1">&#39;chr1&#39;</span><span class="p">,</span> <span class="s1">&#39;chr2&#39;</span><span class="p">,</span> <span class="s1">&#39;chr3&#39;</span><span class="p">,</span> <span class="s1">&#39;chr4&#39;</span><span class="p">,</span> <span class="s1">&#39;chrX&#39;</span><span class="p">,</span> <span class="s1">&#39;chrY&#39;</span><span class="p">],</span> <span class="mi">15</span><span class="p">)</span>
+<span class="p">}</span>
+
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Original dataframe&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+
+<span class="c1"># 1. Simple custom aggregation with custom function</span>
+
+<span class="c1"># Define a custom function</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_range</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Get range&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">x</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">-</span> <span class="n">x</span><span class="o">.</span><span class="n">min</span><span class="p">()</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">range_ratio</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Calculate the ratio of max to min value&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">x</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">/</span> <span class="n">x</span><span class="o">.</span><span class="n">min</span><span class="p">()</span>
+
+
+<span class="n">range_calc</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;Expression_Level&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">agg</span><span class="p">(</span><span class="n">get_range</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">1. Expression Level range using lambda function:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">range_calc</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">2. Expression Level max/min ratio using custom function:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;Expression_Level&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">agg</span><span class="p">(</span><span class="n">range_ratio</span><span class="p">)</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># 3. Different aggregations for different columns</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">3. Different aggregations per column:&quot;</span><span class="p">)</span>
+<span class="n">mixed_aggs</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">agg</span><span class="p">({</span>
+    <span class="s1">&#39;Expression_Level&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;min&#39;</span><span class="p">,</span> <span class="s1">&#39;max&#39;</span><span class="p">,</span> <span class="s1">&#39;mean&#39;</span><span class="p">],</span>
+    <span class="s1">&#39;Log2_Fold_Change&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;median&#39;</span><span class="p">,</span> <span class="s1">&#39;std&#39;</span><span class="p">],</span>
+    <span class="s1">&#39;P_Value&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;min&#39;</span><span class="p">,</span> <span class="s1">&#39;mean&#39;</span><span class="p">],</span>
+    <span class="s1">&#39;Is_Significant&#39;</span><span class="p">:</span> <span class="s1">&#39;sum&#39;</span>
+<span class="p">})</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">mixed_aggs</span><span class="p">)</span>
+
+<span class="c1"># 4. Genomics-specific custom aggregation</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">differential_expression_score</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Calculate a custom score based on fold change magnitude and significance&quot;&quot;&quot;</span>
+    <span class="c1"># Higher absolute fold change and lower p-values yield higher scores</span>
+    <span class="k">return</span> <span class="n">x</span><span class="o">.</span><span class="n">abs</span><span class="p">()</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span> <span class="o">*</span> <span class="p">(</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;P_Value&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">dropna</span><span class="p">()</span><span class="o">.</span><span class="n">mean</span><span class="p">()))</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">4. Custom differential expression score:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;Log2_Fold_Change&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">agg</span><span class="p">(</span><span class="n">differential_expression_score</span><span class="p">)</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="admonition-output solution important dropdown admonition" id="solution-1">
+<p class="admonition-title">Output</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>1. Expression Level range using lambda function:
+256.80
+
+2. Expression Level max/min ratio using custom function:
+32.86
+
+3. Different aggregations per column:
+        Expression_Level  Log2_Fold_Change   P_Value  Is_Significant
+min             8.060000               NaN  0.003800             NaN
+max           264.860000               NaN       NaN             NaN
+mean           82.993333               NaN  0.069429             NaN
+median               NaN         -0.850000       NaN             NaN
+std                  NaN          1.611707       NaN             NaN
+sum                  NaN               NaN       NaN             4.0
+
+4. Custom differential expression score:
+1.64
+</pre></div>
+</div>
+</div>
+</div>
+<div class="docutils">
+<p class="rubric" id="custom-aggregations-with-groupby">Custom Aggregations with GroupBy</p>
+<ul class="simple">
+<li><p>The <code class="docutils literal notranslate"><span class="pre">groupby()</span></code> function allows us to split data into groups based on some criteria</p></li>
+<li><p>We can apply a function to each group independently, and combine the results</p></li>
+<li><p>Think of it as a “split-apply-combine” strategy</p></li>
+</ul>
+<p class="rubric" id="basic-groupby-concept">Basic GroupBy Concept</p>
+<div class="admonition-group-dataframes-on-columns instructor-note admonition" id="instructor-note-1">
+<p class="admonition-title">Group dataframes on columns</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create a genetic dataset</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+<span class="n">genetic_data</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;Gene&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;BRCA1&#39;</span><span class="p">,</span> <span class="s1">&#39;TP53&#39;</span><span class="p">,</span> <span class="s1">&#39;APOE&#39;</span><span class="p">,</span> <span class="s1">&#39;PTEN&#39;</span><span class="p">,</span> <span class="s1">&#39;BRAF&#39;</span><span class="p">,</span> <span class="s1">&#39;KRAS&#39;</span><span class="p">,</span> 
+            <span class="s1">&#39;BRCA2&#39;</span><span class="p">,</span> <span class="s1">&#39;EGFR&#39;</span><span class="p">,</span> <span class="s1">&#39;TNF&#39;</span><span class="p">,</span> <span class="s1">&#39;IL6&#39;</span><span class="p">],</span>
+    <span class="s1">&#39;Chromosome&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;Chr17&#39;</span><span class="p">,</span> <span class="s1">&#39;Chr17&#39;</span><span class="p">,</span> <span class="s1">&#39;Chr19&#39;</span><span class="p">,</span> <span class="s1">&#39;Chr10&#39;</span><span class="p">,</span> <span class="s1">&#39;Chr7&#39;</span><span class="p">,</span> <span class="s1">&#39;Chr12&#39;</span><span class="p">,</span> 
+                  <span class="s1">&#39;Chr13&#39;</span><span class="p">,</span> <span class="s1">&#39;Chr7&#39;</span><span class="p">,</span> <span class="s1">&#39;Chr6&#39;</span><span class="p">,</span> <span class="s1">&#39;Chr7&#39;</span><span class="p">],</span>
+    <span class="s1">&#39;Study&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;Study1&#39;</span><span class="p">,</span> <span class="s1">&#39;Study2&#39;</span><span class="p">,</span> <span class="s1">&#39;Study1&#39;</span><span class="p">,</span> <span class="s1">&#39;Study3&#39;</span><span class="p">,</span> <span class="s1">&#39;Study2&#39;</span><span class="p">,</span> <span class="s1">&#39;Study3&#39;</span><span class="p">,</span> 
+             <span class="s1">&#39;Study1&#39;</span><span class="p">,</span> <span class="s1">&#39;Study2&#39;</span><span class="p">,</span> <span class="s1">&#39;Study3&#39;</span><span class="p">,</span> <span class="s1">&#39;Study1&#39;</span><span class="p">],</span>
+    <span class="s1">&#39;PValue&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.0001</span><span class="p">,</span> <span class="mf">0.0050</span><span class="p">,</span> <span class="mf">0.0200</span><span class="p">,</span> <span class="mf">0.0150</span><span class="p">,</span> <span class="mf">0.0300</span><span class="p">,</span> <span class="mf">0.0400</span><span class="p">,</span> 
+              <span class="mf">0.0005</span><span class="p">,</span> <span class="mf">0.0250</span><span class="p">,</span> <span class="mf">0.0100</span><span class="p">,</span> <span class="mf">0.0450</span><span class="p">],</span>
+    <span class="s1">&#39;EffectSize&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">2.5</span><span class="p">,</span> <span class="mf">1.8</span><span class="p">,</span> <span class="mf">3.2</span><span class="p">,</span> <span class="mf">2.1</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">,</span> <span class="mf">1.2</span><span class="p">,</span> <span class="mf">2.7</span><span class="p">,</span> <span class="mf">1.9</span><span class="p">,</span> <span class="mf">2.3</span><span class="p">,</span> <span class="mf">1.1</span><span class="p">]</span>
+<span class="p">}</span>
+
+<span class="n">genetic_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">genetic_data</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Genetic DataFrame:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">genetic_df</span><span class="p">)</span>
+
+<span class="c1"># Group by Chromosome</span>
+<span class="n">chromosome_groups</span> <span class="o">=</span> <span class="n">genetic_df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;Chromosome&#39;</span><span class="p">)</span>
+
+<span class="c1"># View the groups</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Available groups:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">chromosome_groups</span><span class="o">.</span><span class="n">groups</span><span class="o">.</span><span class="n">keys</span><span class="p">()))</span>
+
+<span class="c1"># Access a specific group</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Genes on Chr17:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">chromosome_groups</span><span class="o">.</span><span class="n">get_group</span><span class="p">(</span><span class="s1">&#39;Chr17&#39;</span><span class="p">))</span>
+</pre></div>
+</div>
+<div class="admonition-output solution important dropdown admonition" id="solution-2">
+<p class="admonition-title">Output</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Genetic DataFrame:
+    Gene Chromosome   Study  PValue  EffectSize
+0  BRCA1      Chr17  Study1  0.0001         2.5
+1   TP53      Chr17  Study2  0.0050         1.8
+2   APOE      Chr19  Study1  0.0200         3.2
+3   PTEN      Chr10  Study3  0.0150         2.1
+4   BRAF       Chr7  Study2  0.0300         1.5
+5   KRAS      Chr12  Study3  0.0400         1.2
+6  BRCA2      Chr13  Study1  0.0005         2.7
+7   EGFR       Chr7  Study2  0.0250         1.9
+8    TNF       Chr6  Study3  0.0100         2.3
+9    IL6       Chr7  Study1  0.0450         1.1
+Available groups:
+[&#39;Chr10&#39;, &#39;Chr12&#39;, &#39;Chr13&#39;, &#39;Chr17&#39;, &#39;Chr19&#39;, &#39;Chr6&#39;, &#39;Chr7&#39;]
+
+Genes on Chr17:
+    Gene Chromosome   Study  PValue  EffectSize
+0  BRCA1      Chr17  Study1  0.0001         2.5
+1   TP53      Chr17  Study2  0.0050         1.8
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="docutils">
+<div class="admonition-demo demo admonition" id="demo-2">
+<p class="admonition-title">Demo</p>
+<p><strong>Aggregations - The Core of GroupBy:</strong></p>
+<p>After grouping, we typically want to perform calculations on each group.</p>
+<p class="rubric" id="basic-aggregation-functions">Basic Aggregation Functions</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Calculate mean effect size and p-value for each chromosome</span>
+<span class="n">chromosome_stats</span> <span class="o">=</span> <span class="n">genetic_df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;Chromosome&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">agg</span><span class="p">({</span>
+    <span class="s1">&#39;PValue&#39;</span><span class="p">:</span> <span class="s1">&#39;mean&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;EffectSize&#39;</span><span class="p">:</span> <span class="s1">&#39;mean&#39;</span>
+<span class="p">})</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Mean statistics by chromosome:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">chromosome_stats</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="admonition-output solution important dropdown admonition" id="solution-3">
+<p class="admonition-title">Output</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Mean statistics by chromosome:
+              PValue  EffectSize
+Chromosome
+Chr10       0.015000        2.10
+Chr12       0.040000        1.20
+Chr13       0.000500        2.70
+Chr17       0.002550        2.15
+Chr19       0.020000        3.20
+Chr6        0.010000        2.30
+Chr7        0.033333        1.50
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="admonition-more-info instructor-note admonition" id="instructor-note-2">
+<p class="admonition-title">More info</p>
+<details>
+<summary>Additional notes: Multiple Aggregations</summary>
+<p><strong>Multiple Aggregations:</strong></p>
+<p>We can apply multiple functions to each column:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Apply multiple aggregations</span>
+<span class="n">multi_agg</span> <span class="o">=</span> <span class="n">genetic_df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;Study&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">agg</span><span class="p">({</span>
+    <span class="s1">&#39;PValue&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;min&#39;</span><span class="p">,</span> <span class="s1">&#39;max&#39;</span><span class="p">,</span> <span class="s1">&#39;mean&#39;</span><span class="p">],</span>
+    <span class="s1">&#39;EffectSize&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;min&#39;</span><span class="p">,</span> <span class="s1">&#39;max&#39;</span><span class="p">,</span> <span class="s1">&#39;mean&#39;</span><span class="p">,</span> <span class="s1">&#39;std&#39;</span><span class="p">]</span>
+<span class="p">})</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Multiple aggregations by study:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">multi_agg</span><span class="p">)</span><span class="n">multi_agg</span> <span class="o">=</span> <span class="n">genetic_df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;Study&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">agg</span><span class="p">({</span>
+    <span class="s1">&#39;PValue&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;min&#39;</span><span class="p">,</span> <span class="s1">&#39;max&#39;</span><span class="p">,</span> <span class="s1">&#39;mean&#39;</span><span class="p">],</span>
+    <span class="s1">&#39;EffectSize&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;min&#39;</span><span class="p">,</span> <span class="s1">&#39;max&#39;</span><span class="p">,</span> <span class="s1">&#39;mean&#39;</span><span class="p">,</span> <span class="s1">&#39;std&#39;</span><span class="p">]</span>
+<span class="p">})</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Multiple aggregations by study:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">multi_agg</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Output</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Multiple aggregations by study:
+        PValue                  EffectSize
+           min    max      mean        min  max      mean       std
+Study
+Study1  0.0001  0.045  0.016400        1.1  3.2  2.375000  0.899537
+Study2  0.0050  0.030  0.020000        1.5  1.9  1.733333  0.208167
+Study3  0.0100  0.040  0.021667        1.2  2.3  1.866667  0.585947
+</pre></div>
+</div>
+<p><strong>Custom Aggregation Functions:</strong></p>
+<p>Sometimes built-in functions aren’t enough. Let’s create a custom function to calculate the coefficient of variation (CV):</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Custom function for coefficient of variation</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">cv</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">x</span><span class="o">.</span><span class="n">std</span><span class="p">()</span> <span class="o">/</span> <span class="n">x</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span> <span class="k">if</span> <span class="n">x</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span> <span class="o">!=</span> <span class="mi">0</span> <span class="k">else</span> <span class="mi">0</span>
+
+<span class="c1"># Apply our custom function</span>
+<span class="n">custom_agg</span> <span class="o">=</span> <span class="n">genetic_df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;Chromosome&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">agg</span><span class="p">({</span>
+    <span class="s1">&#39;EffectSize&#39;</span><span class="p">:</span> <span class="p">[</span><span class="n">cv</span><span class="p">,</span> <span class="s1">&#39;count&#39;</span><span class="p">]</span>
+<span class="p">})</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Custom aggregation by chromosome:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">custom_agg</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Output</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Custom aggregation by chromosome:
+           EffectSize
+                   cv count
+Chromosome
+Chr10             NaN     1
+Chr12             NaN     1
+Chr13             NaN     1
+Chr17        0.230221     2
+Chr19             NaN     1
+Chr6              NaN     1
+Chr7         0.266667     3
+</pre></div>
+</div>
+<p><strong>Grouping by Multiple Columns:</strong></p>
+<p>We can create hierarchical groups using multiple columns:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Group by both Chromosome and Study</span>
+<span class="n">multi_group</span> <span class="o">=</span> <span class="n">genetic_df</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;Chromosome&#39;</span><span class="p">,</span> <span class="s1">&#39;Study&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">agg</span><span class="p">({</span>
+    <span class="s1">&#39;PValue&#39;</span><span class="p">:</span> <span class="s1">&#39;mean&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;EffectSize&#39;</span><span class="p">:</span> <span class="s1">&#39;mean&#39;</span>
+<span class="p">})</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Grouping by multiple columns:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">multi_group</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Output</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Grouping by multiple columns:
+                   PValue  EffectSize
+Chromosome Study
+Chr10      Study3  0.0150         2.1
+Chr12      Study3  0.0400         1.2
+Chr13      Study1  0.0005         2.7
+Chr17      Study1  0.0001         2.5
+           Study2  0.0050         1.8
+Chr19      Study1  0.0200         3.2
+Chr6       Study3  0.0100         2.3
+Chr7       Study1  0.0450         1.1
+           Study2  0.0275         1.7
+</pre></div>
+</div>
+<p>Notes:</p>
+<ul class="simple">
+<li><p>Built-in aggregations cover many common needs, but custom functions let you calculate any metric you can imagine.</p></li>
+<li><p>Lambda functions are perfect for simple calculations that don’t need to be reused.</p></li>
+<li><p>Named functions are better for complex calculations or ones you’ll reuse multiple times.</p></li>
+<li><p>The dictionary approach gives you fine-grained control over which aggregations to apply to each column.</p></li>
+<li><p>Custom aggregations really shine when combined with grouping operations.</p></li>
+<li><p>Note how the result has a hierarchical index - flattening these can make the results more manageable.</p></li>
+<li><p>These techniques are powerful because they let you create domain-specific metrics tailored to your analysis needs.</p></li>
+</ul>
+<p><strong>Exercises: Basic Statistics:</strong></p>
+<ul class="simple">
+<li><p>Use <code class="docutils literal notranslate"><span class="pre">students</span></code> database and</p>
+<ul>
+<li><p>Generate a comprehensive statistical summary of all numeric columns</p></li>
+<li><p>Calculate the average score for each subject</p></li>
+<li><p>Find the highest and lowest scoring student in each subject</p></li>
+</ul>
+</li>
+</ul>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create a dataset of student scores</span>
+<span class="n">student_data</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;Student_ID&#39;</span><span class="p">:</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">11</span><span class="p">),</span>
+    <span class="s1">&#39;Math&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">85</span><span class="p">,</span> <span class="mi">90</span><span class="p">,</span> <span class="mi">72</span><span class="p">,</span> <span class="mi">95</span><span class="p">,</span> <span class="mi">83</span><span class="p">,</span> <span class="mi">78</span><span class="p">,</span> <span class="mi">92</span><span class="p">,</span> <span class="mi">86</span><span class="p">,</span> <span class="mi">79</span><span class="p">,</span> <span class="mi">88</span><span class="p">],</span>
+    <span class="s1">&#39;Science&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">92</span><span class="p">,</span> <span class="mi">85</span><span class="p">,</span> <span class="mi">76</span><span class="p">,</span> <span class="mi">94</span><span class="p">,</span> <span class="mi">88</span><span class="p">,</span> <span class="mi">84</span><span class="p">,</span> <span class="mi">90</span><span class="p">,</span> <span class="mi">81</span><span class="p">,</span> <span class="mi">74</span><span class="p">,</span> <span class="mi">89</span><span class="p">],</span>
+    <span class="s1">&#39;English&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">78</span><span class="p">,</span> <span class="mi">92</span><span class="p">,</span> <span class="mi">88</span><span class="p">,</span> <span class="mi">96</span><span class="p">,</span> <span class="mi">82</span><span class="p">,</span> <span class="mi">79</span><span class="p">,</span> <span class="mi">91</span><span class="p">,</span> <span class="mi">84</span><span class="p">,</span> <span class="mi">76</span><span class="p">,</span> <span class="mi">93</span><span class="p">],</span>
+    <span class="s1">&#39;Class&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="s1">&#39;B&#39;</span><span class="p">,</span> <span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="s1">&#39;B&#39;</span><span class="p">,</span> <span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="s1">&#39;B&#39;</span><span class="p">,</span> <span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="s1">&#39;B&#39;</span><span class="p">,</span> <span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="s1">&#39;B&#39;</span><span class="p">]</span>
+<span class="p">}</span>
+<span class="n">students</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">student_data</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Tasks:</span>
+<span class="c1"># 1. Generate a comprehensive statistical summary of all numeric columns</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;1. Statistical summary of student scores:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">students</span><span class="o">.</span><span class="n">describe</span><span class="p">())</span>
+
+<span class="c1"># 2. Calculate the average score for each subject</span>
+<span class="n">subject_means</span> <span class="o">=</span> <span class="n">students</span><span class="p">[[</span><span class="s1">&#39;Math&#39;</span><span class="p">,</span> <span class="s1">&#39;Science&#39;</span><span class="p">,</span> <span class="s1">&#39;English&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">2. Average scores by subject:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">subject_means</span><span class="p">)</span>
+
+<span class="c1"># 3. Find the highest and lowest scoring student in each subject</span>
+<span class="n">highest_math</span> <span class="o">=</span> <span class="n">students</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">students</span><span class="p">[</span><span class="s1">&#39;Math&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">idxmax</span><span class="p">()]</span>
+<span class="n">lowest_english</span> <span class="o">=</span> <span class="n">students</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">students</span><span class="p">[</span><span class="s1">&#39;English&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">idxmin</span><span class="p">()]</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">3. Highest scoring student in Math:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">highest_math</span><span class="p">[[</span><span class="s1">&#39;Student_ID&#39;</span><span class="p">,</span> <span class="s1">&#39;Math&#39;</span><span class="p">,</span> <span class="s1">&#39;Class&#39;</span><span class="p">]])</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Lowest scoring student in English:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">lowest_english</span><span class="p">[[</span><span class="s1">&#39;Student_ID&#39;</span><span class="p">,</span> <span class="s1">&#39;English&#39;</span><span class="p">,</span> <span class="s1">&#39;Class&#39;</span><span class="p">]])</span>
+
+<span class="c1"># # 4. Compare average scores between classes</span>
+<span class="c1"># class_comparison = students.groupby(&#39;Class&#39;)[[&#39;Math&#39;, &#39;Science&#39;, &#39;English&#39;]].mean()</span>
+<span class="c1"># print(&quot;\n4. Average scores by class:&quot;)</span>
+<span class="c1"># print(class_comparison)</span>
+</pre></div>
+</div>
+<p><strong>Exercise: Custom Aggregations:</strong></p>
+<p>Use <code class="docutils literal notranslate"><span class="pre">students</span></code> dataframe and execute:</p>
+<ul class="simple">
+<li><p>Calculate the range (max - min) for each subject</p></li>
+<li><p>Define and apply a custom function to calculate the proportion of students scoring above 85</p>
+<ul>
+<li><p>Define a new function called <code class="docutils literal notranslate"><span class="pre">high_achievers</span></code> that takes in one parameter called <code class="docutils literal notranslate"><span class="pre">scores</span></code>. The <code class="docutils literal notranslate"><span class="pre">scores</span></code> parameter will be a series of scores for a particular subject</p></li>
+<li><p>Perform a Boolean Comparison - compare each score in the scores series to 85. This will result in a Boolean mask</p></li>
+<li><p>call <code class="docutils literal notranslate"><span class="pre">.mean()</span></code> on the Boolean series (average of the numerical representation of <code class="docutils literal notranslate"><span class="pre">True</span></code> and <code class="docutils literal notranslate"><span class="pre">False</span></code>) and calculate the percentage</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">agg()</span></code> applying <code class="docutils literal notranslate"><span class="pre">high_achievers</span></code> function</p></li>
+</ul>
+</li>
+<li><p>Calculate multiple statistics (‘mean’, ‘max’, high_achievers) by class</p></li>
+</ul>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>
+<span class="n">student_data</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;Student_ID&#39;</span><span class="p">:</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">11</span><span class="p">),</span>
+    <span class="s1">&#39;Math&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">85</span><span class="p">,</span> <span class="mi">90</span><span class="p">,</span> <span class="mi">72</span><span class="p">,</span> <span class="mi">95</span><span class="p">,</span> <span class="mi">83</span><span class="p">,</span> <span class="mi">78</span><span class="p">,</span> <span class="mi">92</span><span class="p">,</span> <span class="mi">86</span><span class="p">,</span> <span class="mi">79</span><span class="p">,</span> <span class="mi">88</span><span class="p">],</span>
+    <span class="s1">&#39;Science&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">92</span><span class="p">,</span> <span class="mi">85</span><span class="p">,</span> <span class="mi">76</span><span class="p">,</span> <span class="mi">94</span><span class="p">,</span> <span class="mi">88</span><span class="p">,</span> <span class="mi">84</span><span class="p">,</span> <span class="mi">90</span><span class="p">,</span> <span class="mi">81</span><span class="p">,</span> <span class="mi">74</span><span class="p">,</span> <span class="mi">89</span><span class="p">],</span>
+    <span class="s1">&#39;English&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">78</span><span class="p">,</span> <span class="mi">92</span><span class="p">,</span> <span class="mi">88</span><span class="p">,</span> <span class="mi">96</span><span class="p">,</span> <span class="mi">82</span><span class="p">,</span> <span class="mi">79</span><span class="p">,</span> <span class="mi">91</span><span class="p">,</span> <span class="mi">84</span><span class="p">,</span> <span class="mi">76</span><span class="p">,</span> <span class="mi">93</span><span class="p">],</span>
+    <span class="s1">&#39;Class&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="s1">&#39;B&#39;</span><span class="p">,</span> <span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="s1">&#39;B&#39;</span><span class="p">,</span> <span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="s1">&#39;B&#39;</span><span class="p">,</span> <span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="s1">&#39;B&#39;</span><span class="p">,</span> <span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="s1">&#39;B&#39;</span><span class="p">]</span>
+<span class="p">}</span>
+<span class="n">students</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">student_data</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Student DataFrame:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">students</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><em>Solution Exercise - Custom Aggregations:</em></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Tasks:</span>
+<span class="c1"># 1. Calculate the range (max - min) for each subject</span>
+<span class="n">score_ranges</span> <span class="o">=</span> <span class="n">students</span><span class="o">.</span><span class="n">agg</span><span class="p">({</span>
+    <span class="s1">&#39;Math&#39;</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">-</span> <span class="n">x</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span>
+    <span class="s1">&#39;Science&#39;</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">-</span> <span class="n">x</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span>
+    <span class="s1">&#39;English&#39;</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">-</span> <span class="n">x</span><span class="o">.</span><span class="n">min</span><span class="p">()</span>
+<span class="p">})</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">1. Score range for each subject:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">score_ranges</span><span class="p">)</span>
+
+<span class="c1"># 2. Define and apply a custom function to calculate the proportion of students scoring above 85</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">high_achievers</span><span class="p">(</span><span class="n">scores</span><span class="p">):</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">scores</span> <span class="o">&gt;</span> <span class="mi">85</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span> <span class="o">*</span> <span class="mi">100</span>  <span class="c1"># Percentage of scores above 85</span>
+
+<span class="n">high_performers</span> <span class="o">=</span> <span class="n">students</span><span class="p">[[</span><span class="s1">&#39;Math&#39;</span><span class="p">,</span> <span class="s1">&#39;Science&#39;</span><span class="p">,</span> <span class="s1">&#39;English&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">agg</span><span class="p">(</span><span class="n">high_achievers</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">2. Percentage of high achievers (&gt;85) in each subject:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">high_performers</span><span class="p">)</span>
+
+<span class="c1"># 3. Calculate multiple statistics by class</span>
+<span class="n">class_stats</span> <span class="o">=</span> <span class="n">students</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;Class&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">agg</span><span class="p">({</span>
+    <span class="s1">&#39;Math&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;mean&#39;</span><span class="p">,</span> <span class="s1">&#39;max&#39;</span><span class="p">,</span> <span class="n">high_achievers</span><span class="p">],</span>
+    <span class="s1">&#39;Science&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;mean&#39;</span><span class="p">,</span> <span class="s1">&#39;max&#39;</span><span class="p">,</span> <span class="n">high_achievers</span><span class="p">],</span>
+    <span class="s1">&#39;English&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;mean&#39;</span><span class="p">,</span> <span class="s1">&#39;max&#39;</span><span class="p">,</span> <span class="n">high_achievers</span><span class="p">]</span>
+<span class="p">})</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">3. Multiple statistics by class:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">class_stats</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</details>
+<div class="admonition-more-info instructor-note admonition" id="instructor-note-3">
+<p class="admonition-title">More info</p>
+<details>
+<summary>Additional notes: Homework</summary>
+<p class="rubric" id="homework">Homework</p>
+<div class="admonition-homework homework important admonition" id="homework-0">
+<p class="admonition-title">Homework</p>
+<p class="rubric" id="groupby-operations-and-the-split-apply-combine-pattern-7-minutes">GroupBy Operations and the Split-Apply-Combine Pattern (7 minutes)</p>
+<p><strong>The Split-Apply-Combine Workflow:</strong></p>
+<p>Split-Apply-Combine Pattern</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Phase</p></th>
+<th class="head"><p>Description</p></th>
+<th class="head"><p>Pandas Implementation</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Split</p></td>
+<td><p>Divide data into groups</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">df.groupby('column')</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>Apply</p></td>
+<td><p>Perform operation on each group</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">.mean()</span></code>, <code class="docutils literal notranslate"><span class="pre">.sum()</span></code>, <code class="docutils literal notranslate"><span class="pre">.agg()</span></code>, etc.</p></td>
+</tr>
+<tr class="row-even"><td><p>Combine</p></td>
+<td><p>Bring results back together</p></td>
+<td><p>Automatic in Pandas</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Basic GroupBy Operations:</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create a more comprehensive dataset</span>
+<span class="n">retail_data</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;Date&#39;</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">date_range</span><span class="p">(</span><span class="n">start</span><span class="o">=</span><span class="s1">&#39;2023-01-01&#39;</span><span class="p">,</span> <span class="n">periods</span><span class="o">=</span><span class="mi">20</span><span class="p">),</span>
+    <span class="s1">&#39;Product&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">([</span><span class="s1">&#39;Laptop&#39;</span><span class="p">,</span> <span class="s1">&#39;Phone&#39;</span><span class="p">,</span> <span class="s1">&#39;Tablet&#39;</span><span class="p">,</span> <span class="s1">&#39;Monitor&#39;</span><span class="p">],</span> <span class="mi">20</span><span class="p">),</span>
+    <span class="s1">&#39;Category&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">([</span><span class="s1">&#39;Electronics&#39;</span><span class="p">,</span> <span class="s1">&#39;Accessories&#39;</span><span class="p">],</span> <span class="mi">20</span><span class="p">),</span>
+    <span class="s1">&#39;Store&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">([</span><span class="s1">&#39;North&#39;</span><span class="p">,</span> <span class="s1">&#39;South&#39;</span><span class="p">,</span> <span class="s1">&#39;East&#39;</span><span class="p">,</span> <span class="s1">&#39;West&#39;</span><span class="p">],</span> <span class="mi">20</span><span class="p">),</span>
+    <span class="s1">&#39;Units&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">),</span>
+    <span class="s1">&#39;Unit_Price&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">([</span><span class="mi">1200</span><span class="p">,</span> <span class="mi">800</span><span class="p">,</span> <span class="mi">300</span><span class="p">,</span> <span class="mi">250</span><span class="p">],</span> <span class="mi">20</span><span class="p">),</span>
+    <span class="s1">&#39;Discount&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">],</span> <span class="mi">20</span><span class="p">)</span>
+<span class="p">}</span>
+<span class="n">sales</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">retail_data</span><span class="p">)</span>
+<span class="n">sales</span><span class="p">[</span><span class="s1">&#39;Revenue&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">sales</span><span class="p">[</span><span class="s1">&#39;Units&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="n">sales</span><span class="p">[</span><span class="s1">&#39;Unit_Price&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">sales</span><span class="p">[</span><span class="s1">&#39;Discount&#39;</span><span class="p">])</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Retail Sales DataFrame:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">sales</span><span class="o">.</span><span class="n">head</span><span class="p">())</span>
+
+<span class="c1"># 1. Basic groupby with single column</span>
+<span class="n">product_sales</span> <span class="o">=</span> <span class="n">sales</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;Product&#39;</span><span class="p">)[</span><span class="s1">&#39;Units&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">1. Total units sold by product:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">product_sales</span><span class="p">)</span>
+
+<span class="c1"># 2. Groupby with multiple aggregations</span>
+<span class="n">product_summary</span> <span class="o">=</span> <span class="n">sales</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;Product&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">agg</span><span class="p">({</span>
+    <span class="s1">&#39;Units&#39;</span><span class="p">:</span> <span class="s1">&#39;sum&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;Revenue&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;sum&#39;</span><span class="p">,</span> <span class="s1">&#39;mean&#39;</span><span class="p">],</span>
+    <span class="s1">&#39;Discount&#39;</span><span class="p">:</span> <span class="s1">&#39;mean&#39;</span>
+<span class="p">})</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">2. Product sales summary:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">product_summary</span><span class="p">)</span>
+
+<span class="c1"># 3. Groupby with multiple columns</span>
+<span class="n">store_product</span> <span class="o">=</span> <span class="n">sales</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;Store&#39;</span><span class="p">,</span> <span class="s1">&#39;Product&#39;</span><span class="p">])[</span><span class="s1">&#39;Revenue&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">3. Revenue by store and product:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">store_product</span><span class="p">)</span>
+
+<span class="c1"># 4. Unstack to reshape result</span>
+<span class="n">store_product_unstacked</span> <span class="o">=</span> <span class="n">store_product</span><span class="o">.</span><span class="n">unstack</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">4. Revenue by store and product (unstacked):&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">store_product_unstacked</span><span class="p">)</span>
+
+<span class="c1"># 5. Groupby with date components</span>
+<span class="n">sales</span><span class="p">[</span><span class="s1">&#39;Month&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">sales</span><span class="p">[</span><span class="s1">&#39;Date&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">month</span>
+<span class="n">monthly_sales</span> <span class="o">=</span> <span class="n">sales</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;Month&#39;</span><span class="p">)[</span><span class="s1">&#39;Revenue&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">5. Total monthly revenue:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">monthly_sales</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Advanced GroupBy Operations:</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 1. Filter groups based on a condition</span>
+<span class="n">high_volume_products</span> <span class="o">=</span> <span class="n">sales</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;Product&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="s1">&#39;Units&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mi">30</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;1. Products with more than 30 total units sold:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">high_volume_products</span><span class="p">[</span><span class="s1">&#39;Product&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">())</span>
+
+<span class="c1"># 2. Transform to fill missing values with group mean</span>
+<span class="n">df_with_missing</span> <span class="o">=</span> <span class="n">sales</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">df_with_missing</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;Unit_Price&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="n">df_with_missing</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="s1">&#39;Unit_Price&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">2a. DataFrame with missing values:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df_with_missing</span><span class="p">[</span><span class="n">df_with_missing</span><span class="p">[</span><span class="s1">&#39;Unit_Price&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">isna</span><span class="p">()])</span>
+
+<span class="c1"># Fill with product-specific means</span>
+<span class="n">filled_df</span> <span class="o">=</span> <span class="n">df_with_missing</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">filled_df</span><span class="p">[</span><span class="s1">&#39;Unit_Price&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df_with_missing</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;Product&#39;</span><span class="p">)[</span><span class="s1">&#39;Unit_Price&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span>
+    <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">mean</span><span class="p">())</span>
+<span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">2b. After filling with product-specific means:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">filled_df</span><span class="p">[</span><span class="n">df_with_missing</span><span class="p">[</span><span class="s1">&#39;Unit_Price&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">isna</span><span class="p">()])</span>
+
+<span class="c1"># 3. Apply to manipulate each group</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">top_revenue_product</span><span class="p">(</span><span class="n">group</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">group</span><span class="o">.</span><span class="n">nlargest</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;Revenue&#39;</span><span class="p">)</span>
+
+<span class="n">top_by_store</span> <span class="o">=</span> <span class="n">sales</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;Store&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">top_revenue_product</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">3. Highest revenue product in each store:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">top_by_store</span><span class="p">[[</span><span class="s1">&#39;Store&#39;</span><span class="p">,</span> <span class="s1">&#39;Product&#39;</span><span class="p">,</span> <span class="s1">&#39;Revenue&#39;</span><span class="p">]])</span>
+
+<span class="c1"># 4. Calculating group-specific ranks</span>
+<span class="n">sales</span><span class="p">[</span><span class="s1">&#39;Revenue_Rank&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">sales</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;Store&#39;</span><span class="p">)[</span><span class="s1">&#39;Revenue&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">rank</span><span class="p">(</span><span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">top_sellers</span> <span class="o">=</span> <span class="n">sales</span><span class="p">[</span><span class="n">sales</span><span class="p">[</span><span class="s1">&#39;Revenue_Rank&#39;</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="mi">2</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">4. Top 2 sales by revenue in each store:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">top_sellers</span><span class="p">[[</span><span class="s1">&#39;Store&#39;</span><span class="p">,</span> <span class="s1">&#39;Product&#39;</span><span class="p">,</span> <span class="s1">&#39;Revenue&#39;</span><span class="p">,</span> <span class="s1">&#39;Revenue_Rank&#39;</span><span class="p">]])</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<ul class="simple">
+<li><p>The GroupBy operation is one of the most powerful features in Pandas, inspired by the ‘split-apply-combine’ pattern from R.</p></li>
+<li><p>First, data is split into groups based on one or more columns.</p></li>
+<li><p>Next, operations are applied to each group independently.</p></li>
+<li><p>Finally, results are combined back into a coherent structure.</p></li>
+<li><p>This pattern is incredibly flexible - you can group by any column(s) and apply virtually any operation.”</p></li>
+<li><p>The result of a groupby has a hierarchical index, which can be reshaped using <code class="docutils literal notranslate"><span class="pre">unstack()</span></code>.”</p></li>
+<li><p>Beyond simple aggregations, groupby supports filtering, transformation, and applying custom functions to groups.</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">transform()</span></code> method is particularly useful for filling missing values with group-specific statistics.</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">apply()</span></code> method allows for complex operations that operate on the entire group.</p></li>
+<li><p>Groupby operations often form the backbone of business intelligence and reporting systems.</p></li>
+</ul>
+</div>
+</div>
+</div>
+<div class="docutils">
+<p class="rubric" id="key-takeaways">Key Takeaways</p>
+<div class="admonition-keypoints keypoints admonition" id="keypoints-0">
+<p class="admonition-title">Keypoints</p>
+<ol class="arabic simple">
+<li><p><strong>Descriptive Statistics:</strong> Pandas provides comprehensive methods for calculating summary statistics on your data</p></li>
+<li><p><strong>Custom Aggregations:</strong> When built-in statistics aren’t enough, you can create custom aggregation functions</p></li>
+<li><p><strong>GroupBy Power:</strong> The split-apply-combine pattern enables sophisticated analyses across subsets of your data</p></li>
+<li><p><strong>Multiple Dimensions:</strong> You can group by multiple columns to create hierarchical analyses</p></li>
+</ol>
+</div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../11.Pandas_indexing_slicing/" class="btn btn-neutral float-left" title="Indexing, Selection &amp; Slicing in Pandas" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../15.Hands-on_expression_count_analysis/" class="btn btn-neutral float-right" title="Hands-on: RNA Expression Analysis - alternative method" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025 Norwegian Ai Cloud.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

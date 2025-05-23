@@ -1,0 +1,681 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Vectorized Operations in NumPy: Beyond Python Loops &mdash; NumPy and Pandas for biological data handling  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+      <link rel="stylesheet" type="text/css" href="../_static/sphinx_lesson.css?v=e9df6548" />
+      <link rel="stylesheet" type="text/css" href="../_static/term_role_formatting.css?v=4194e21c" />
+      <link rel="stylesheet" type="text/css" href="../_static/sphinx_rtd_theme_ext_color_contrast.css?v=8e8ea19f" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=187304be"></script>
+      <script src="../_static/doctools.js?v=9a2dae69"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../_static/copybutton.js?v=35a8b989"></script>
+      <script src="../_static/minipres.js?v=a0d29692"></script>
+      <script>let toggleHintShow = 'Click to show';</script>
+      <script>let toggleHintHide = 'Click to hide';</script>
+      <script>let toggleOpenOnPrint = 'true';</script>
+      <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+      <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+      <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex/" />
+    <link rel="search" title="Search" href="../search/" />
+    <link rel="next" title="Hands-on: RNA Expression Analysis - alternative method" href="../6.1.Numpy_hands_on/" />
+    <link rel="prev" title="Essential Array Operations with NumPy" href="../5.Essential_array_operations/" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../" class="icon icon-home">
+            NumPy and Pandas for biological data handling
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search/" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Numpy for handling biological datasets</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../0.Numpy_for_bioinformatics/">Lesson plan</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1.numpy_intro/">Introduction to NumPy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../2.NumPy_Data_Types/">NumPy Data Types</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3.Indexing_and_Slicing/">Array Indexing and Slicing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../4.Advance_indexing_filtering/">NumPy Boolean Masking and Filtering</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../5.Essential_array_operations/">Essential Array Operations with NumPy</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Vectorized Operations in NumPy: Beyond Python Loops</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#introduction-to-vectorized-operations">Introduction to Vectorized Operations</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#what-are-vectorized-operations">What are Vectorized Operations?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#the-speed-advantage-loops-vs-vectorization">The Speed Advantage: Loops vs. Vectorization</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#broadcasting-in-numpy">3. Broadcasting in NumPy</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#what-is-broadcasting">What is Broadcasting?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#broadcasting-rules">Broadcasting Rules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#broadcasting-examples">Broadcasting Examples</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#example-1-adding-a-scalar-to-an-array">Example 1: Adding a scalar to an array</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#best-practices">Best Practices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#key-takeaways">Key Takeaways</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../6.1.Numpy_hands_on/">Hands-on: RNA Expression Analysis - alternative method</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Pandas for handling biological datasets</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../7.Pandas_lesson plan/">Lesson plan</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8.Introduction_to_pandas/">Introduction to Pandas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../9.Pandas_data_import_export/">Data Import and Export in Pandas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../10.DataFrame_Manipulation/">DataFrame Manipulation &amp; Sorting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../11.Pandas_indexing_slicing/">Indexing, Selection &amp; Slicing in Pandas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../14.Pandas_summary_stats/">Summary Statistics &amp; Aggregations in Pandas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../15.Hands-on_expression_count_analysis/">Hands-on: RNA Expression Analysis - alternative method</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../12.Handling_Missing_Data/">Bonus Lesson 1: Handling Missing Data in Pandas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../13.Merging_DataFrames/">Bonus Lesson 2: Merging DataFrames in Pandas</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../">NumPy and Pandas for biological data handling</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Vectorized Operations in NumPy: Beyond Python Loops</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/coderefinery/content/blob/main/content/6.Vectorized_Operations_in_NumPy.md" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="vectorized-operations-in-numpy-beyond-python-loops">
+<h1>Vectorized Operations in NumPy: Beyond Python Loops<a class="headerlink" href="#vectorized-operations-in-numpy-beyond-python-loops" title="Link to this heading"></a></h1>
+<div class="admonition-objectives objectives admonition" id="objectives-0">
+<p class="admonition-title">Objectives</p>
+<p>By the end of this lecture, you will be able to:</p>
+<ul class="simple">
+<li><p>Understand and implement vectorized operations to replace traditional Python loops</p></li>
+<li><p>Apply broadcasting to perform operations between arrays of different shapes</p></li>
+<li><p>Optimize calculations for working with large biological datasets</p></li>
+</ul>
+</div>
+<div class="admonition-instructor-note instructor-note admonition" id="instructor-note-0">
+<p class="admonition-title">Instructor note</p>
+<ul class="simple">
+<li><p>Teaching : 15 min</p></li>
+<li><p>Demo: 20 min</p></li>
+</ul>
+</div>
+<section id="introduction-to-vectorized-operations">
+<h2>Introduction to Vectorized Operations<a class="headerlink" href="#introduction-to-vectorized-operations" title="Link to this heading"></a></h2>
+<section id="what-are-vectorized-operations">
+<h3>What are Vectorized Operations?<a class="headerlink" href="#what-are-vectorized-operations" title="Link to this heading"></a></h3>
+<p>Vectorized operations allow us to perform mathematical operations on entire arrays at once, rather than iterating through each element individually. This approach offers several key advantages:</p>
+<ul class="simple">
+<li><p>Performance and Efficiency:</p>
+<ul>
+<li><p>Vectorized operations are significantly faster than Python loops, especially for large datasets</p></li>
+<li><p>NumPy uses optimized C code under the hood, making calculations much more efficient</p></li>
+</ul>
+</li>
+<li><p>Readability:</p>
+<ul>
+<li><p>The code becomes more concise and often easier to understand</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="the-speed-advantage-loops-vs-vectorization">
+<h3>The Speed Advantage: Loops vs. Vectorization<a class="headerlink" href="#the-speed-advantage-loops-vs-vectorization" title="Link to this heading"></a></h3>
+<p>Let’s see a simple example comparing a traditional Python loop with NumPy’s vectorized approach:</p>
+<div class="admonition-demo demo admonition" id="demo-0">
+<p class="admonition-title">Demo</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
+
+<span class="c1"># Create a large array for testing</span>
+<span class="n">size</span> <span class="o">=</span> <span class="mi">10000000</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">(</span><span class="n">size</span><span class="p">)</span>
+
+<span class="c1"># Method 1: Traditional Python loop</span>
+<span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+<span class="n">result_loop</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
+    <span class="n">result_loop</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">value</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">+</span> <span class="mi">5</span><span class="p">)</span>
+<span class="n">loop_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start_time</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Python loop time: </span><span class="si">{</span><span class="n">loop_time</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2"> seconds&quot;</span><span class="p">)</span>
+
+<span class="c1"># Method 2: NumPy vectorized operation</span>
+<span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+<span class="n">result_vectorized</span> <span class="o">=</span> <span class="n">data</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">+</span> <span class="mi">5</span>
+<span class="n">vector_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start_time</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;NumPy vectorized time: </span><span class="si">{</span><span class="n">vector_time</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2"> seconds&quot;</span><span class="p">)</span>
+
+<span class="c1"># Calculate the speedup</span>
+<span class="n">speedup</span> <span class="o">=</span> <span class="n">loop_time</span> <span class="o">/</span> <span class="n">vector_time</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Vectorized operations are </span><span class="si">{</span><span class="n">speedup</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">x faster!&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="admonition-output solution important dropdown admonition" id="solution-0">
+<p class="admonition-title">Output</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Python loop time: 1.0195 seconds
+NumPy vectorized time: 0.0613 seconds
+Vectorized operations are 16.6x faster!
+</pre></div>
+</div>
+</div>
+</div>
+<div class="docutils">
+<p class="rubric" id="basic-vectorized-operations-in-numpy">Basic Vectorized Operations in NumPy</p>
+<p class="rubric" id="arithmetic-operations">Arithmetic Operations</p>
+<p>NumPy enables element-wise arithmetic operations on arrays:</p>
+<p><img alt="alt text" src="../_images/image-8.png" /></p>
+<div class="admonition-demo demo admonition" id="demo-1">
+<p class="admonition-title">Demo</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+<span class="c1"># Create two arrays</span>
+<span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">])</span>
+<span class="n">b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">40</span><span class="p">,</span> <span class="mi">50</span><span class="p">])</span>
+
+<span class="c1"># Element-wise operations</span>
+<span class="n">addition</span> <span class="o">=</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span>
+<span class="n">subtraction</span> <span class="o">=</span> <span class="n">b</span> <span class="o">-</span> <span class="n">a</span>
+<span class="n">multiplication</span> <span class="o">=</span> <span class="n">a</span> <span class="o">*</span> <span class="n">b</span>
+<span class="n">division</span> <span class="o">=</span> <span class="n">b</span> <span class="o">/</span> <span class="n">a</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Addition: </span><span class="si">{</span><span class="n">addition</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Subtraction: </span><span class="si">{</span><span class="n">subtraction</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Multiplication: </span><span class="si">{</span><span class="n">multiplication</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Division: </span><span class="si">{</span><span class="n">division</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="admonition-output solution important dropdown admonition" id="solution-1">
+<p class="admonition-title">Output</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Addition: [11 22 33 44 55]
+Subtraction: [ 9 18 27 36 45]
+Multiplication: [ 10  40  90 160 250]
+Division: [10. 10. 10. 10. 10.]
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="docutils">
+<p class="rubric" id="scalar-operations">Scalar Operations</p>
+<p>You can perform operations between arrays and scalars (single values):</p>
+<p><img alt="alt text" src="../_images/image-9.png" /></p>
+<div class="admonition-demo demo admonition" id="demo-2">
+<p class="admonition-title">Demo</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Scalar operations</span>
+<span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">])</span>
+
+<span class="n">plus_10</span> <span class="o">=</span> <span class="n">a</span> <span class="o">+</span> <span class="mi">10</span>
+<span class="n">times_2</span> <span class="o">=</span> <span class="n">a</span> <span class="o">*</span> <span class="mi">2</span>
+<span class="n">square</span> <span class="o">=</span> <span class="n">a</span> <span class="o">**</span> <span class="mi">2</span>
+<span class="n">reciprocal</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="n">a</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Plus 10: </span><span class="si">{</span><span class="n">plus_10</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Times 2: </span><span class="si">{</span><span class="n">times_2</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Squared: </span><span class="si">{</span><span class="n">square</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Reciprocal: </span><span class="si">{</span><span class="n">reciprocal</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="admonition-output solution important dropdown admonition" id="solution-2">
+<p class="admonition-title">Output</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Plus 10: [11 12 13 14 15]
+Times 2: [ 2  4  6  8 10]
+Squared: [ 1  4  9 16 25]
+Reciprocal: [1.         0.5        0.33333333 0.25       0.2       ]
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="docutils">
+<p class="rubric" id="comparison-operations">Comparison Operations</p>
+<p>Comparison operations create boolean masks that can be useful for filtering data:</p>
+<div class="admonition-demo demo admonition" id="demo-3">
+<p class="admonition-title">Demo</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Comparison operations</span>
+<span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">])</span>
+
+<span class="n">greater_than_3</span> <span class="o">=</span> <span class="n">a</span> <span class="o">&gt;</span> <span class="mi">3</span>
+<span class="n">less_than_equal_to_2</span> <span class="o">=</span> <span class="n">a</span> <span class="o">&lt;=</span> <span class="mi">2</span>
+<span class="n">equal_to_3</span> <span class="o">=</span> <span class="n">a</span> <span class="o">==</span> <span class="mi">3</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;a &gt; 3: </span><span class="si">{</span><span class="n">greater_than_3</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;a &lt;= 2: </span><span class="si">{</span><span class="n">less_than_equal_to_2</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;a == 3: </span><span class="si">{</span><span class="n">equal_to_3</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># Using boolean masks for filtering</span>
+<span class="n">filtered_data</span> <span class="o">=</span> <span class="n">a</span><span class="p">[</span><span class="n">greater_than_3</span><span class="p">]</span>   <span class="c1"># [4, 5]</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Values greater than 3: </span><span class="si">{</span><span class="n">filtered_data</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="admonition-output solution important dropdown admonition" id="solution-3">
+<p class="admonition-title">Output</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>a &gt; 3: [False False False  True  True]
+a &lt;= 2: [ True  True False False False]
+a == 3: [False False  True False False]
+Values greater than 3: [4 5]
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="docutils">
+<p class="rubric" id="aggregation-functions-and-universal-functions">Aggregation Functions and Universal Functions</p>
+<p>NumPy also provides functions to calculate aggregate statistics across arrays:
+<img alt="alt text" src="../_images/image-10.png" /></p>
+<div class="admonition-demo demo admonition" id="demo-4">
+<p class="admonition-title">Demo</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Aggregation functions</span>
+<span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">])</span>
+
+<span class="n">sum_a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>                   <span class="c1"># Sum of all elements (15)</span>
+<span class="n">mean_a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>                 <span class="c1"># Mean of all elements (3.0)</span>
+<span class="n">min_a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>                   <span class="c1"># Minimum value (1)</span>
+<span class="n">max_a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>                   <span class="c1"># Maximum value (5)</span>
+<span class="n">std_a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>                   <span class="c1"># Standard deviation (~1.41)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Sum: </span><span class="si">{</span><span class="n">sum_a</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Mean: </span><span class="si">{</span><span class="n">mean_a</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Min: </span><span class="si">{</span><span class="n">min_a</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Max: </span><span class="si">{</span><span class="n">max_a</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Standard deviation: </span><span class="si">{</span><span class="n">std_a</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="admonition-output solution important dropdown admonition" id="solution-4">
+<p class="admonition-title">Output</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Sum: 15
+Mean: 3.0
+Min: 1
+Max: 5
+Standard deviation: 1.4142
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="docutils">
+<div class="admonition-more-info instructor-note admonition" id="instructor-note-1">
+<p class="admonition-title">More info</p>
+<details>
+<summary>Additional notes: Universal Functions</summary>
+<p><strong>Universal Functions:</strong></p>
+<p>NumPy provides a wide range of universal functions (ufuncs) that operate element-wise on arrays:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">])</span>
+
+<span class="n">sqrt_values</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>            <span class="c1"># Square root of each element</span>
+<span class="n">log_values</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>              <span class="c1"># Natural logarithm of each element</span>
+<span class="n">exp_values</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>              <span class="c1"># e raised to the power of each element</span>
+<span class="n">sin_values</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>              <span class="c1"># Sine of each element</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Square roots: </span><span class="si">{</span><span class="n">sqrt_values</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Natural logs: </span><span class="si">{</span><span class="n">log_values</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Exponentials: </span><span class="si">{</span><span class="n">exp_values</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Sine values: </span><span class="si">{</span><span class="n">sin_values</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Output</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Square roots: [1.         1.41421356 1.73205081 2.         2.23606798]
+Natural logs: [0.         0.69314718 1.09861229 1.38629436 1.60943791]
+Exponentials: [  2.71828183   7.3890561   20.08553692  54.59815003 148.4131591 ]
+Sine values: [ 0.84147098  0.90929743  0.14112001 -0.7568025  -0.95892427]
+</pre></div>
+</div>
+</details>
+<details>
+<summary>Additional notes: Exercise</summary>
+<p><strong>Exercise: Use NumPy’s Built-in Functions</strong>: They’re optimized for performance</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
+
+<span class="c1"># Create a large array</span>
+<span class="n">size</span> <span class="o">=</span> <span class="mi">1_000_000</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">(</span><span class="n">size</span><span class="p">)</span>
+
+<span class="c1"># Method 1: Custom function with a loop</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">mean_std_loop</span><span class="p">(</span><span class="n">arr</span><span class="p">):</span>
+    <span class="n">mean</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">arr</span><span class="p">)</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">arr</span><span class="p">)</span>
+    <span class="n">squared_diff_sum</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">((</span><span class="n">x</span> <span class="o">-</span> <span class="n">mean</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">arr</span><span class="p">)</span>
+    <span class="n">std</span> <span class="o">=</span> <span class="p">(</span><span class="n">squared_diff_sum</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">arr</span><span class="p">))</span> <span class="o">**</span> <span class="mf">0.5</span>
+    <span class="k">return</span> <span class="n">mean</span><span class="p">,</span> <span class="n">std</span>
+
+<span class="c1"># Method 2: NumPy&#39;s built-in functions</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">mean_std_numpy</span><span class="p">(</span><span class="n">arr</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">arr</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">arr</span><span class="p">)</span>
+
+<span class="c1"># Time the loop version</span>
+<span class="n">start</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+<span class="n">mean1</span><span class="p">,</span> <span class="n">std1</span> <span class="o">=</span> <span class="n">mean_std_loop</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+<span class="n">time1</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start</span>
+
+<span class="c1"># Time the NumPy version</span>
+<span class="n">start</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+<span class="n">mean2</span><span class="p">,</span> <span class="n">std2</span> <span class="o">=</span> <span class="n">mean_std_numpy</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+<span class="n">time2</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Loop implementation: </span><span class="si">{</span><span class="n">time1</span><span class="si">:</span><span class="s2">.6f</span><span class="si">}</span><span class="s2"> seconds&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;NumPy implementation: </span><span class="si">{</span><span class="n">time2</span><span class="si">:</span><span class="s2">.6f</span><span class="si">}</span><span class="s2"> seconds&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Speed improvement: </span><span class="si">{</span><span class="n">time1</span><span class="o">/</span><span class="n">time2</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">x&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Solution</p>
+<p>Output</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Loop implementation: 0.156354 seconds
+NumPy implementation: 0.002557 seconds
+Speed improvement: 61.1x
+</pre></div>
+</div>
+</div>
+</div>
+</details>
+</section>
+</section>
+<section id="broadcasting-in-numpy">
+<h2>3. Broadcasting in NumPy<a class="headerlink" href="#broadcasting-in-numpy" title="Link to this heading"></a></h2>
+<section id="what-is-broadcasting">
+<h3>What is Broadcasting?<a class="headerlink" href="#what-is-broadcasting" title="Link to this heading"></a></h3>
+<p>Broadcasting is a powerful mechanism that allows NumPy to perform operations on arrays of different shapes. It automatically “broadcasts” the smaller array across the larger array so that they have compatible shapes.</p>
+<p><img alt="alt text" src="../_images/image-11.png" /></p>
+</section>
+<section id="broadcasting-rules">
+<h3>Broadcasting Rules<a class="headerlink" href="#broadcasting-rules" title="Link to this heading"></a></h3>
+<ol class="arabic simple">
+<li><p>If the arrays don’t have the same number of dimensions, the shape of the smaller array is padded with ones on the left</p></li>
+<li><p>If the shape of the arrays doesn’t match in any dimension, the array with shape equal to 1 in that dimension is stretched to match the other shape</p></li>
+<li><p>If in any dimension the sizes disagree and neither is equal to 1, an error is raised</p></li>
+</ol>
+</section>
+<section id="broadcasting-examples">
+<h3>Broadcasting Examples<a class="headerlink" href="#broadcasting-examples" title="Link to this heading"></a></h3>
+<section id="example-1-adding-a-scalar-to-an-array">
+<h4>Example 1: Adding a scalar to an array<a class="headerlink" href="#example-1-adding-a-scalar-to-an-array" title="Link to this heading"></a></h4>
+<p>The simplest form of broadcasting:</p>
+<div class="admonition-demo demo admonition" id="demo-5">
+<p class="admonition-title">Demo</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Adding a scalar to an array</span>
+<span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">])</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">a</span> <span class="o">+</span> <span class="mi">10</span>  <span class="c1"># Scalar 10 is broadcast to array [10, 10, 10, 10, 10]</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>    <span class="c1"># [11, 12, 13, 14, 15]</span>
+</pre></div>
+</div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If the sizes along a dimension differ, the array with size 1 in that dimension is stretched to match the other size</p>
+</div>
+<div class="admonition-more-info instructor-note admonition" id="instructor-note-2">
+<p class="admonition-title">More info</p>
+<details>
+<summary>Additional notes: Broadcasting with n-D arrays</summary>
+<p><strong>Operations between a 1D array and a 2D array:</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Broadcasting with different dimensional arrays</span>
+<span class="c1"># Create a 2D array (3x3)</span>
+<span class="n">matrix</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span>
+    <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span>
+    <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">],</span>
+    <span class="p">[</span><span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">]</span>
+<span class="p">])</span>
+
+<span class="c1"># Create a 1D array</span>
+<span class="n">row_vector</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">30</span><span class="p">])</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">matrix</span> <span class="o">+</span> <span class="n">row_vector</span>
+
+<span class="c1"># Broadcasting: Add the 1D array to each row of the 2D array</span>
+<span class="c1"># row_vector is broadcast to match matrix&#39;s shape</span>
+<span class="c1"># NumPy&#39;s default broadcasting for 1D arrays applies column-wise</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Original matrix:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">matrix</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Row vector:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">row_vector</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Result after broadcasting addition:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+<span class="c1"># Output:</span>
+<span class="c1"># [[11, 22, 33],</span>
+<span class="c1">#  [14, 25, 36],</span>
+<span class="c1">#  [17, 28, 39]]</span>
+</pre></div>
+</div>
+<p>Note:</p>
+<ul class="simple">
+<li><p>Row_vector is duplicated across the rows of the matrix</p></li>
+</ul>
+<p><strong>Adding a column vector to a 2D array:</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create a column vector (3x1)</span>
+<span class="n">column_vector</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">100</span><span class="p">],</span> <span class="p">[</span><span class="mi">200</span><span class="p">],</span> <span class="p">[</span><span class="mi">300</span><span class="p">]])</span>
+
+<span class="c1"># Broadcasting: Add the column vector to each column of the matrix</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">matrix</span> <span class="o">+</span> <span class="n">column_vector</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Original matrix:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">matrix</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Column vector:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">column_vector</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Result after broadcasting addition:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+<span class="c1"># Output:</span>
+<span class="c1"># [[101, 102, 103],</span>
+<span class="c1">#  [204, 205, 206],</span>
+<span class="c1">#  [307, 308, 309]]</span>
+</pre></div>
+</div>
+<p>Notes:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">column_vector</span></code> is effectively repeated across all columns, resulting in:</p></li>
+</ul>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>[[100, 100, 100],
+ [200, 200, 200],
+ [300, 300, 300]]
+</pre></div>
+</div>
+</details>
+<details>
+<summary>Additional notes: Array Splitting</summary>
+<p class="rubric" id="array-splitting-with-numpy">Array Splitting with NumPy</p>
+<p>Splitting arrays is a common operation when working with biological data, especially when you need to separate data into training and testing sets or divide data by conditions.</p>
+<p><strong>Basic Array Splitting:</strong></p>
+<p>The <code class="docutils literal notranslate"><span class="pre">np.split</span></code> function allows you to divide an array into multiple sub-arrays:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+<span class="c1"># Create a simple array</span>
+<span class="n">arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Original array: </span><span class="si">{</span><span class="n">arr</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># Split into 5 equal parts</span>
+<span class="n">splits</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">arr</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;After splitting into 5 equal parts:&quot;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">split</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">splits</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Split </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">split</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Output</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Original array: [0 1 2 3 4 5 6 7 8 9]
+After splitting into 5 equal parts:
+Split 0: [0 1]
+Split 1: [2 3]
+Split 2: [4 5]
+Split 3: [6 7]
+Split 4: [8 9]
+</pre></div>
+</div>
+<p><strong>Splitting 2D Arrays:</strong></p>
+<p>You can split arrays along different axes:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create a 4x4 array</span>
+<span class="n">arr_2d</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">16</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Original 2D array:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">arr_2d</span><span class="p">)</span>
+
+<span class="c1"># Split along rows (axis=0)</span>
+<span class="n">row_splits</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">arr_2d</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Split along rows (axis=0):&quot;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">split</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">row_splits</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Split </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">:&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">split</span><span class="p">)</span>
+
+<span class="c1"># Split along columns (axis=1)</span>
+<span class="n">col_splits</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">arr_2d</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Split along columns (axis=1):&quot;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">split</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">col_splits</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Split </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">:&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">split</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Output</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Original 2D array:
+[[ 0  1  2  3]
+ [ 4  5  6  7]
+ [ 8  9 10 11]
+ [12 13 14 15]]
+
+Split along rows (axis=0):
+Split 0:
+[[0 1 2 3]
+ [4 5 6 7]]
+Split 1:
+[[ 8  9 10 11]
+ [12 13 14 15]]
+
+Split along columns (axis=1):
+Split 0:
+[[ 0  1]
+ [ 4  5]
+ [ 8  9]
+ [12 13]]
+Split 1:
+[[ 2  3]
+ [ 6  7]
+ [10 11]
+ [14 15]]
+</pre></div>
+</div>
+<p><strong>Avoiding Common Mistakes:</strong></p>
+<p><strong>Copying vs. Viewing</strong>: Be aware of when you’re creating a view versus a copy</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Creating a view - changes to &#39;view&#39; will affect &#39;original&#39;</span>
+<span class="n">original</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">])</span>
+<span class="n">view</span> <span class="o">=</span> <span class="n">original</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="mi">4</span><span class="p">]</span>
+<span class="n">view</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">99</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Original after modifying view: </span><span class="si">{</span><span class="n">original</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>  <span class="c1"># [1, 99, 3, 4, 5]</span>
+
+<span class="c1"># Creating a copy - changes to &#39;copy&#39; won&#39;t affect &#39;original&#39;</span>
+<span class="n">original</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">])</span>
+<span class="n">copy</span> <span class="o">=</span> <span class="n">original</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="mi">4</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">copy</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">99</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Original after modifying copy: </span><span class="si">{</span><span class="n">original</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>  <span class="c1"># [1, 2, 3, 4, 5]</span>
+</pre></div>
+</div>
+<p><strong>Broadcasting Dimensions</strong>: Be careful with dimensions when broadcasting</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># This works as expected</span>
+<span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">]])</span>  <span class="c1"># 2x3</span>
+<span class="n">b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">30</span><span class="p">])</span>            <span class="c1"># 1D with 3 elements</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+
+<span class="c1"># This will fail because dimensions don&#39;t align properly</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="n">c</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">])</span>            <span class="c1"># 1D with 2 elements</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">a</span> <span class="o">+</span> <span class="n">c</span>
+<span class="k">except</span> <span class="ne">ValueError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</details>
+</section>
+</section>
+</section>
+<section id="best-practices">
+<h2>Best Practices<a class="headerlink" href="#best-practices" title="Link to this heading"></a></h2>
+<ol class="arabic simple">
+<li><p><strong>Avoid Python Loops</strong> when working with numerical data; use vectorized operations instead</p></li>
+<li><p><strong>Use Broadcasting</strong> wisely to make your code concise and efficient</p></li>
+<li><p><strong>Pre-allocate Arrays</strong> when you know their size in advance</p></li>
+<li><p><strong>Leverage NumPy’s Built-in Functions</strong> for optimal performance</p></li>
+<li><p><strong>Be Mindful of Memory Usage</strong> when working with large biological datasets</p></li>
+</ol>
+<p>Vectorized operations in NumPy are a powerful tool for data analysis in computational biology. By replacing traditional loops with vectorized operations, you can significantly improve the performance and readability of your code, making it easier to work with large biological datasets.</p>
+</section>
+<section id="key-takeaways">
+<h2>Key Takeaways<a class="headerlink" href="#key-takeaways" title="Link to this heading"></a></h2>
+<div class="admonition-keypoints keypoints admonition" id="keypoints-0">
+<p class="admonition-title">Keypoints</p>
+<ol class="arabic simple">
+<li><p><strong>Vectorized Operations</strong> are much faster than Python loops for numerical computations</p></li>
+<li><p><strong>Broadcasting</strong> allows operations between arrays of different shapes</p></li>
+<li><p><strong>NumPy’s Universal Functions</strong> provide efficient implementations of common mathematical operations</p></li>
+<li><p><strong>Array Splitting</strong> is useful for dividing data for analysis and machine learning</p></li>
+</ol>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../5.Essential_array_operations/" class="btn btn-neutral float-left" title="Essential Array Operations with NumPy" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../6.1.Numpy_hands_on/" class="btn btn-neutral float-right" title="Hands-on: RNA Expression Analysis - alternative method" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025 Norwegian Ai Cloud.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

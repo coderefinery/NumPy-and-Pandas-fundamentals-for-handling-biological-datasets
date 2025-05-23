@@ -1,0 +1,584 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NumPy Data Types &mdash; NumPy and Pandas for biological data handling  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+      <link rel="stylesheet" type="text/css" href="../_static/sphinx_lesson.css?v=e9df6548" />
+      <link rel="stylesheet" type="text/css" href="../_static/term_role_formatting.css?v=4194e21c" />
+      <link rel="stylesheet" type="text/css" href="../_static/sphinx_rtd_theme_ext_color_contrast.css?v=8e8ea19f" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=187304be"></script>
+      <script src="../_static/doctools.js?v=9a2dae69"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../_static/copybutton.js?v=35a8b989"></script>
+      <script src="../_static/minipres.js?v=a0d29692"></script>
+      <script>let toggleHintShow = 'Click to show';</script>
+      <script>let toggleHintHide = 'Click to hide';</script>
+      <script>let toggleOpenOnPrint = 'true';</script>
+      <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+      <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+      <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex/" />
+    <link rel="search" title="Search" href="../search/" />
+    <link rel="next" title="Array Indexing and Slicing" href="../3.Indexing_and_Slicing/" />
+    <link rel="prev" title="Introduction to NumPy" href="../1.numpy_intro/" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../" class="icon icon-home">
+            NumPy and Pandas for biological data handling
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search/" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Numpy for handling biological datasets</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../0.Numpy_for_bioinformatics/">Lesson plan</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1.numpy_intro/">Introduction to NumPy</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">NumPy Data Types</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#introduction-to-data-types">Introduction to Data Types</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#python-vs-numpy-data-types">Python vs NumPy Data Types</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#type-homogeneity">Type Homogeneity</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#key-numpy-data-types">Key NumPy Data Types</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#integer-types">Integer Types</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#floating-point-types">Floating-Point Types</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#boolean-type">Boolean Type</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#string-types">String Types</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#practical-considerations-for-bioinformatics">Practical Considerations for Bioinformatics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#key-takeaways">Key Takeaways</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../3.Indexing_and_Slicing/">Array Indexing and Slicing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../4.Advance_indexing_filtering/">NumPy Boolean Masking and Filtering</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../5.Essential_array_operations/">Essential Array Operations with NumPy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../6.Vectorized_Operations_in_NumPy/">Vectorized Operations in NumPy: Beyond Python Loops</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../6.1.Numpy_hands_on/">Hands-on: RNA Expression Analysis - alternative method</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Pandas for handling biological datasets</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../7.Pandas_lesson plan/">Lesson plan</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8.Introduction_to_pandas/">Introduction to Pandas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../9.Pandas_data_import_export/">Data Import and Export in Pandas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../10.DataFrame_Manipulation/">DataFrame Manipulation &amp; Sorting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../11.Pandas_indexing_slicing/">Indexing, Selection &amp; Slicing in Pandas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../14.Pandas_summary_stats/">Summary Statistics &amp; Aggregations in Pandas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../15.Hands-on_expression_count_analysis/">Hands-on: RNA Expression Analysis - alternative method</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../12.Handling_Missing_Data/">Bonus Lesson 1: Handling Missing Data in Pandas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../13.Merging_DataFrames/">Bonus Lesson 2: Merging DataFrames in Pandas</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../">NumPy and Pandas for biological data handling</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">NumPy Data Types</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/coderefinery/content/blob/main/content/2.NumPy_Data_Types.md" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="numpy-data-types">
+<h1>NumPy Data Types<a class="headerlink" href="#numpy-data-types" title="Link to this heading"></a></h1>
+<div class="admonition-objectives objectives admonition" id="objectives-0">
+<p class="admonition-title">Objectives</p>
+<ul class="simple">
+<li><p>Explain the fundamental concept of data types and their importance in computing</p></li>
+<li><p>Compare and contrast Python’s general data types with NumPy’s specialized data types</p></li>
+<li><p>Identify the key NumPy data types relevant to bioinformatics applications</p></li>
+<li><p>Apply data type conversion techniques to optimize NumPy arrays</p></li>
+<li><p>Explore different NumPy data types for different bioinformatics use cases</p></li>
+</ul>
+</div>
+<div class="admonition-instructor-note instructor-note admonition" id="instructor-note-0">
+<p class="admonition-title">Instructor note</p>
+<ul class="simple">
+<li><p>Teaching : 15 min</p></li>
+<li><p>Demo: 10 min</p></li>
+</ul>
+</div>
+<section id="introduction-to-data-types">
+<h2>Introduction to Data Types<a class="headerlink" href="#introduction-to-data-types" title="Link to this heading"></a></h2>
+<p>Data types are fundamental categories that define how computers interpret and store information in memory</p>
+<p><img alt="alt text" src="../_images/image-2.png" /></p>
+<p><strong>Data types directly impact:</strong></p>
+<ul class="simple">
+<li><p>Program correctness</p>
+<ul>
+<li><p>Inappropriate data types can lead to errors or unexpected behavior</p></li>
+</ul>
+</li>
+<li><p>Computational performance</p>
+<ul>
+<li><p>Different data types have different processing speeds</p></li>
+<li><p>e.g., Choosing appropriate data types helps optimize memory usage</p></li>
+</ul>
+</li>
+</ul>
+<p>In scientific computing and bioinformatics specifically, where we often work with large datasets, choosing the right data type becomes even more critical for both accuracy and performance.</p>
+</section>
+<section id="python-vs-numpy-data-types">
+<h2>Python vs NumPy Data Types<a class="headerlink" href="#python-vs-numpy-data-types" title="Link to this heading"></a></h2>
+<p>Python and NumPy both provide data type systems, but they serve different purposes and have important distinctions:</p>
+<p><img alt="alt text" src="../_images/image-3.png" /></p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This specialization allows NumPy to provide exactly what’s needed for scientific applications without unnecessary overhead. For example, summing a million numbers can be 10-100x faster using NumPy arrays compared to Python lists.</p>
+</div>
+<div class="admonition-more-info instructor-note admonition" id="instructor-note-1">
+<p class="admonition-title">More info</p>
+<details>
+<summary>Additional notes: Python vs NumPy</summary>
+<ul class="simple">
+<li><p>Python vs NumPy - Variety and Focus</p>
+<ul>
+<li><p>Python data types offer broad versatility for general programming:</p>
+<ul>
+<li><p>Integers (<code class="docutils literal notranslate"><span class="pre">int</span></code>): Whole numbers without size limitation</p></li>
+<li><p>Floating-point numbers (<code class="docutils literal notranslate"><span class="pre">float</span></code>): Decimal numbers</p></li>
+<li><p>Strings (<code class="docutils literal notranslate"><span class="pre">str</span></code>): Text data</p></li>
+<li><p>Booleans (<code class="docutils literal notranslate"><span class="pre">bool</span></code>): True/False values</p></li>
+<li><p>Lists, dictionaries, sets, and Complex data structures</p></li>
+</ul>
+</li>
+<li><p>NumPy data types are specialized for numerical and scientific computing:</p>
+<ul>
+<li><p>More precise control over numeric representation (int8, int16, int32, int64, etc.)</p></li>
+<li><p>Greater variety of floating-point precisions (float16, float32, float64)</p></li>
+<li><p>Memory-efficient representations of text and boolean values</p></li>
+<li><p>Specialized types for complex numbers and datetime values</p></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p><strong>Memory Management:</strong></p>
+<p><strong>Python’s approach to memory:</strong></p>
+<ul class="simple">
+<li><p>Each value comes with extra information (type information, tracking system - reference count)</p></li>
+<li><p>Python arranges values wherever it finds room in memory</p></li>
+<li><p>It’s like having sticky notes scattered across your desk - flexible but takes extra space</p></li>
+</ul>
+<p><strong>NumPy’s approach to memory:</strong></p>
+<ul class="simple">
+<li><p>Values are stored together in one organized block</p></li>
+<li><p>Each value has a fixed, predictable size</p></li>
+<li><p>It’s like having numbers written in a grid-style notebook - compact and easier to access</p></li>
+<li><p>This organization also works better with how your computer naturally processes information</p></li>
+</ul>
+<p>In bioinformatics, where we might analyze gene expression data with millions of values, NumPy’s memory efficiency becomes critical.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
+
+<span class="c1"># Create a larger dataset for more noticeable timing differences</span>
+<span class="n">size</span> <span class="o">=</span> <span class="mi">10000000</span>  <span class="c1"># 10 million elements</span>
+
+<span class="c1"># Create Python list and NumPy array</span>
+<span class="n">python_list</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">size</span>
+<span class="n">numpy_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int8</span><span class="p">)</span>
+
+<span class="c1"># Function to multiply each element by 2</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">double_python_list</span><span class="p">(</span><span class="n">my_list</span><span class="p">):</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">x</span> <span class="o">*</span> <span class="mi">2</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">my_list</span><span class="p">]</span>
+
+<span class="c1"># Timing the Python list operation</span>
+<span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+<span class="n">doubled_list</span> <span class="o">=</span> <span class="n">double_python_list</span><span class="p">(</span><span class="n">python_list</span><span class="p">)</span>
+<span class="n">python_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start_time</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Python list processing time: </span><span class="si">{</span><span class="n">python_time</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2"> seconds&quot;</span><span class="p">)</span>
+
+<span class="c1"># Timing the NumPy array operation</span>
+<span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+<span class="n">doubled_array</span> <span class="o">=</span> <span class="n">numpy_array</span> <span class="o">*</span> <span class="mi">2</span>  <span class="c1"># Element-wise multiplication</span>
+<span class="n">numpy_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start_time</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;NumPy array processing time: </span><span class="si">{</span><span class="n">numpy_time</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2"> seconds&quot;</span><span class="p">)</span>
+
+<span class="c1"># Calculate the speed improvement</span>
+<span class="n">speedup</span> <span class="o">=</span> <span class="n">python_time</span> <span class="o">/</span> <span class="n">numpy_time</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;NumPy is approximately </span><span class="si">{</span><span class="n">speedup</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">x faster&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</details>
+</div>
+<section id="type-homogeneity">
+<h3>Type Homogeneity<a class="headerlink" href="#type-homogeneity" title="Link to this heading"></a></h3>
+<div class="admonition-demo demo admonition" id="demo-0">
+<p class="admonition-title">Demo</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Python collections like lists can contain mixed types:</span>
+<span class="n">mixed_list</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;DNA&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="mf">3.14</span><span class="p">]</span>  <span class="c1"># Different types in one list</span>
+<span class="nb">print</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">mixed_list</span><span class="p">),</span> <span class="nb">type</span><span class="p">(</span><span class="n">mixed_list</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="nb">type</span><span class="p">(</span><span class="n">mixed_list</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> <span class="nb">type</span><span class="p">(</span><span class="n">mixed_list</span><span class="p">[</span><span class="mi">2</span><span class="p">]),</span> <span class="nb">type</span><span class="p">(</span><span class="n">mixed_list</span><span class="p">[</span><span class="mi">3</span><span class="p">]))</span>
+
+<span class="c1"># NumPy arrays enforce type homogeneity:</span>
+<span class="c1"># All elements converted to the same type (float64)</span>
+<span class="n">np_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mf">3.14</span><span class="p">,</span> <span class="mi">4</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">np_array</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="admonition-output solution important dropdown admonition" id="solution-0">
+<p class="admonition-title">Output</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;class &#39;list&#39;&gt; &lt;class &#39;int&#39;&gt; &lt;class &#39;str&#39;&gt; &lt;class &#39;bool&#39;&gt; &lt;class &#39;float&#39;&gt;
+float64
+</pre></div>
+</div>
+<p>This homogeneity enables:</p>
+<ul class="simple">
+<li><p>Predictable memory usage</p></li>
+<li><p>Optimized vectorized operations</p></li>
+<li><p>Simplified data processing logic</p></li>
+</ul>
+<p>For bioinformatics applications, this homogeneity helps ensure consistency when processing large datasets of gene expression values, sequence reads, or alignment scores.</p>
+</div>
+</div>
+</section>
+</section>
+<section id="key-numpy-data-types">
+<h2>Key NumPy Data Types<a class="headerlink" href="#key-numpy-data-types" title="Link to this heading"></a></h2>
+<section id="integer-types">
+<h3>Integer Types<a class="headerlink" href="#integer-types" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Stores whole numbers only, no decimals - Integer</p></li>
+</ul>
+<p><code class="docutils literal notranslate"><span class="pre">np.int32</span></code> &amp; <code class="docutils literal notranslate"><span class="pre">np.int64</span></code> (64-bit signed integer):</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">np.int32</span></code> Range: -2,147,483,648 to 2,147,483,647</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">np.int64</span></code> Range: -9,223,372,036,854,775,808 to 9,223,372,036,854,775,807</p></li>
+<li><p>Primary uses in bioinformatics:</p>
+<ul>
+<li><p>Storing chromosome positions</p></li>
+<li><p>Indexing into large sequences</p></li>
+</ul>
+</li>
+</ul>
+<div class="admonition-demo demo admonition" id="demo-1">
+<p class="admonition-title">Demo</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Storing chromosome positions for a set of genes</span>
+<span class="n">gene_positions</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">45123</span><span class="p">,</span> <span class="mi">67845</span><span class="p">,</span> <span class="mi">123456</span><span class="p">,</span> <span class="mi">789012</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int32</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">gene_positions</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;int8 range: </span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">iinfo</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">int8</span><span class="p">)</span><span class="o">.</span><span class="n">min</span><span class="si">}</span><span class="s2"> to </span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">iinfo</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">int8</span><span class="p">)</span><span class="o">.</span><span class="n">max</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;int16 range: </span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">iinfo</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">int16</span><span class="p">)</span><span class="o">.</span><span class="n">min</span><span class="si">}</span><span class="s2"> to </span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">iinfo</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">int16</span><span class="p">)</span><span class="o">.</span><span class="n">max</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+</pre></div>
+</div>
+<div class="admonition-output solution important dropdown admonition" id="solution-1">
+<p class="admonition-title">Output</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>int32
+int8 range: -128 to 127
+int16 range: -32768 to 32767
+</pre></div>
+</div>
+</div>
+</div>
+<div class="admonition-more-info instructor-note admonition" id="instructor-note-2">
+<p class="admonition-title">More info</p>
+<details>
+<summary>Additional notes: `np.uint8`</summary>
+<p><code class="docutils literal notranslate"><span class="pre">np.uint8</span></code> (8-bit unsigned integer):</p>
+<ul class="simple">
+<li><p>Uses 8 bits (1 byte) of memory for each number</p>
+<ul>
+<li><p>Extremely memory-efficient compared to default integer types (usually 32 or 64 bits)</p></li>
+<li><p>Smaller data types can lead to faster computations</p></li>
+</ul>
+</li>
+<li><p>It can only represent non-negative numbers (Unsigned)</p></li>
+<li><p>Range: 0 to 255</p></li>
+<li><p>Primary uses in bioinformatics:</p>
+<ul>
+<li><p>Compact storage for quality scores in FASTQ data</p></li>
+<li><p>Representing nucleotide bases with numeric codes</p></li>
+<li><p>Storing small count data efficiently</p></li>
+</ul>
+</li>
+</ul>
+<p>Example:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Representing DNA as numeric codes (A=1, C=2, G=3, T=4)</span>
+<span class="n">dna_sequence</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>When working with small integers, using <code class="docutils literal notranslate"><span class="pre">np.uint8</span></code> instead of <code class="docutils literal notranslate"><span class="pre">np.int64</span></code> can reduce memory usage by 8x, which becomes significant when processing millions of sequence reads.</p>
+</details>
+</div>
+</section>
+<section id="floating-point-types">
+<h3>Floating-Point Types<a class="headerlink" href="#floating-point-types" title="Link to this heading"></a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">np.float32</span></code> (Single precision); <code class="docutils literal notranslate"><span class="pre">np.float64</span></code> (double-precision float):</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">np.float32</span></code> (Single precision)</p>
+<ul>
+<li><p>32 bits of precision (~7 significant decimal digits)</p></li>
+</ul>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">np.float64</span></code> (double-precision float)</p>
+<ul>
+<li><p>64 bits of precision (~15-17 significant decimal digits)</p></li>
+</ul>
+</li>
+</ul>
+<div class="admonition-more-info instructor-note admonition" id="instructor-note-3">
+<p class="admonition-title">More info</p>
+<details>
+<summary>Additional notes: Inspect float-types</summary>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Gene expression values from RNA-seq experiment</span>
+<span class="n">expression_values</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">12.5</span><span class="p">,</span> <span class="mf">45.7</span><span class="p">,</span> <span class="mf">0.13</span><span class="p">,</span> <span class="mf">92.1</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">expression_values</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
+<span class="c1"># For floating-point types, use np.finfo()</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;float16 range: </span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">finfo</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float16</span><span class="p">)</span><span class="o">.</span><span class="n">min</span><span class="si">}</span><span class="s2"> to </span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">finfo</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float16</span><span class="p">)</span><span class="o">.</span><span class="n">max</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;float32 range: </span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">finfo</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span><span class="o">.</span><span class="n">min</span><span class="si">}</span><span class="s2"> to </span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">finfo</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span><span class="o">.</span><span class="n">max</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;float64 range: </span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">finfo</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span><span class="o">.</span><span class="n">min</span><span class="si">}</span><span class="s2"> to </span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">finfo</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span><span class="o">.</span><span class="n">max</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;longdouble range: </span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">finfo</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">longdouble</span><span class="p">)</span><span class="o">.</span><span class="n">min</span><span class="si">}</span><span class="s2"> to </span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">finfo</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">longdouble</span><span class="p">)</span><span class="o">.</span><span class="n">max</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span> <span class="c1"># Special cases requiring maximum available precision, Rarely used due to platform inconsistency</span>
+</pre></div>
+</div>
+<p>Output</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>float64
+float16 range: -65504.0 to 65504.0
+float32 range: -3.4028234663852886e+38 to 3.4028234663852886e+38
+float64 range: -1.7976931348623157e+308 to 1.7976931348623157e+308
+longdouble range: -1.7976931348623157e+308 to 1.7976931348623157e+308
+</pre></div>
+</div>
+<p>Bioinformatics often requires high precision for statistical calculations, making <code class="docutils literal notranslate"><span class="pre">float64</span></code> a common choice despite its larger memory footprint.</p>
+</details>
+<details>
+<summary>Additional notes: Primary uses in bioinformatics</summary>
+<ul class="simple">
+<li><p>Primary uses in bioinformatics:</p>
+<ul>
+<li><p>Storing p-values from statistical tests</p></li>
+<li><p>Representing gene expression values</p></li>
+<li><p>Calculating evolutionary distances</p></li>
+<li><p>Storing probabilities in models</p></li>
+</ul>
+</li>
+</ul>
+</details>
+</div>
+</section>
+<section id="boolean-type">
+<h3>Boolean Type<a class="headerlink" href="#boolean-type" title="Link to this heading"></a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">np.bool_</span></code> (Boolean type):</p>
+<ul class="simple">
+<li><p>Values: True or False</p></li>
+<li><p>Primary uses in bioinformatics:</p>
+<ul>
+<li><p>Creating masks for filtering data</p></li>
+<li><p>Representing presence/absence of features</p></li>
+<li><p>Storing binary outcomes from statistical tests</p></li>
+<li><p>Marking regions of interest in genomic data</p></li>
+</ul>
+</li>
+</ul>
+<p>Boolean arrays in NumPy are extremely useful for data filtering and are more memory-efficient and faster than equivalent Python list comprehensions.</p>
+</section>
+<section id="string-types">
+<h3>String Types<a class="headerlink" href="#string-types" title="Link to this heading"></a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">&lt;U#</span></code> (Fixed-length string):</p>
+<ul class="simple">
+<li><p>Stores character data with fixed length</p></li>
+<li><p>Primary uses in bioinformatics:</p>
+<ul>
+<li><p>Storing DNA/RNA sequences</p></li>
+<li><p>Representing gene names, IDs, or annotations</p></li>
+<li><p>Storing taxonomic information</p></li>
+</ul>
+</li>
+</ul>
+<div class="admonition-demo demo admonition" id="demo-2">
+<p class="admonition-title">Demo</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Array of gene IDs</span>
+<span class="n">gene_ids</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="s1">&#39;BRCA1&#39;</span><span class="p">,</span> <span class="s1">&#39;TP53&#39;</span><span class="p">,</span> <span class="s1">&#39;EGFR&#39;</span><span class="p">,</span> <span class="s1">&#39;KRAS&#39;</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">gene_ids</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
+
+<span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="s2">&quot;1234567890&quot;</span><span class="p">,</span> <span class="s2">&quot;12345678901234567890&quot;</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
+
+<span class="c1"># Output</span>
+<span class="c1"># dtype(&#39;&lt;U20&#39;)</span>
+</pre></div>
+</div>
+<div class="admonition-output solution important dropdown admonition" id="solution-2">
+<p class="admonition-title">Output</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;U5
+&lt;U20
+</pre></div>
+</div>
+</div>
+</div>
+<p>NumPy’s string types are less flexible than Python strings but more memory-efficient when working with large collections of fixed-length identifiers.</p>
+<p>External resources - <a class="reference external" href="https://numpy.org/devdocs/user/basics.strings.html">Working with Arrays of Strings And Bytes</a></p>
+<div class="docutils">
+<p class="rubric" id="data-type-conversion-and-specification">Data Type Conversion and Specification</p>
+<p>NumPy provides several ways to specify or convert data types:</p>
+<p class="rubric" id="explicit-type-declaration">Explicit Type Declaration</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create array with specific type</span>
+<span class="n">counts</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int32</span><span class="p">)</span>
+
+<span class="c1"># Convert existing array to new type</span>
+<span class="n">float_counts</span> <span class="o">=</span> <span class="n">counts</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+</pre></div>
+</div>
+<p class="rubric" id="checking-data-types">Checking Data Types</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Check the data type of an array</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">,</span> <span class="mf">3.0</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>  <span class="c1"># Output: float64</span>
+</pre></div>
+</div>
+<p class="rubric" id="automatic-type-inference">Automatic Type Inference</p>
+<p>NumPy attempts to choose an appropriate type based on the data:</p>
+<div class="admonition-demo demo admonition" id="demo-3">
+<p class="admonition-title">Demo</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>            <span class="c1"># Creates int64 array</span>
+<span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">,</span> <span class="mf">3.0</span><span class="p">])</span>      <span class="c1"># Creates float64 array</span>
+<span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="kc">True</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">True</span><span class="p">])</span>  <span class="c1"># Creates bool array</span>
+<span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="s1">&#39;C&#39;</span><span class="p">,</span> <span class="s1">&#39;G&#39;</span><span class="p">,</span> <span class="s1">&#39;T&#39;</span><span class="p">])</span> <span class="c1"># Creates string array</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="practical-considerations-for-bioinformatics">
+<h2>Practical Considerations for Bioinformatics<a class="headerlink" href="#practical-considerations-for-bioinformatics" title="Link to this heading"></a></h2>
+<div class="admonition-more-info instructor-note admonition" id="instructor-note-4">
+<p class="admonition-title">More info</p>
+<details>
+<summary>Additional notes: Memory Optimization</summary>
+<p><strong>Memory Optimization:</strong></p>
+<p>For large genomic datasets, memory usage is critical:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Comparison of memory usage for different types</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+<span class="c1"># Create arrays with different types</span>
+<span class="n">int64_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="mi">1000000</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">)</span>
+<span class="n">int8_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="mi">1000000</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int8</span><span class="p">)</span>
+
+<span class="c1"># Check memory usage</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;int64 array: </span><span class="si">{</span><span class="n">int64_array</span><span class="o">.</span><span class="n">nbytes</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="p">(</span><span class="mi">1024</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">1024</span><span class="p">)</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> MB&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;int8 array: </span><span class="si">{</span><span class="n">int8_array</span><span class="o">.</span><span class="n">nbytes</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="p">(</span><span class="mi">1024</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">1024</span><span class="p">)</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> MB&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The int8 array uses 1/8th the memory of the int64 array, which can make the difference between an analysis running in memory or needing extra resources.</p>
+</details>
+<details>
+<summary>Additional notes: Performance Considerations</summary>
+<p><strong>Performance Considerations:</strong></p>
+<p>Data types affect computation speed:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Summing integers vs floats</span>
+<span class="n">int_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">10000000</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int32</span><span class="p">)</span>
+<span class="n">float_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">10000000</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+
+<span class="o">%</span><span class="n">time</span> <span class="n">int_sum</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">int_array</span><span class="p">)</span>
+<span class="o">%</span><span class="n">time</span> <span class="n">float_sum</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">float_array</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Integer operations are generally faster than floating-point operations, which can be important when processing whole-genome data.</p>
+<p><strong>Type Compatibility in Bioinformatics Pipelines:</strong></p>
+<p>Different bioinformatics tools may expect specific data types:</p>
+<ul class="simple">
+<li><p>Visualization libraries may require float64 values</p></li>
+<li><p>Machine learning models may work best with specific types</p></li>
+<li><p>File formats may impose type constraints</p></li>
+</ul>
+<p>Being aware of these requirements helps create more robust analysis pipelines.</p>
+</div>
+</details>
+</section>
+<section id="key-takeaways">
+<h2>Key Takeaways<a class="headerlink" href="#key-takeaways" title="Link to this heading"></a></h2>
+<div class="admonition-keypoints keypoints admonition" id="keypoints-0">
+<p class="admonition-title">Keypoints</p>
+<p>NumPy’s specialized data types provide significant advantages for bioinformatics applications:</p>
+<ol class="arabic simple">
+<li><p>Efficiency - Both in terms of memory usage and computational performance</p></li>
+<li><p>Precision - Control over numeric representation ensures accurate calculations</p></li>
+<li><p>Compatibility - Designed to work well with other scientific computing libraries</p></li>
+<li><p>Consistency - Type homogeneity helps prevent errors in large datasets</p></li>
+</ol>
+<p>By choosing appropriate data types, bioinformaticians can:</p>
+<ul class="simple">
+<li><p>Process larger datasets in memory</p></li>
+<li><p>Run analyses faster</p></li>
+<li><p>Ensure computational accuracy</p></li>
+<li><p>Build more robust analysis pipelines</p></li>
+</ul>
+<p>Understanding the distinctions between Python’s general-purpose types and NumPy’s specialized numeric types is essential for effective scientific programming in bioinformatics.</p>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../1.numpy_intro/" class="btn btn-neutral float-left" title="Introduction to NumPy" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../3.Indexing_and_Slicing/" class="btn btn-neutral float-right" title="Array Indexing and Slicing" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025 Norwegian Ai Cloud.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

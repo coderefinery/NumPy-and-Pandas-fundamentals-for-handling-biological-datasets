@@ -1,0 +1,801 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hands-on: RNA Expression Analysis - alternative method &mdash; NumPy and Pandas for biological data handling  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+      <link rel="stylesheet" type="text/css" href="../_static/sphinx_lesson.css?v=e9df6548" />
+      <link rel="stylesheet" type="text/css" href="../_static/term_role_formatting.css?v=4194e21c" />
+      <link rel="stylesheet" type="text/css" href="../_static/sphinx_rtd_theme_ext_color_contrast.css?v=8e8ea19f" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=187304be"></script>
+      <script src="../_static/doctools.js?v=9a2dae69"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../_static/copybutton.js?v=35a8b989"></script>
+      <script src="../_static/minipres.js?v=a0d29692"></script>
+      <script>let toggleHintShow = 'Click to show';</script>
+      <script>let toggleHintHide = 'Click to hide';</script>
+      <script>let toggleOpenOnPrint = 'true';</script>
+      <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+      <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+      <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+      <script type="module" src="https://cdn.jsdelivr.net/npm/mermaid@11.2.0/dist/mermaid.esm.min.mjs"></script>
+      <script type="module" src="https://cdn.jsdelivr.net/npm/@mermaid-js/layout-elk@0.1.4/dist/mermaid-layout-elk.esm.min.mjs"></script>
+      <script type="module">import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11.2.0/dist/mermaid.esm.min.mjs";import elkLayouts from "https://cdn.jsdelivr.net/npm/@mermaid-js/layout-elk@0.1.4/dist/mermaid-layout-elk.esm.min.mjs";mermaid.registerLayoutLoaders(elkLayouts);mermaid.initialize({startOnLoad:false});</script>
+      <script src="https://cdn.jsdelivr.net/npm/d3@7.9.0/dist/d3.min.js"></script>
+      <script type="module">
+import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11.2.0/dist/mermaid.esm.min.mjs";
+window.addEventListener("load", () => mermaid.run());
+</script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex/" />
+    <link rel="search" title="Search" href="../search/" />
+    <link rel="next" title="Lesson plan" href="../7.Pandas_lesson plan/" />
+    <link rel="prev" title="Vectorized Operations in NumPy: Beyond Python Loops" href="../6.Vectorized_Operations_in_NumPy/" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../" class="icon icon-home">
+            NumPy and Pandas for biological data handling
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search/" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Numpy for handling biological datasets</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../0.Numpy_for_bioinformatics/">Lesson plan</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1.numpy_intro/">Introduction to NumPy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../2.NumPy_Data_Types/">NumPy Data Types</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3.Indexing_and_Slicing/">Array Indexing and Slicing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../4.Advance_indexing_filtering/">NumPy Boolean Masking and Filtering</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../5.Essential_array_operations/">Essential Array Operations with NumPy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../6.Vectorized_Operations_in_NumPy/">Vectorized Operations in NumPy: Beyond Python Loops</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Hands-on: RNA Expression Analysis - alternative method</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#objective">Objective</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#dataset-description">Dataset description</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#steps">Steps</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#step-1-loading-and-inspecting-data">Step 1: Loading and inspecting data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#step-2-sample-identification">Step 2: Sample Identification</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#step-3-data-preprocessing">Step 3: Data Preprocessing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#step-4-statistical-analysis">Step 4: Statistical Analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#step5-rank-genes-according-to-the-z-score-ratio">Step5: Rank genes according to the Z score ratio:</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Pandas for handling biological datasets</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../7.Pandas_lesson plan/">Lesson plan</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8.Introduction_to_pandas/">Introduction to Pandas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../9.Pandas_data_import_export/">Data Import and Export in Pandas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../10.DataFrame_Manipulation/">DataFrame Manipulation &amp; Sorting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../11.Pandas_indexing_slicing/">Indexing, Selection &amp; Slicing in Pandas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../14.Pandas_summary_stats/">Summary Statistics &amp; Aggregations in Pandas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../15.Hands-on_expression_count_analysis/">Hands-on: RNA Expression Analysis - alternative method</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../12.Handling_Missing_Data/">Bonus Lesson 1: Handling Missing Data in Pandas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../13.Merging_DataFrames/">Bonus Lesson 2: Merging DataFrames in Pandas</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../">NumPy and Pandas for biological data handling</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Hands-on: RNA Expression Analysis - alternative method</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/coderefinery/content/blob/main/content/6.1.Numpy_hands_on.ipynb" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="hands-on-rna-expression-analysis-alternative-method">
+<h1>Hands-on: RNA Expression Analysis - alternative method<a class="headerlink" href="#hands-on-rna-expression-analysis-alternative-method" title="Link to this heading"></a></h1>
+<section id="objective">
+<h2>Objective<a class="headerlink" href="#objective" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>Examine differential expression of immune-related genes between patient groups <a class="reference external" href="https://pubmed.ncbi.nlm.nih.gov/30393759/">previously classified as immunologically strong (‘istrong’) and immunologically weak (‘iweak’)</a></p></li>
+<li><p>Apply an alternative analytical approach using Z-ratio methodology to complement standard differential expression tools like DESeq</p></li>
+<li><p>Ranks immune-related genes based on their relative expression differences between the patient groups</p></li>
+</ul>
+</section>
+<section id="dataset-description">
+<h2>Dataset description<a class="headerlink" href="#dataset-description" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">test_data/Sample_group_info.csv</span></code></p>
+<ul>
+<li><p>Patients were divided into <code class="docutils literal notranslate"><span class="pre">istrong</span></code> (immunity-strong) and <code class="docutils literal notranslate"><span class="pre">iweak</span></code> (immunity-weak) groups based on their Immunity score</p></li>
+<li><p>The Immunity score was calculated by averaging the gene expression values of the 17 identified immune-genes</p></li>
+</ul>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">test_data/count_matrix.csv</span></code>: Gene expression raw counts</p></li>
+</ul>
+</section>
+<section id="steps">
+<h2>Steps<a class="headerlink" href="#steps" title="Link to this heading"></a></h2>
+<ol class="arabic simple">
+<li><p>Data Loading and visualization</p>
+<ol class="arabic simple">
+<li><p>Load sample group information (<code class="docutils literal notranslate"><span class="pre">iweak</span></code> vs <code class="docutils literal notranslate"><span class="pre">istrong</span></code>)</p></li>
+<li><p>Load gene expression count matrix</p></li>
+<li><p>Examine array information</p></li>
+</ol>
+</li>
+<li><p>Sample Identification</p>
+<ol class="arabic simple">
+<li><p>Filter samples by group (<code class="docutils literal notranslate"><span class="pre">iweak</span></code>/<code class="docutils literal notranslate"><span class="pre">istrong</span></code>)</p></li>
+<li><p>Match count matrix columns with sample IDs</p></li>
+</ol>
+</li>
+<li><p>Data Preprocessing</p>
+<ol class="arabic simple">
+<li><p>Convert count matrix to numeric values</p></li>
+<li><p>Apply log2 transformation: log2(counts + 1)</p></li>
+</ol>
+</li>
+<li><p>Statistical Analysis</p>
+<ol class="arabic simple">
+<li><p>Calculate mean and std for each gene within each group</p></li>
+<li><p>Compute Z-scores within each sample group</p></li>
+<li><p>Calculate Z-score differences between groups</p></li>
+<li><p>Compute standard deviation of all differences</p></li>
+</ol>
+</li>
+<li><p>Ranking Genes</p>
+<ol class="arabic simple">
+<li><p>Calculate Z-ratio: difference / std_difference</p></li>
+<li><p>Rank genes by Z-ratio (highest to lowest)</p></li>
+</ol>
+</li>
+</ol>
+<p><em><strong>Workflow:</strong></em></p>
+<pre  class="mermaid">
+        flowchart TD
+    A[Load Sample Group Info] --&gt; B{Filter by Group}
+    B --&gt;|iweak| C[Identify iweak samples]
+    B --&gt;|istrong| D[Identify istrong samples]
+    
+    E[Load Count Matrix] --&gt; F[Match columns with samples]
+    
+    F --&gt; G[Convert to numeric]
+    G --&gt; H[Log2 transformation]
+    
+    C --&gt; F
+    D --&gt; F
+    
+    H --&gt; I1[Calculate iweak mean &amp; std]
+    H --&gt; I2[Calculate istrong mean &amp; std]
+    
+    I1 --&gt; J1[Compute Z-scores for iweak]
+    I2 --&gt; J2[Compute Z-scores for istrong]
+    
+    J1 --&gt; K[Calculate Z-score difference]
+    J2 --&gt; K
+    
+    K --&gt; L[Calculate standard deviation]
+    
+    L --&gt; M[Compute Z-ratio]
+    
+    M --&gt; N[Rank genes by Z-ratio]
+    
+    classDef dataNode fill:#f9f9f9,stroke:#aaa,stroke-width:2px;
+    classDef processNode fill:#e1f5fe,stroke:#01579b,stroke-width:2px;
+    classDef resultNode fill:#e8f5e9,stroke:#2e7d32,stroke-width:2px;
+    
+    class A,E dataNode;
+    class B,C,D,F,G,H,I1,I2,J1,J2,K,L,M processNode;
+    class N resultNode;
+    </pre></section>
+<section id="step-1-loading-and-inspecting-data">
+<h2>Step 1: Loading and inspecting data<a class="headerlink" href="#step-1-loading-and-inspecting-data" title="Link to this heading"></a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">urllib.request</span><span class="w"> </span><span class="kn">import</span> <span class="n">urlopen</span>
+
+<span class="c1"># Read the CSV file into a numpy array</span>
+<span class="c1">## CSV file contains sample group information</span>
+<span class="n">sample_group_info_url</span><span class="o">=</span> <span class="s2">&quot;https://coderefinery.github.io/intermediate-python-ml/_downloads/b458a48eed87eb03931a8ce6efcdd351/Sample_group_info.csv&quot;</span>
+
+<span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">genfromtxt</span><span class="p">(</span><span class="n">urlopen</span><span class="p">(</span><span class="n">sample_group_info_url</span><span class="p">),</span> <span class="n">delimiter</span><span class="o">=</span><span class="s1">&#39;,&#39;</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;str&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Print the numpy array information</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">print_array_info</span><span class="p">(</span><span class="n">array</span><span class="p">):</span>
+    <span class="c1"># Get the shape of the array</span>
+    <span class="n">shape</span> <span class="o">=</span> <span class="n">array</span><span class="o">.</span><span class="n">shape</span>
+
+    <span class="c1"># Get the number of dimensions of the array</span>
+    <span class="n">ndim</span> <span class="o">=</span> <span class="n">array</span><span class="o">.</span><span class="n">ndim</span>
+
+    <span class="c1"># Get the data type of the array</span>
+    <span class="n">dtype</span> <span class="o">=</span> <span class="n">array</span><span class="o">.</span><span class="n">dtype</span>
+
+    <span class="c1"># Get the number of elements in the array</span>
+    <span class="n">size</span> <span class="o">=</span> <span class="n">array</span><span class="o">.</span><span class="n">size</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Shape: </span><span class="si">{</span><span class="n">shape</span><span class="si">}</span><span class="s2"> </span><span class="se">\n</span><span class="s2">Number of dimensions: </span><span class="si">{</span><span class="n">ndim</span><span class="si">}</span><span class="s2"> </span><span class="se">\n</span><span class="s2">Data type: </span><span class="si">{</span><span class="n">dtype</span><span class="si">}</span><span class="s2"> </span><span class="se">\n</span><span class="s2">Size: </span><span class="si">{</span><span class="n">size</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">print_array_info</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Shape: (303, 2) 
+Number of dimensions: 2 
+Data type: &lt;U12 
+Size: 606
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Read the CSV file into a numpy array with string dtype</span>
+<span class="c1">## CSV file contains RNA count matrix</span>
+
+<span class="n">count_matrix_url</span> <span class="o">=</span> <span class="s2">&quot;https://coderefinery.github.io/intermediate-python-ml/_downloads/ab7de98031b77441be14a9d7ba21466c/count_matrix.csv&quot;</span>
+
+<span class="n">count_matrix</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">genfromtxt</span><span class="p">(</span><span class="n">urlopen</span><span class="p">(</span><span class="n">count_matrix_url</span><span class="p">),</span> <span class="n">delimiter</span><span class="o">=</span><span class="s1">&#39;,&#39;</span><span class="p">,</span>
+                     <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;str&#39;</span><span class="p">)</span>
+<span class="n">print_array_info</span><span class="p">(</span><span class="n">count_matrix</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Shape: (81, 483) 
+Number of dimensions: 2 
+Data type: &lt;U18 
+Size: 39123
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Remove sample names from the count matrix (cm) - Delete the first row</span>
+<span class="c1">## Convert the cm to a float32 array</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">count_matrix</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">5</span><span class="p">,</span> <span class="mi">0</span><span class="p">:</span><span class="mi">5</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;___&quot;</span><span class="p">)</span>
+<span class="n">cm</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">count_matrix</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s2">&quot;float32&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">cm</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">5</span><span class="p">,</span> <span class="mi">0</span><span class="p">:</span><span class="mi">5</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[[&#39;SH_TS_BC_C1&#39; &#39;SH_TS_BC_C11&#39; &#39;SH_TS_BC_C15&#39; &#39;SH_TS_BC_C3&#39; &#39;SH_TS_BC01&#39;]
+ [&#39;25&#39; &#39;559&#39; &#39;231&#39; &#39;44&#39; &#39;23&#39;]
+ [&#39;173&#39; &#39;2475&#39; &#39;886&#39; &#39;320&#39; &#39;6&#39;]
+ [&#39;114&#39; &#39;8806&#39; &#39;2781&#39; &#39;537&#39; &#39;47&#39;]
+ [&#39;626&#39; &#39;7492&#39; &#39;2829&#39; &#39;564&#39; &#39;14&#39;]]
+___
+[[2.500e+01 5.590e+02 2.310e+02 4.400e+01 2.300e+01]
+ [1.730e+02 2.475e+03 8.860e+02 3.200e+02 6.000e+00]
+ [1.140e+02 8.806e+03 2.781e+03 5.370e+02 4.700e+01]
+ [6.260e+02 7.492e+03 2.829e+03 5.640e+02 1.400e+01]
+ [3.170e+02 5.949e+03 2.357e+03 2.750e+02 2.600e+01]]
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="step-2-sample-identification">
+<h2>Step 2: Sample Identification<a class="headerlink" href="#step-2-sample-identification" title="Link to this heading"></a></h2>
+<ol class="arabic simple">
+<li><p>Filter samples by group (iweak/istrong)</p></li>
+<li><p>Match count matrix columns with sample IDs</p></li>
+</ol>
+<p><img alt="alt text" src="../_images/image-12.png" /></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Print the first 5 rows and columns of the data</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">data</span><span class="p">[:</span><span class="mi">5</span><span class="p">,</span> <span class="p">:</span><span class="mi">5</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[[&#39;SH_TS_BC111&#39; &#39;iweak&#39;]
+ [&#39;SH_TS_BC112&#39; &#39;iweak&#39;]
+ [&#39;SH_TS_BC113&#39; &#39;iweak&#39;]
+ [&#39;SH_TS_BC119&#39; &#39;istrong&#39;]
+ [&#39;SH_TS_BC133&#39; &#39;iweak&#39;]]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Access indices of the array where the second column is &#39;iweak&#39;</span>
+<span class="n">iweak_index</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">data</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;iweak&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">iweak_index</span><span class="p">)</span>
+<span class="n">print_array_info</span><span class="p">(</span><span class="n">iweak_index</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([  0,   1,   2,   4,   5,   6,   7,   8,   9,  12,  14,  15,  16,
+        17,  18,  21,  24,  25,  27,  31,  33,  34,  35,  38,  39,  41,
+        43,  45,  47,  49,  50,  51,  53,  54,  55,  56,  59,  60,  61,
+        63,  64,  65,  67,  69,  71,  72,  73,  74,  75,  78,  80,  81,
+        84,  86,  92,  93,  94,  97, 102, 106, 108, 111, 112, 114, 122,
+       123, 126, 131, 132, 133, 139, 142, 145, 146, 148, 149, 150, 151,
+       160, 161, 163, 164, 166, 168, 170, 171, 173, 176, 177, 180, 186,
+       188, 192, 195, 196, 197, 200, 203, 206, 207, 212, 214, 215, 216,
+       217, 219, 223, 225, 226, 227, 228, 230, 235, 244, 248, 249, 252,
+       256, 258, 260, 262, 263, 265, 266, 269, 270, 271, 275, 276, 278,
+       279, 280, 282, 283, 285, 286, 287, 288, 289, 291, 292, 293, 294,
+       295, 296, 298, 299, 300, 302]),)
+Shape: (149,) 
+Number of dimensions: 1 
+Data type: int64 
+Size: 149
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Access indices of the array where the second column is &#39;iweak&#39;</span>
+<span class="n">iweak_index</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">data</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;iweak&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Index</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">iweak_index</span><span class="p">[:</span><span class="mi">5</span><span class="p">],</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Data</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">data</span><span class="p">[</span><span class="n">iweak_index</span><span class="p">][:</span><span class="mi">5</span><span class="p">,])</span>
+<span class="n">print_array_info</span><span class="p">(</span><span class="n">iweak_index</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Index
+ [0 1 2 4 5] 
+Data
+ [[&#39;SH_TS_BC111&#39; &#39;iweak&#39;]
+ [&#39;SH_TS_BC112&#39; &#39;iweak&#39;]
+ [&#39;SH_TS_BC113&#39; &#39;iweak&#39;]
+ [&#39;SH_TS_BC133&#39; &#39;iweak&#39;]
+ [&#39;SH_TS_BC134&#39; &#39;iweak&#39;]]
+Shape: (149,) 
+Number of dimensions: 1 
+Data type: int64 
+Size: 149
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># View the first column of the count matrix where the sample group is &#39;iweak&#39;</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">count_matrix</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">5</span><span class="p">,</span> <span class="mi">0</span><span class="p">:</span><span class="mi">5</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[[&#39;SH_TS_BC_C1&#39; &#39;SH_TS_BC_C11&#39; &#39;SH_TS_BC_C15&#39; &#39;SH_TS_BC_C3&#39; &#39;SH_TS_BC01&#39;]
+ [&#39;25&#39; &#39;559&#39; &#39;231&#39; &#39;44&#39; &#39;23&#39;]
+ [&#39;173&#39; &#39;2475&#39; &#39;886&#39; &#39;320&#39; &#39;6&#39;]
+ [&#39;114&#39; &#39;8806&#39; &#39;2781&#39; &#39;537&#39; &#39;47&#39;]
+ [&#39;626&#39; &#39;7492&#39; &#39;2829&#39; &#39;564&#39; &#39;14&#39;]]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create a boolean mask to find if the columns in the count matrix where the sample group is &#39;iweak&#39;</span>
+<span class="n">cm_iweak_mask</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">count_matrix</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">:],</span> <span class="n">data</span><span class="p">[</span><span class="n">iweak_index</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">cm_iweak_mask</span><span class="p">[:</span><span class="mi">30</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[False False False False False False False False False False False False
+ False False False False False False False False False False False False
+ False  True  True  True False False]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Find the indices of the columns in the count matrix where the sample group is &#39;iweak&#39;</span>
+<span class="n">cm_weak_cols</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">cm_iweak_mask</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">cm_weak_cols</span><span class="p">)</span>
+<span class="n">print_array_info</span><span class="p">(</span><span class="n">cm_weak_cols</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[ 25  26  27  36  37  38  40  41  42  46  48  49  51  52  53  56  64  65
+  67  71  73  74  75  79  80  83  85  88  91  93  94  95  97  98  99 100
+ 103 104 105 108 109 110 112 114 116 117 118 119 120 124 126 128 131 133]
+Shape: (54,) 
+Number of dimensions: 1 
+Data type: int64 
+Size: 54
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Access indices of the array where the second column is &#39;istrong&#39;</span>
+<span class="c1">## Assign the indices to a istrong_index (not the tuple returned by np.where)</span>
+<span class="n">istrong_index</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">data</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;istrong&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">istrong_index</span><span class="p">)</span>
+<span class="n">print_array_info</span><span class="p">(</span><span class="n">istrong_index</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[  3  10  11  13  19  20  22  23  26  28  29  30  32  36  37  40  42  44
+  46  48  52  57  58  62  66  68  70  76  77  79  82  83  85  87  88  89
+  90  91  95  96  98  99 100 101 103 104 105 107 109 110 113 115 116 117
+ 118 119 120 121 124 125 127 128 129 130 134 135 136 137 138 140 141 143
+ 144 147 152 153 154 155 156 157 158 159 162 165 167 169 172 174 175 178
+ 179 181 182 183 184 185 187 189 190 191 193 194 198 199 201 202 204 205
+ 208 209 210 211 213 218 220 221 222 224 229 231 232 233 234 236 237 238
+ 239 240 241 242 243 245 246 247 250 251 253 254 255 257 259 261 264 267
+ 268 272 273 274 277 281 284 290 297 301]
+Shape: (154,) 
+Number of dimensions: 1 
+Data type: int64 
+Size: 154
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Find the indices of the columns in the count matrix where the sample group is &#39;istrong&#39;</span>
+<span class="n">cm_strong_cols</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">count_matrix</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">:],</span> <span class="n">data</span><span class="p">[</span><span class="n">istrong_index</span><span class="p">,</span> <span class="mi">0</span><span class="p">]))[</span><span class="mi">0</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">cm_strong_cols</span><span class="p">)</span>
+<span class="n">print_array_info</span><span class="p">(</span><span class="n">cm_strong_cols</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[ 33  44  45  47  54  55  58  63  66  68  69  70  72  76  78  81  84  86
+  89  92  96 101 102 107 111 113 115 121 122 125 129 130 132 134 136 137
+ 138]
+Shape: (37,) 
+Number of dimensions: 1 
+Data type: int64 
+Size: 37
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">count_matrix</span><span class="o">.</span><span class="n">shape</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(81, 483)
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="step-3-data-preprocessing">
+<h2>Step 3: Data Preprocessing<a class="headerlink" href="#step-3-data-preprocessing" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>Convert count matrix to numeric values</p></li>
+<li><p>Apply log2 transformation: log2(counts + 1)</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Remove sample names from the count matrix (cm) - Delete the first row</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">count_matrix</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">5</span><span class="p">,</span> <span class="mi">0</span><span class="p">:</span><span class="mi">5</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;___&quot;</span><span class="p">)</span>
+<span class="c1">## Convert the cm to a float32 array</span>
+
+<span class="n">cm</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">count_matrix</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s2">&quot;float32&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">cm</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">5</span><span class="p">,</span> <span class="mi">0</span><span class="p">:</span><span class="mi">5</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[[&#39;SH_TS_BC_C1&#39; &#39;SH_TS_BC_C11&#39; &#39;SH_TS_BC_C15&#39; &#39;SH_TS_BC_C3&#39; &#39;SH_TS_BC01&#39;]
+ [&#39;25&#39; &#39;559&#39; &#39;231&#39; &#39;44&#39; &#39;23&#39;]
+ [&#39;173&#39; &#39;2475&#39; &#39;886&#39; &#39;320&#39; &#39;6&#39;]
+ [&#39;114&#39; &#39;8806&#39; &#39;2781&#39; &#39;537&#39; &#39;47&#39;]
+ [&#39;626&#39; &#39;7492&#39; &#39;2829&#39; &#39;564&#39; &#39;14&#39;]]
+___
+[[2.500e+01 5.590e+02 2.310e+02 4.400e+01 2.300e+01]
+ [1.730e+02 2.475e+03 8.860e+02 3.200e+02 6.000e+00]
+ [1.140e+02 8.806e+03 2.781e+03 5.370e+02 4.700e+01]
+ [6.260e+02 7.492e+03 2.829e+03 5.640e+02 1.400e+01]
+ [3.170e+02 5.949e+03 2.357e+03 2.750e+02 2.600e+01]]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Convert cm to log scale</span>
+<span class="n">cm</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log2</span><span class="p">(</span><span class="n">cm</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">cm</span><span class="p">)</span>
+<span class="n">print_array_info</span><span class="p">(</span><span class="n">cm</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[[ 4.70044    9.129283   7.857981  ...  0.         6.5999126  7.936638 ]
+ [ 7.4429436 11.273795   9.79279   ...  6.794416   9.865733  11.2842455]
+ [ 6.84549   13.104435  11.441907  ...  9.187352  10.403012  11.279611 ]
+ ...
+ [10.675957  13.7911625 12.428099  ... 10.456354  11.276706  12.22581  ]
+ [ 4.857981   8.169925   7.491853  ...  8.948367   4.5849624  8.204571 ]
+ [ 9.432542  12.378024  10.899357  ... 10.82893   13.397273  14.26415  ]]
+Shape: (80, 483) 
+Number of dimensions: 2 
+Data type: float32 
+Size: 38640
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Calculate mean and STD of each gene in iweak samples</span>
+<span class="n">iweak_mean</span> <span class="o">=</span> <span class="n">cm</span><span class="p">[:,</span> <span class="n">cm_weak_cols</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>    <span class="c1">## Mean of iweak samples</span>
+<span class="n">iweak_std</span> <span class="o">=</span> <span class="n">cm</span><span class="p">[:,</span> <span class="n">cm_weak_cols</span><span class="p">]</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>      <span class="c1">## STD of iweak samples</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;iweak_mean&quot;</span><span class="p">,</span> <span class="n">iweak_mean</span><span class="p">[:</span><span class="mi">5</span><span class="p">],</span> <span class="n">iweak_mean</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;iweak_std&quot;</span><span class="p">,</span> <span class="n">iweak_std</span><span class="p">[:</span><span class="mi">5</span><span class="p">],</span> <span class="n">iweak_std</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>iweak_mean [7.8603177 8.870119  8.839295  9.873015  8.818066 ] (80,)
+iweak_std [1.9773906 1.5399547 2.0553062 1.1807643 2.1794095] (80,)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Calculate mean and STD of each gene in istrong samples</span>
+<span class="n">istrong_mean</span> <span class="o">=</span> <span class="n">cm</span><span class="p">[:,</span><span class="n">cm_strong_cols</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="c1">## Mean of istrong disease samples</span>
+<span class="n">istrong_std</span> <span class="o">=</span> <span class="n">cm</span><span class="p">[:,</span><span class="n">cm_strong_cols</span><span class="p">]</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>   <span class="c1">## STD of istrong samples</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;istrong_mean&quot;</span><span class="p">,</span> <span class="n">istrong_mean</span><span class="p">[:</span><span class="mi">5</span><span class="p">],</span> <span class="n">istrong_mean</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;istrong_std&quot;</span><span class="p">,</span> <span class="n">istrong_std</span><span class="p">[:</span><span class="mi">5</span><span class="p">],</span> <span class="n">istrong_std</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>istrong_mean [ 6.9949713  6.953521  10.527761   9.192108   9.029262 ] (80,)
+istrong_std [2.2878554 2.8049028 1.3030388 2.2123892 1.9921837] (80,)
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="step-4-statistical-analysis">
+<h2>Step 4: Statistical Analysis<a class="headerlink" href="#step-4-statistical-analysis" title="Link to this heading"></a></h2>
+<ol class="arabic simple">
+<li><p>Calculate mean and std for each gene within each group</p></li>
+<li><p>Compute Z-scores within each sample group</p></li>
+<li><p>Calculate Z-score differences between groups</p></li>
+<li><p>Compute standard deviation of all differences</p></li>
+</ol>
+<p><strong>Z-scores:</strong></p>
+<ul class="simple">
+<li><p>Gene expression measurements (counts) can have vastly different scales across different samples due to technical variations</p></li>
+<li><p>The Z-score transformation standardizes these measurements</p></li>
+</ul>
+<p>$$ Z_{G} = \frac{(Count_G - \mu_{Count_{group}})}{\sigma_{Count_{group}}} $$</p>
+<p>$$ Z_{G} : Z-score\ for\ a\ gene\ G$$
+$$ Count_G: Log10\ count\ of\ gene\ G\ in\ a\ given\ sample$$
+$$ \mu_{Count_{group}}: The\ overall\ average\ across\ all\ samples\ in\ the\ given\ group\ for\ each\ gene$$
+$$ \sigma_{Count_{group}}: Standard\ deviation\ all\ samples\ in\ the\ given\ group\ for\ each\ gene$$</p>
+<p><img alt="alt text" src="../_images/image-16.png" /></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Calculate Z-scores of each gene in iweak samples (vectorized)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">cm</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">iweak_mean</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">iweak_std</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+
+<span class="c1">## use .reshape(-1, 1) to convert the mean and std to column vectors</span>
+<span class="c1">## This is necessary for vectorized operations to work correctly</span>
+<span class="n">cm_iweak_z</span> <span class="o">=</span> <span class="p">(</span><span class="n">cm</span><span class="p">[:,</span> <span class="n">cm_weak_cols</span><span class="p">]</span> <span class="o">-</span> <span class="n">iweak_mean</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span> <span class="o">/</span> <span class="n">iweak_std</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="c1">## The reshape is necessary because you want to subtract/divide row-wise, but NumPy&#39;s default broadcasting for 1D arrays applies column-wise.</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;cm_iweak_z&quot;</span><span class="p">,</span> <span class="n">cm_iweak_z</span><span class="p">[:</span><span class="mi">5</span><span class="p">,</span> <span class="p">:</span><span class="mi">5</span><span class="p">])</span>
+<span class="n">print_array_info</span><span class="p">(</span><span class="n">cm_iweak_z</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(80, 483) (80,) (80,)
+cm_iweak_z [[-0.8058757  -0.7423927  -0.9294824   0.4624626  -0.95228404]
+ [-1.1998737  -2.0764856   0.16326085  0.22980079 -5.1106176 ]
+ [-4.3007193   0.31064132 -0.57465094  0.26697835 -1.5138254 ]
+ [-1.1198412  -1.3803278   0.17033552  1.1318417  -2.3681269 ]
+ [-4.04608    -0.28826228 -0.18751603  0.5879035  -1.0315684 ]]
+Shape: (80, 54) 
+Number of dimensions: 2 
+Data type: float32 
+Size: 4320
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Calculate Z-scores of each gene in istrong samples (vectorized)</span>
+<span class="n">cm_istrong_z</span> <span class="o">=</span> <span class="p">(</span><span class="n">cm</span><span class="p">[:,</span> <span class="n">cm_strong_cols</span><span class="p">]</span> <span class="o">-</span> <span class="n">istrong_mean</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span> <span class="o">/</span> <span class="n">istrong_std</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;cm_istrong_z&quot;</span><span class="p">,</span> <span class="n">cm_istrong_z</span><span class="p">[:</span><span class="mi">5</span><span class="p">,</span> <span class="p">:</span><span class="mi">5</span><span class="p">])</span>
+<span class="n">print_array_info</span><span class="p">(</span><span class="n">cm_istrong_z</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>cm_istrong_z [[ 0.2545867   0.7559668   0.47983187  1.1538492   0.3143879 ]
+ [ 0.97684896 -0.04753883  0.8586477   1.0635368   0.32466918]
+ [ 0.13716765  0.28922623  1.1129626   1.229808    0.77283007]
+ [ 0.4442336   0.6031446   0.74163324  0.75332576  0.71388024]
+ [ 0.29755822  1.1648388   1.0060126   0.3692481  -0.07359705]]
+Shape: (80, 37) 
+Number of dimensions: 2 
+Data type: float32 
+Size: 2960
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>Z-ratio = Z-score difference (per gene):</strong></p>
+<ul class="simple">
+<li><p>The Z-ratio provides a standardized measure of the difference between conditions for each gene</p></li>
+<li><p>This accounts for the overall variability in the experiment</p></li>
+<li><p>A gene showing a difference of, say, 0.5 in average Z-score</p>
+<ul>
+<li><p>might be highly significant if most genes show very little difference (small Z-score difference - SD),</p></li>
+<li><p>but not significant if many genes show large differences (large Z-score difference - SD)</p></li>
+</ul>
+</li>
+<li><p>It puts the individual gene’s change in the context of the overall experimental variation</p></li>
+</ul>
+<p>$$ Z.score_{Diff_{gene}} = \bar{Z}<em>{Gene, istring} - \bar{Z}</em>{Gene, iweak} $$</p>
+<p>$$ Z_{Ratio, Gene} = \frac{Z.score_{Diff_{gene}}}{SD_{Z.score_{Diff_{gene}}}} $$</p>
+<p><img alt="alt text" src="../_images/image-17.png" /></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">diff_z_scores</span> <span class="o">=</span> <span class="n">cm_istrong_z</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="o">-</span> <span class="n">cm_iweak_z</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">std_diff</span> <span class="o">=</span> <span class="n">diff_z_scores</span><span class="o">.</span><span class="n">std</span><span class="p">()</span>
+
+<span class="c1">### z-score ratio for each gene</span>
+<span class="c1">## Divide Z-Ratio differences by the Z-Ratio differences SD</span>
+<span class="n">z_score_ratios</span> <span class="o">=</span> <span class="n">diff_z_scores</span> <span class="o">/</span> <span class="n">std_diff</span>
+<span class="n">print_array_info</span><span class="p">(</span><span class="n">z_score_ratios</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">z_score_ratios</span><span class="p">[:</span><span class="mi">10</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Shape: (80,) 
+Number of dimensions: 1 
+Data type: float32 
+Size: 80
+[-0.43179178 -1.5044755   1.247218    0.22787355  0.64381164  0.83408666
+  0.96931595  2.2225075   2.1141531   0.49432233]
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="step5-rank-genes-according-to-the-z-score-ratio">
+<h2>Step5: Rank genes according to the Z score ratio:<a class="headerlink" href="#step5-rank-genes-according-to-the-z-score-ratio" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>Sort z_score_ratio in descending order and access indices</p></li>
+<li><p>Rank genes using indices</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gene_list</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;ACTR3B&quot;</span><span class="p">,</span> <span class="s2">&quot;ANLN&quot;</span><span class="p">,</span> <span class="s2">&quot;APOBEC3G&quot;</span><span class="p">,</span> <span class="s2">&quot;AURKA&quot;</span><span class="p">,</span> <span class="s2">&quot;BAG1&quot;</span><span class="p">,</span> <span class="s2">&quot;BCL2&quot;</span><span class="p">,</span> <span class="s2">&quot;BIRC5&quot;</span><span class="p">,</span> <span class="s2">&quot;BLVRA&quot;</span><span class="p">,</span> <span class="s2">&quot;CCL5&quot;</span><span class="p">,</span> <span class="s2">&quot;CCNB1&quot;</span><span class="p">,</span> <span class="s2">&quot;CCNE1&quot;</span><span class="p">,</span> <span class="s2">&quot;CCR2&quot;</span><span class="p">,</span> <span class="s2">&quot;CD2&quot;</span><span class="p">,</span> <span class="s2">&quot;CD27&quot;</span><span class="p">,</span> <span class="s2">&quot;CD3D&quot;</span><span class="p">,</span> <span class="s2">&quot;CD52&quot;</span><span class="p">,</span> <span class="s2">&quot;CD68&quot;</span><span class="p">,</span> <span class="s2">&quot;CDC20&quot;</span><span class="p">,</span> <span class="s2">&quot;CDC6&quot;</span><span class="p">,</span> <span class="s2">&quot;CDH3&quot;</span><span class="p">,</span> <span class="s2">&quot;CENPF&quot;</span><span class="p">,</span> <span class="s2">&quot;CEP55&quot;</span><span class="p">,</span> <span class="s2">&quot;CORO1A&quot;</span><span class="p">,</span> <span class="s2">&quot;CTSL2&quot;</span><span class="p">,</span> <span class="s2">&quot;CXCL9&quot;</span><span class="p">,</span> <span class="s2">&quot;CXXC5&quot;</span><span class="p">,</span> <span class="s2">&quot;EGFR&quot;</span><span class="p">,</span> <span class="s2">&quot;ERBB2&quot;</span><span class="p">,</span> <span class="s2">&quot;ESR1&quot;</span><span class="p">,</span> <span class="s2">&quot;EXO1&quot;</span><span class="p">,</span> <span class="s2">&quot;FGFR4&quot;</span><span class="p">,</span> <span class="s2">&quot;FOXA1&quot;</span><span class="p">,</span> <span class="s2">&quot;FOXC1&quot;</span><span class="p">,</span> <span class="s2">&quot;GAPDH&quot;</span><span class="p">,</span> <span class="s2">&quot;GPR160&quot;</span><span class="p">,</span> <span class="s2">&quot;GRB7&quot;</span><span class="p">,</span> <span class="s2">&quot;GSTM1&quot;</span><span class="p">,</span> <span class="s2">&quot;GUSB&quot;</span><span class="p">,</span> <span class="s2">&quot;GZMA&quot;</span><span class="p">,</span> <span class="s2">&quot;GZMK&quot;</span><span class="p">,</span> <span class="s2">&quot;HLA-DMA&quot;</span><span class="p">,</span> <span class="s2">&quot;IL2RG&quot;</span><span class="p">,</span> <span class="s2">&quot;KIF2C&quot;</span><span class="p">,</span> <span class="s2">&quot;KRT14&quot;</span><span class="p">,</span> <span class="s2">&quot;KRT17&quot;</span><span class="p">,</span> <span class="s2">&quot;KRT5&quot;</span><span class="p">,</span> <span class="s2">&quot;LCK&quot;</span><span class="p">,</span> <span class="s2">&quot;MAPT&quot;</span><span class="p">,</span> <span class="s2">&quot;MDM2&quot;</span><span class="p">,</span> <span class="s2">&quot;MELK&quot;</span><span class="p">,</span> <span class="s2">&quot;MIA&quot;</span><span class="p">,</span> <span class="s2">&quot;MKI67&quot;</span><span class="p">,</span> <span class="s2">&quot;MLPH&quot;</span><span class="p">,</span> <span class="s2">&quot;MMP11&quot;</span><span class="p">,</span> <span class="s2">&quot;MRPL19&quot;</span><span class="p">,</span> <span class="s2">&quot;MYBL2&quot;</span><span class="p">,</span> <span class="s2">&quot;MYC&quot;</span><span class="p">,</span> <span class="s2">&quot;NAT1&quot;</span><span class="p">,</span> <span class="s2">&quot;NDC80&quot;</span><span class="p">,</span> <span class="s2">&quot;NUF2&quot;</span><span class="p">,</span> <span class="s2">&quot;ORC6&quot;</span><span class="p">,</span> <span class="s2">&quot;PGR&quot;</span><span class="p">,</span> <span class="s2">&quot;PHGDH&quot;</span><span class="p">,</span> <span class="s2">&quot;PRKCB&quot;</span><span class="p">,</span> <span class="s2">&quot;PSMC4&quot;</span><span class="p">,</span> <span class="s2">&quot;PTPRC&quot;</span><span class="p">,</span> <span class="s2">&quot;PTTG1&quot;</span><span class="p">,</span> <span class="s2">&quot;RRM2&quot;</span><span class="p">,</span> <span class="s2">&quot;SCUBE2&quot;</span><span class="p">,</span> <span class="s2">&quot;SF3A1&quot;</span><span class="p">,</span> <span class="s2">&quot;SFRP1&quot;</span><span class="p">,</span> <span class="s2">&quot;SH2D1A&quot;</span><span class="p">,</span> <span class="s2">&quot;SLC39A6&quot;</span><span class="p">,</span> <span class="s2">&quot;TFRC&quot;</span><span class="p">,</span> <span class="s2">&quot;TMEM45B&quot;</span><span class="p">,</span> <span class="s2">&quot;TP53&quot;</span><span class="p">,</span> <span class="s2">&quot;TYMS&quot;</span><span class="p">,</span> <span class="s2">&quot;UBE2C&quot;</span><span class="p">,</span> <span class="s2">&quot;UBE2T&quot;</span><span class="p">,</span> <span class="s2">&quot;VEGFA&quot;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">### `np.argsort()` returns indices of the array that would sort in ascending order</span>
+<span class="c1">### slicing syntax [start:stop:step] with step -1 returns a reversed array</span>
+
+<span class="n">gene_ranks</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">z_score_ratios</span><span class="p">)[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Genes ranked according to Z-score ratio:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">gene_list</span><span class="p">)[</span><span class="n">gene_ranks</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Genes ranked according to Z-score ratio:
+[&#39;PSMC4&#39; &#39;FOXC1&#39; &#39;TP53&#39; &#39;BLVRA&#39; &#39;CCL5&#39; &#39;CD68&#39; &#39;PTPRC&#39; &#39;GRB7&#39; &#39;APOBEC3G&#39;
+ &#39;MRPL19&#39; &#39;CENPF&#39; &#39;BIRC5&#39; &#39;UBE2C&#39; &#39;PHGDH&#39; &#39;ERBB2&#39; &#39;TFRC&#39; &#39;BCL2&#39; &#39;GUSB&#39;
+ &#39;MDM2&#39; &#39;KRT5&#39; &#39;BAG1&#39; &#39;FOXA1&#39; &#39;CCNB1&#39; &#39;KRT17&#39; &#39;CEP55&#39; &#39;KRT14&#39; &#39;NDC80&#39;
+ &#39;AURKA&#39; &#39;CXCL9&#39; &#39;TMEM45B&#39; &#39;SLC39A6&#39; &#39;GZMK&#39; &#39;PTTG1&#39; &#39;GPR160&#39; &#39;IL2RG&#39;
+ &#39;GZMA&#39; &#39;MYC&#39; &#39;EXO1&#39; &#39;MKI67&#39; &#39;TYMS&#39; &#39;PGR&#39; &#39;SH2D1A&#39; &#39;CD27&#39; &#39;PRKCB&#39; &#39;CCR2&#39;
+ &#39;NUF2&#39; &#39;RRM2&#39; &#39;MIA&#39; &#39;MELK&#39; &#39;ESR1&#39; &#39;SF3A1&#39; &#39;UBE2T&#39; &#39;EGFR&#39; &#39;CCNE1&#39; &#39;MAPT&#39;
+ &#39;KIF2C&#39; &#39;MMP11&#39; &#39;HLA-DMA&#39; &#39;NAT1&#39; &#39;CTSL2&#39; &#39;MLPH&#39; &#39;CXXC5&#39; &#39;CD2&#39; &#39;ACTR3B&#39;
+ &#39;CORO1A&#39; &#39;SFRP1&#39; &#39;FGFR4&#39; &#39;CD3D&#39; &#39;ORC6&#39; &#39;LCK&#39; &#39;CD52&#39; &#39;CDH3&#39; &#39;GSTM1&#39;
+ &#39;VEGFA&#39; &#39;SCUBE2&#39; &#39;CDC6&#39; &#39;ANLN&#39; &#39;MYBL2&#39; &#39;CDC20&#39; &#39;GAPDH&#39;]
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../6.Vectorized_Operations_in_NumPy/" class="btn btn-neutral float-left" title="Vectorized Operations in NumPy: Beyond Python Loops" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../7.Pandas_lesson plan/" class="btn btn-neutral float-right" title="Lesson plan" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025 Norwegian Ai Cloud.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

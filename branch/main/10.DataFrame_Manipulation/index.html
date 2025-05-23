@@ -1,0 +1,1207 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DataFrame Manipulation &amp; Sorting &mdash; NumPy and Pandas for biological data handling  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+      <link rel="stylesheet" type="text/css" href="../_static/sphinx_lesson.css?v=e9df6548" />
+      <link rel="stylesheet" type="text/css" href="../_static/term_role_formatting.css?v=4194e21c" />
+      <link rel="stylesheet" type="text/css" href="../_static/sphinx_rtd_theme_ext_color_contrast.css?v=8e8ea19f" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=187304be"></script>
+      <script src="../_static/doctools.js?v=9a2dae69"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../_static/copybutton.js?v=35a8b989"></script>
+      <script src="../_static/minipres.js?v=a0d29692"></script>
+      <script>let toggleHintShow = 'Click to show';</script>
+      <script>let toggleHintHide = 'Click to hide';</script>
+      <script>let toggleOpenOnPrint = 'true';</script>
+      <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+      <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+      <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex/" />
+    <link rel="search" title="Search" href="../search/" />
+    <link rel="next" title="Indexing, Selection &amp; Slicing in Pandas" href="../11.Pandas_indexing_slicing/" />
+    <link rel="prev" title="Data Import and Export in Pandas" href="../9.Pandas_data_import_export/" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../" class="icon icon-home">
+            NumPy and Pandas for biological data handling
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search/" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Numpy for handling biological datasets</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../0.Numpy_for_bioinformatics/">Lesson plan</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1.numpy_intro/">Introduction to NumPy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../2.NumPy_Data_Types/">NumPy Data Types</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3.Indexing_and_Slicing/">Array Indexing and Slicing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../4.Advance_indexing_filtering/">NumPy Boolean Masking and Filtering</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../5.Essential_array_operations/">Essential Array Operations with NumPy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../6.Vectorized_Operations_in_NumPy/">Vectorized Operations in NumPy: Beyond Python Loops</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../6.1.Numpy_hands_on/">Hands-on: RNA Expression Analysis - alternative method</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Pandas for handling biological datasets</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../7.Pandas_lesson plan/">Lesson plan</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8.Introduction_to_pandas/">Introduction to Pandas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../9.Pandas_data_import_export/">Data Import and Export in Pandas</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">DataFrame Manipulation &amp; Sorting</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#column-and-row-selection">Column and Row Selection</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#basic-selection">Basic Selection</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#advanced-selection-with-conditions">Advanced Selection with Conditions</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#adding-and-removing-columns-rows">Adding and Removing Columns/Rows</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#adding-and-removing-columns">Adding and Removing Columns</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#adding-and-removing-rows">Adding and Removing Rows</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#dataframe-sorting">DataFrame Sorting</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#sorting-functions">Sorting functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#basic-sorting">Basic Sorting</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#key-takeaways">Key Takeaways</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../11.Pandas_indexing_slicing/">Indexing, Selection &amp; Slicing in Pandas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../14.Pandas_summary_stats/">Summary Statistics &amp; Aggregations in Pandas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../15.Hands-on_expression_count_analysis/">Hands-on: RNA Expression Analysis - alternative method</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../12.Handling_Missing_Data/">Bonus Lesson 1: Handling Missing Data in Pandas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../13.Merging_DataFrames/">Bonus Lesson 2: Merging DataFrames in Pandas</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../">NumPy and Pandas for biological data handling</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">DataFrame Manipulation &amp; Sorting</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/coderefinery/content/blob/main/content/10.DataFrame_Manipulation.md" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="dataframe-manipulation-sorting">
+<h1>DataFrame Manipulation &amp; Sorting<a class="headerlink" href="#dataframe-manipulation-sorting" title="Link to this heading"></a></h1>
+<div class="admonition-objectives objectives admonition" id="objectives-0">
+<p class="admonition-title">Objectives</p>
+<ul class="simple">
+<li><p>Demonstrate effective techniques for selecting specific rows and from DataFrames.</p></li>
+<li><p>Equip participants with skills to add and remove columns within a DataFrame.</p></li>
+<li><p>Implement sorting methods by values, by index, and perform multiple column sorting with custom orders.</p></li>
+</ul>
+</div>
+<div class="admonition-instructor-note instructor-note admonition" id="instructor-note-0">
+<p class="admonition-title">Instructor note</p>
+<ul class="simple">
+<li><p>Teaching : 15 min</p></li>
+<li><p>Demo: 25 min</p></li>
+</ul>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<ul class="simple">
+<li><p>Now that we can import data, we need to reshape and manipulate it for analysis</p></li>
+<li><p>In real-world data analysis, you’ll spend about 80% of your time cleaning and manipulating data, and only 20% on actual analysis</p></li>
+<li><p>The skills we’re covering in this session form the backbone of data wrangling in Python</p></li>
+<li><p>Think of these operations as transforming raw data into analysis-ready information</p></li>
+</ul>
+</div>
+<section id="column-and-row-selection">
+<h2>Column and Row Selection<a class="headerlink" href="#column-and-row-selection" title="Link to this heading"></a></h2>
+<p><strong>Different Ways to Select Data:</strong></p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Selection Type</p></th>
+<th class="head"><p>Purpose</p></th>
+<th class="head"><p>Example Syntax</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Single column</p></td>
+<td><p>Get one variable</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">df['column_name']</span></code> or <code class="docutils literal notranslate"><span class="pre">df.column_name</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>Multiple columns</p></td>
+<td><p>Get specific variables</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">df[['col1',</span> <span class="pre">'col2']]</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>Row by index</p></td>
+<td><p>Get specific observation</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">df.loc['index_label']</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>Row by position</p></td>
+<td><p>Get nth observation</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">df.iloc[n]</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>Row and column</p></td>
+<td><p>Get specific value(s)</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">df.loc['index',</span> <span class="pre">'column']</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>Slicing</p></td>
+<td><p>Get ranges of data</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">df.loc['idx1':'idx2',</span> <span class="pre">'col1':'col2']</span></code></p></td>
+</tr>
+</tbody>
+</table>
+<section id="basic-selection">
+<h3>Basic Selection<a class="headerlink" href="#basic-selection" title="Link to this heading"></a></h3>
+<div class="admonition-demo demo admonition" id="demo-0">
+<p class="admonition-title">Demo</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+<span class="c1"># Create a sample dataset</span>
+<span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;Name&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;Alice&#39;</span><span class="p">,</span> <span class="s1">&#39;Bob&#39;</span><span class="p">,</span> <span class="s1">&#39;Charlie&#39;</span><span class="p">,</span> <span class="s1">&#39;David&#39;</span><span class="p">,</span> <span class="s1">&#39;Eva&#39;</span><span class="p">],</span>
+    <span class="s1">&#39;Age&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">24</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">35</span><span class="p">,</span> <span class="mi">42</span><span class="p">,</span> <span class="mi">28</span><span class="p">],</span>
+    <span class="s1">&#39;City&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;New York&#39;</span><span class="p">,</span> <span class="s1">&#39;Boston&#39;</span><span class="p">,</span> <span class="s1">&#39;Chicago&#39;</span><span class="p">,</span> <span class="s1">&#39;Seattle&#39;</span><span class="p">,</span> <span class="s1">&#39;Miami&#39;</span><span class="p">],</span>
+    <span class="s1">&#39;Salary&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">65000</span><span class="p">,</span> <span class="mi">72000</span><span class="p">,</span> <span class="mi">85000</span><span class="p">,</span> <span class="mi">92000</span><span class="p">,</span> <span class="mi">70000</span><span class="p">],</span>
+    <span class="s1">&#39;Department&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;HR&#39;</span><span class="p">,</span> <span class="s1">&#39;Sales&#39;</span><span class="p">,</span> <span class="s1">&#39;Tech&#39;</span><span class="p">,</span> <span class="s1">&#39;Tech&#39;</span><span class="p">,</span> <span class="s1">&#39;Finance&#39;</span><span class="p">]</span>
+<span class="p">}</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+<span class="n">df</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;emp001&#39;</span><span class="p">,</span> <span class="s1">&#39;emp002&#39;</span><span class="p">,</span> <span class="s1">&#39;emp003&#39;</span><span class="p">,</span> <span class="s1">&#39;emp004&#39;</span><span class="p">,</span> <span class="s1">&#39;emp005&#39;</span><span class="p">]</span>  <span class="c1"># Custom index</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Original DataFrame:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+
+</pre></div>
+</div>
+</div>
+<div class="admonition-more-info instructor-note admonition" id="instructor-note-1">
+<p class="admonition-title">More info</p>
+<details>
+<summary>Additional notes: Dataframe set_index</summary>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;Name&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;Alice&#39;</span><span class="p">,</span> <span class="s1">&#39;Bob&#39;</span><span class="p">,</span> <span class="s1">&#39;Charlie&#39;</span><span class="p">,</span> <span class="s1">&#39;David&#39;</span><span class="p">,</span> <span class="s1">&#39;Eva&#39;</span><span class="p">],</span>
+    <span class="s1">&#39;Age&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">24</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">35</span><span class="p">,</span> <span class="mi">42</span><span class="p">,</span> <span class="mi">28</span><span class="p">],</span>
+    <span class="s1">&#39;City&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;New York&#39;</span><span class="p">,</span> <span class="s1">&#39;Boston&#39;</span><span class="p">,</span> <span class="s1">&#39;Chicago&#39;</span><span class="p">,</span> <span class="s1">&#39;Seattle&#39;</span><span class="p">,</span> <span class="s1">&#39;Miami&#39;</span><span class="p">],</span>
+    <span class="s1">&#39;Salary&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">65000</span><span class="p">,</span> <span class="mi">72000</span><span class="p">,</span> <span class="mi">85000</span><span class="p">,</span> <span class="mi">92000</span><span class="p">,</span> <span class="mi">70000</span><span class="p">],</span>
+    <span class="s1">&#39;Department&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;HR&#39;</span><span class="p">,</span> <span class="s1">&#39;Sales&#39;</span><span class="p">,</span> <span class="s1">&#39;Tech&#39;</span><span class="p">,</span> <span class="s1">&#39;Tech&#39;</span><span class="p">,</span> <span class="s1">&#39;Finance&#39;</span><span class="p">],</span>
+    <span class="s1">&#39;employee_id&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;emp001&#39;</span><span class="p">,</span> <span class="s1">&#39;emp002&#39;</span><span class="p">,</span> <span class="s1">&#39;emp003&#39;</span><span class="p">,</span> <span class="s1">&#39;emp004&#39;</span><span class="p">,</span> <span class="s1">&#39;emp005&#39;</span><span class="p">],</span>
+<span class="p">}</span>
+
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+<span class="n">df</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s2">&quot;employee_id&quot;</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</details>
+<div class="admonition-demo demo admonition" id="demo-1">
+<p class="admonition-title">Demo</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Single column selection - two methods</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">1. Single column as Series:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;Age&#39;</span><span class="p">])</span>  <span class="c1"># Returns a Series</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">2. Alternative syntax for columns without spaces:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">Age</span><span class="p">)</span>  <span class="c1"># Also returns a Series, but only works if column name has no spaces</span>
+
+<span class="c1"># Multiple column selection</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">3. Selecting multiple columns:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="p">[[</span><span class="s1">&#39;Name&#39;</span><span class="p">,</span> <span class="s1">&#39;Salary&#39;</span><span class="p">]])</span>  <span class="c1"># Returns a DataFrame</span>
+
+<span class="c1"># Row selection by index label using .loc</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">4. Selecting row by index label:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">&#39;emp003&#39;</span><span class="p">])</span>  <span class="c1"># Returns a Series representing the row</span>
+
+<span class="c1"># Row selection by position using .iloc</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">5. Selecting row by position (third row):&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>  <span class="c1"># Also returns a Series</span>
+
+<span class="c1"># Selecting a subset of rows</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">6. Selecting multiple rows by position:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="mi">4</span><span class="p">])</span>  <span class="c1"># Row indices 1, 2, and 3 (not including 4)</span>
+
+<span class="c1"># Selecting specific cells</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">7. Selecting specific value (cell):&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">&#39;emp002&#39;</span><span class="p">,</span> <span class="s1">&#39;Salary&#39;</span><span class="p">])</span>  <span class="c1"># Returns the value (72000)</span>
+
+<span class="c1"># Selecting a subset of rows and columns</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">8. Selecting subset of rows and columns:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">&#39;emp001&#39;</span><span class="p">:</span><span class="s1">&#39;emp003&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;Name&#39;</span><span class="p">,</span> <span class="s1">&#39;Age&#39;</span><span class="p">,</span> <span class="s1">&#39;Salary&#39;</span><span class="p">]])</span>
+<span class="c1">## df.iloc[0:3, [0,1,3]] == df.loc[&#39;emp001&#39;:&#39;emp003&#39;, [&#39;Name&#39;, &#39;Age&#39;, &#39;Salary&#39;]] </span>
+</pre></div>
+</div>
+<div class="admonition-output solution important dropdown admonition" id="solution-0">
+<p class="admonition-title">Output</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Original DataFrame:
+           Name  Age      City  Salary Department
+emp001    Alice   24  New York   65000         HR
+emp002      Bob   30    Boston   72000      Sales
+emp003  Charlie   35   Chicago   85000       Tech
+emp004    David   42   Seattle   92000       Tech
+emp005      Eva   28     Miami   70000    Finance
+
+1. Single column as Series:
+emp001    24
+emp002    30
+emp003    35
+emp004    42
+emp005    28
+Name: Age, dtype: int64
+
+2. Alternative syntax for columns without spaces:
+emp001    24
+emp002    30
+emp003    35
+emp004    42
+emp005    28
+Name: Age, dtype: int64
+
+3. Selecting multiple columns:
+           Name  Salary
+emp001    Alice   65000
+emp002      Bob   72000
+emp003  Charlie   85000
+emp004    David   92000
+emp005      Eva   70000
+
+4. Selecting row by index label:
+Name          Charlie
+Age                35
+City          Chicago
+Salary          85000
+Department       Tech
+Name: emp003, dtype: object
+
+5. Selecting row by position (third row):
+Name          Charlie
+Age                35
+City          Chicago
+Salary          85000
+Department       Tech
+Name: emp003, dtype: object
+
+6. Selecting multiple rows by position:
+           Name  Age     City  Salary Department
+emp002      Bob   30   Boston   72000      Sales
+emp003  Charlie   35  Chicago   85000       Tech
+emp004    David   42  Seattle   92000       Tech
+
+7. Selecting specific value (cell):
+72000
+
+8. Selecting subset of rows and columns:
+           Name  Age  Salary
+emp001    Alice   24   65000
+emp002      Bob   30   72000
+emp003  Charlie   35   85000
+</pre></div>
+</div>
+</div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<ul class="simple">
+<li><p>Notice that selecting a single column returns a Series, while selecting multiple columns maintains the DataFrame structure</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">.loc</span></code> accessor is used for label-based indexing, while <code class="docutils literal notranslate"><span class="pre">.iloc</span></code> is for position-based indexing</p></li>
+</ul>
+</div>
+</section>
+<section id="advanced-selection-with-conditions">
+<h3>Advanced Selection with Conditions<a class="headerlink" href="#advanced-selection-with-conditions" title="Link to this heading"></a></h3>
+<div class="admonition-demo demo admonition" id="demo-2">
+<p class="admonition-title">Demo</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Boolean selection - rows where Age &gt; 30</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">9. Boolean selection - employees over 30:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;Age&#39;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">30</span><span class="p">])</span>
+
+<span class="c1"># Multiple conditions using &amp; (and) and | (or)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">10. Multiple conditions - Tech department with salary &gt; 80000:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="p">[(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;Department&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;Tech&#39;</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;Salary&#39;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">80000</span><span class="p">)])</span>
+
+<span class="c1"># Using .query() method for cleaner syntax</span>
+<span class="c1">## .query() method allows you to use and/or</span>
+<span class="c1">## print(&quot;\n11. Using query method - same condition:&quot;)</span>
+<span class="c1">## print(df.query(&quot;Department == &#39;Tech&#39; and Salary &gt; 80000&quot;))</span>
+
+<span class="c1"># Row selection with .isin()</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">12. Using .isin() - employees in HR or Finance:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;Department&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">([</span><span class="s1">&#39;HR&#39;</span><span class="p">,</span> <span class="s1">&#39;Finance&#39;</span><span class="p">])])</span>
+</pre></div>
+</div>
+<div class="admonition-output solution important dropdown admonition" id="solution-1">
+<p class="admonition-title">Output</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>9. Boolean selection - employees over 30:
+           Name  Age     City  Salary Department
+emp003  Charlie   35  Chicago   85000       Tech
+emp004    David   42  Seattle   92000       Tech
+
+10. Multiple conditions - Tech department with salary &gt; 80000:
+           Name  Age     City  Salary Department
+emp003  Charlie   35  Chicago   85000       Tech
+emp004    David   42  Seattle   92000       Tech
+
+11. Using query method - same condition:
+           Name  Age     City  Salary Department
+emp003  Charlie   35  Chicago   85000       Tech
+emp004    David   42  Seattle   92000       Tech
+
+12. Using .isin() - employees in HR or Finance:
+         Name  Age      City  Salary Department
+emp001  Alice   24  New York   65000         HR
+emp005    Eva   28     Miami   70000    Finance
+</pre></div>
+</div>
+</div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<ul class="simple">
+<li><p>Boolean selection is incredibly powerful - it lets you filter data based on specific conditions</p></li>
+<li><p>These selection methods can be combined in powerful ways to extract exactly the data you need</p></li>
+</ul>
+</div>
+<div class="admonition-more-info instructor-note admonition" id="instructor-note-2">
+<p class="admonition-title">More info</p>
+<details>
+<summary>Additional notes: Exercise</summary>
+<p><strong>Selection Practice:</strong></p>
+<p>Use <code class="docutils literal notranslate"><span class="pre">inventory</span></code> dataframe and</p>
+<ul class="simple">
+<li><p>Select just the Product_Name and Price columns</p></li>
+<li><p>Select all products that are in stock (In_Stock is True)</p></li>
+<li><p>Select all electronics that cost less than 500</p></li>
+<li><p>Select the 2nd and 3rd products using position-based indexing</p></li>
+</ul>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create a dataset of product inventory</span>
+<span class="n">products</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;Product_ID&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;P001&#39;</span><span class="p">,</span> <span class="s1">&#39;P002&#39;</span><span class="p">,</span> <span class="s1">&#39;P003&#39;</span><span class="p">,</span> <span class="s1">&#39;P004&#39;</span><span class="p">,</span> <span class="s1">&#39;P005&#39;</span><span class="p">,</span> <span class="s1">&#39;P006&#39;</span><span class="p">],</span>
+    <span class="s1">&#39;Product_Name&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;Laptop&#39;</span><span class="p">,</span> <span class="s1">&#39;Smartphone&#39;</span><span class="p">,</span> <span class="s1">&#39;Tablet&#39;</span><span class="p">,</span> <span class="s1">&#39;Monitor&#39;</span><span class="p">,</span> <span class="s1">&#39;Keyboard&#39;</span><span class="p">,</span> <span class="s1">&#39;Mouse&#39;</span><span class="p">],</span>
+    <span class="s1">&#39;Category&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;Electronics&#39;</span><span class="p">,</span> <span class="s1">&#39;Electronics&#39;</span><span class="p">,</span> <span class="s1">&#39;Electronics&#39;</span><span class="p">,</span> 
+                 <span class="s1">&#39;Electronics&#39;</span><span class="p">,</span> <span class="s1">&#39;Accessories&#39;</span><span class="p">,</span> <span class="s1">&#39;Accessories&#39;</span><span class="p">],</span>
+    <span class="s1">&#39;Price&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1200</span><span class="p">,</span> <span class="mi">800</span><span class="p">,</span> <span class="mi">350</span><span class="p">,</span> <span class="mi">250</span><span class="p">,</span> <span class="mi">75</span><span class="p">,</span> <span class="mi">25</span><span class="p">],</span>
+    <span class="s1">&#39;In_Stock&#39;</span><span class="p">:</span> <span class="p">[</span><span class="kc">True</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">False</span><span class="p">],</span>
+    <span class="s1">&#39;Units&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">15</span><span class="p">,</span> <span class="mi">28</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">45</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+<span class="p">}</span>
+<span class="n">inventory</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">products</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Solution</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Tasks:</span>
+<span class="c1"># 1. Select just the Product_Name and Price columns</span>
+<span class="n">names_prices</span> <span class="o">=</span> <span class="n">inventory</span><span class="p">[[</span><span class="s1">&#39;Product_Name&#39;</span><span class="p">,</span> <span class="s1">&#39;Price&#39;</span><span class="p">]]</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Product names and prices:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">names_prices</span><span class="p">)</span>
+
+<span class="c1"># 2. Select all products that are in stock (In_Stock is True)</span>
+<span class="n">in_stock</span> <span class="o">=</span> <span class="n">inventory</span><span class="p">[</span><span class="n">inventory</span><span class="p">[</span><span class="s1">&#39;In_Stock&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="kc">True</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Products in stock:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">in_stock</span><span class="p">)</span>
+
+<span class="c1"># 3. Select all electronics that cost less than 500</span>
+<span class="n">cheap_electronics</span> <span class="o">=</span> <span class="n">inventory</span><span class="p">[(</span><span class="n">inventory</span><span class="p">[</span><span class="s1">&#39;Category&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;Electronics&#39;</span><span class="p">)</span> <span class="o">&amp;</span> 
+                              <span class="p">(</span><span class="n">inventory</span><span class="p">[</span><span class="s1">&#39;Price&#39;</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">500</span><span class="p">)]</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Affordable electronics:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">cheap_electronics</span><span class="p">)</span>
+
+<span class="c1"># 4. Select the 2nd and 3rd products using position-based indexing</span>
+<span class="n">second_third</span> <span class="o">=</span> <span class="n">inventory</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="mi">3</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Second and third products:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">second_third</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Understand the different ways to select data from a DataFrame, including column selection, row selection by label and position, boolean filtering, and combinations of these methods</p>
+</div>
+</details>
+</section>
+</section>
+<section id="adding-and-removing-columns-rows">
+<h2>Adding and Removing Columns/Rows<a class="headerlink" href="#adding-and-removing-columns-rows" title="Link to this heading"></a></h2>
+<p><strong>Modifying DataFrame Structure:</strong></p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Operation</p></th>
+<th class="head"><p>Method</p></th>
+<th class="head"><p>Example</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Add column</p></td>
+<td><p>Direct assignment</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">df['new_col']</span> <span class="pre">=</span> <span class="pre">values</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>Add column</p></td>
+<td><p>From existing columns</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">df['new_col']</span> <span class="pre">=</span> <span class="pre">df['col1']</span> <span class="pre">+</span> <span class="pre">df['col2']</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>Add column</p></td>
+<td><p>Using apply/lambda</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">df['new_col']</span> <span class="pre">=</span> <span class="pre">df.apply(lambda</span> <span class="pre">x:</span> <span class="pre">func(x),</span> <span class="pre">axis=1)</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>Remove column</p></td>
+<td><p>Using drop</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">df.drop('column',</span> <span class="pre">axis=1)</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>Remove row</p></td>
+<td><p>Using drop</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">df.drop('index_label')</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>Add row</p></td>
+<td><p>Using loc</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">df.loc['new_index']</span> <span class="pre">=</span> <span class="pre">values</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>Add row</p></td>
+<td><p>Using append/concat</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">pd.concat([df,</span> <span class="pre">new_row])</span></code></p></td>
+</tr>
+</tbody>
+</table>
+<section id="adding-and-removing-columns">
+<h3>Adding and Removing Columns<a class="headerlink" href="#adding-and-removing-columns" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Adding new column with</p>
+<ul>
+<li><p>a scalar value</p></li>
+<li><p>a list of values</p></li>
+<li><p>a calculated values in a pandas series</p></li>
+<li><p>a column with conditional values</p></li>
+</ul>
+</li>
+<li><p>Removing</p>
+<ul>
+<li><p>a single column</p></li>
+<li><p>multiple columns</p></li>
+<li><p>columns in-place</p></li>
+</ul>
+</li>
+</ul>
+<div class="admonition-demo demo admonition" id="demo-3">
+<p class="admonition-title">Demo</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>
+<span class="c1"># Create a sample dataset</span>
+<span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;Name&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;Alice&#39;</span><span class="p">,</span> <span class="s1">&#39;Bob&#39;</span><span class="p">,</span> <span class="s1">&#39;Charlie&#39;</span><span class="p">,</span> <span class="s1">&#39;David&#39;</span><span class="p">,</span> <span class="s1">&#39;Eva&#39;</span><span class="p">],</span>
+    <span class="s1">&#39;Age&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">24</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">35</span><span class="p">,</span> <span class="mi">42</span><span class="p">,</span> <span class="mi">28</span><span class="p">],</span>
+    <span class="s1">&#39;City&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;New York&#39;</span><span class="p">,</span> <span class="s1">&#39;Boston&#39;</span><span class="p">,</span> <span class="s1">&#39;Chicago&#39;</span><span class="p">,</span> <span class="s1">&#39;Seattle&#39;</span><span class="p">,</span> <span class="s1">&#39;Miami&#39;</span><span class="p">],</span>
+    <span class="s1">&#39;Salary&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">65000</span><span class="p">,</span> <span class="mi">72000</span><span class="p">,</span> <span class="mi">85000</span><span class="p">,</span> <span class="mi">92000</span><span class="p">,</span> <span class="mi">70000</span><span class="p">],</span>
+    <span class="s1">&#39;Department&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;HR&#39;</span><span class="p">,</span> <span class="s1">&#39;Sales&#39;</span><span class="p">,</span> <span class="s1">&#39;Tech&#39;</span><span class="p">,</span> <span class="s1">&#39;Tech&#39;</span><span class="p">,</span> <span class="s1">&#39;Finance&#39;</span><span class="p">]</span>
+<span class="p">}</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+<span class="n">df</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;emp001&#39;</span><span class="p">,</span> <span class="s1">&#39;emp002&#39;</span><span class="p">,</span> <span class="s1">&#39;emp003&#39;</span><span class="p">,</span> <span class="s1">&#39;emp004&#39;</span><span class="p">,</span> <span class="s1">&#39;emp005&#39;</span><span class="p">]</span>  <span class="c1"># Custom index</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Original DataFrame:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+
+<span class="c1"># 1. Adding a new column with scalar value</span>
+<span class="n">df</span><span class="p">[</span><span class="s1">&#39;Active&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">1. Adding &#39;Active&#39; column with same value for all rows:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+
+<span class="c1"># 2. Adding a column with a list of values</span>
+<span class="n">df</span><span class="p">[</span><span class="s1">&#39;Performance&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="mf">4.5</span><span class="p">,</span> <span class="mf">4.0</span><span class="p">,</span> <span class="mf">3.8</span><span class="p">,</span> <span class="mf">4.7</span><span class="p">,</span> <span class="mf">4.2</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">2. Adding &#39;Performance&#39; column with different values:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+
+<span class="c1"># 3. Adding a calculated column</span>
+<span class="n">df</span><span class="p">[</span><span class="s1">&#39;Bonus&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;Salary&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;Performance&#39;</span><span class="p">]</span> <span class="o">/</span> <span class="mi">100</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">3. Adding calculated &#39;Bonus&#39; column:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+
+<span class="c1"># 4. Adding a column with conditional values</span>
+<span class="n">df</span><span class="p">[</span><span class="s1">&#39;Experience&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;Age&#39;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">30</span><span class="p">,</span> <span class="s1">&#39;Senior&#39;</span><span class="p">,</span> <span class="s1">&#39;Junior&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">4. Adding conditional &#39;Experience&#39; column:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+
+<span class="c1"># 5. Removing a single column</span>
+<span class="n">df_no_city</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="s1">&#39;City&#39;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">5. Removing &#39;City&#39; column:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df_no_city</span><span class="p">)</span>
+
+<span class="c1"># 6. Removing multiple columns</span>
+<span class="n">df_minimal</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">drop</span><span class="p">([</span><span class="s1">&#39;Active&#39;</span><span class="p">,</span> <span class="s1">&#39;Performance&#39;</span><span class="p">,</span> <span class="s1">&#39;Bonus&#39;</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">6. Removing multiple columns:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df_minimal</span><span class="p">)</span>
+
+<span class="c1"># 7. Remove columns in-place</span>
+<span class="n">df</span><span class="o">.</span><span class="n">drop</span><span class="p">([</span><span class="s1">&#39;City&#39;</span><span class="p">,</span> <span class="s1">&#39;Active&#39;</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">7. Removing multiple columns (inplace=True):&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="admonition-output solution important dropdown admonition" id="solution-2">
+<p class="admonition-title">Output</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Original DataFrame:
+           Name  Age      City  Salary Department
+emp001    Alice   24  New York   65000         HR
+emp002      Bob   30    Boston   72000      Sales
+emp003  Charlie   35   Chicago   85000       Tech
+emp004    David   42   Seattle   92000       Tech
+emp005      Eva   28     Miami   70000    Finance
+
+1. Adding &#39;Active&#39; column with same value for all rows:
+           Name  Age      City  Salary Department  Active
+emp001    Alice   24  New York   65000         HR    True
+emp002      Bob   30    Boston   72000      Sales    True
+emp003  Charlie   35   Chicago   85000       Tech    True
+emp004    David   42   Seattle   92000       Tech    True
+emp005      Eva   28     Miami   70000    Finance    True
+
+2. Adding &#39;Performance&#39; column with different values:
+           Name  Age      City  Salary Department  Active  Performance
+emp001    Alice   24  New York   65000         HR    True          4.5
+emp002      Bob   30    Boston   72000      Sales    True          4.0
+emp003  Charlie   35   Chicago   85000       Tech    True          3.8
+emp004    David   42   Seattle   92000       Tech    True          4.7
+emp005      Eva   28     Miami   70000    Finance    True          4.2
+
+3. Adding calculated &#39;Bonus&#39; column:
+           Name  Age      City  Salary Department  Active  Performance   Bonus
+emp001    Alice   24  New York   65000         HR    True          4.5  2925.0
+emp002      Bob   30    Boston   72000      Sales    True          4.0  2880.0
+emp003  Charlie   35   Chicago   85000       Tech    True          3.8  3230.0
+emp004    David   42   Seattle   92000       Tech    True          4.7  4324.0
+emp005      Eva   28     Miami   70000    Finance    True          4.2  2940.0
+
+4. Adding conditional &#39;Experience&#39; column:
+           Name  Age      City  Salary Department  Active  Performance   Bonus Experience
+emp001    Alice   24  New York   65000         HR    True          4.5  2925.0     Junior
+emp002      Bob   30    Boston   72000      Sales    True          4.0  2880.0     Junior
+emp003  Charlie   35   Chicago   85000       Tech    True          3.8  3230.0     Senior
+emp004    David   42   Seattle   92000       Tech    True          4.7  4324.0     Senior
+emp005      Eva   28     Miami   70000    Finance    True          4.2  2940.0     Junior
+
+5. Removing &#39;City&#39; column:
+           Name  Age  Salary Department  Active  Performance   Bonus Experience
+emp001    Alice   24   65000         HR    True          4.5  2925.0     Junior
+emp002      Bob   30   72000      Sales    True          4.0  2880.0     Junior
+emp003  Charlie   35   85000       Tech    True          3.8  3230.0     Senior
+emp004    David   42   92000       Tech    True          4.7  4324.0     Senior
+emp005      Eva   28   70000    Finance    True          4.2  2940.0     Junior
+
+6. Removing multiple columns:
+           Name  Age      City  Salary Department Experience
+emp001    Alice   24  New York   65000         HR     Junior
+emp002      Bob   30    Boston   72000      Sales     Junior
+emp003  Charlie   35   Chicago   85000       Tech     Senior
+emp004    David   42   Seattle   92000       Tech     Senior
+emp005      Eva   28     Miami   70000    Finance     Junior
+
+7. Removing multiple columns (inplace=True):
+           Name  Age  Salary Department  Performance   Bonus
+emp001    Alice   24   65000         HR          4.5  2925.0
+emp002      Bob   30   72000      Sales          4.0  2880.0
+emp003  Charlie   35   85000       Tech          3.8  3230.0
+emp004    David   42   92000       Tech          4.7  4324.0
+emp005      Eva   28   70000    Finance          4.2  2940.0
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="adding-and-removing-rows">
+<h3>Adding and Removing Rows<a class="headerlink" href="#adding-and-removing-rows" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Removing</p>
+<ul>
+<li><p>a row by index label</p></li>
+<li><p>multiple rows</p></li>
+</ul>
+</li>
+<li><p>Adding a new row</p>
+<ul>
+<li><p>with <code class="docutils literal notranslate"><span class="pre">.loc</span></code></p></li>
+<li><p>with a Series</p></li>
+</ul>
+</li>
+</ul>
+<div class="admonition-demo demo admonition" id="demo-4">
+<p class="admonition-title">Demo</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>
+<span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;Name&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;Alice&#39;</span><span class="p">,</span> <span class="s1">&#39;Bob&#39;</span><span class="p">,</span> <span class="s1">&#39;Charlie&#39;</span><span class="p">,</span> <span class="s1">&#39;David&#39;</span><span class="p">,</span> <span class="s1">&#39;Eva&#39;</span><span class="p">],</span>
+    <span class="s1">&#39;Age&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">24</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">35</span><span class="p">,</span> <span class="mi">42</span><span class="p">,</span> <span class="mi">28</span><span class="p">],</span>
+    <span class="s1">&#39;City&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;New York&#39;</span><span class="p">,</span> <span class="s1">&#39;Boston&#39;</span><span class="p">,</span> <span class="s1">&#39;Chicago&#39;</span><span class="p">,</span> <span class="s1">&#39;Seattle&#39;</span><span class="p">,</span> <span class="s1">&#39;Miami&#39;</span><span class="p">],</span>
+    <span class="s1">&#39;Salary&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">65000</span><span class="p">,</span> <span class="mi">72000</span><span class="p">,</span> <span class="mi">85000</span><span class="p">,</span> <span class="mi">92000</span><span class="p">,</span> <span class="mi">70000</span><span class="p">],</span>
+    <span class="s1">&#39;Department&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;HR&#39;</span><span class="p">,</span> <span class="s1">&#39;Sales&#39;</span><span class="p">,</span> <span class="s1">&#39;Tech&#39;</span><span class="p">,</span> <span class="s1">&#39;Tech&#39;</span><span class="p">,</span> <span class="s1">&#39;Finance&#39;</span><span class="p">]</span>
+<span class="p">}</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+<span class="n">df</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;emp001&#39;</span><span class="p">,</span> <span class="s1">&#39;emp002&#39;</span><span class="p">,</span> <span class="s1">&#39;emp003&#39;</span><span class="p">,</span> <span class="s1">&#39;emp004&#39;</span><span class="p">,</span> <span class="s1">&#39;emp005&#39;</span><span class="p">]</span>  <span class="c1"># Custom index</span>
+
+<span class="c1"># 1. Removing a row by index label</span>
+<span class="n">df_no_bob</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="s1">&#39;emp002&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">1. DataFrame without Bob (emp002):&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df_no_bob</span><span class="p">)</span>
+
+<span class="c1"># 2. Removing multiple rows</span>
+<span class="n">df_reduced</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">drop</span><span class="p">([</span><span class="s1">&#39;emp001&#39;</span><span class="p">,</span> <span class="s1">&#39;emp005&#39;</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">2. DataFrame without emp001 and emp005:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df_reduced</span><span class="p">)</span>
+
+<span class="c1"># 3. Adding a new row with .loc</span>
+<span class="c1"># Create a copy to avoid SettingWithCopyWarning</span>
+<span class="n">df_new</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">df_new</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">&#39;emp006&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Frank&#39;</span><span class="p">,</span> <span class="mi">38</span><span class="p">,</span> <span class="s1">&#39;Dallas&#39;</span><span class="p">,</span> <span class="mi">88000</span><span class="p">,</span> <span class="s1">&#39;Sales&#39;</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">3. DataFrame with new employee:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df_new</span><span class="p">)</span>
+
+<span class="c1"># 4. Adding a row with a Series</span>
+<span class="n">new_employee</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">({</span>
+    <span class="s1">&#39;Name&#39;</span><span class="p">:</span> <span class="s1">&#39;Grace&#39;</span><span class="p">,</span> <span class="s1">&#39;Age&#39;</span><span class="p">:</span> <span class="mi">27</span><span class="p">,</span> <span class="s1">&#39;City&#39;</span><span class="p">:</span> <span class="s1">&#39;Denver&#39;</span><span class="p">,</span> <span class="s1">&#39;Salary&#39;</span><span class="p">:</span> <span class="mi">67000</span><span class="p">,</span> <span class="s1">&#39;Department&#39;</span><span class="p">:</span> <span class="s1">&#39;HR&#39;</span><span class="p">,</span>
+<span class="p">},</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;emp007&#39;</span><span class="p">)</span>
+
+<span class="n">df_newer</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">df_new</span><span class="p">,</span> <span class="n">new_employee</span><span class="o">.</span><span class="n">to_frame</span><span class="p">()</span><span class="o">.</span><span class="n">T</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">4. DataFrame with another new employee:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df_newer</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="admonition-output solution important dropdown admonition" id="solution-3">
+<p class="admonition-title">Output</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>1. DataFrame without Bob (emp002):
+           Name  Age      City  Salary Department
+emp001    Alice   24  New York   65000         HR
+emp003  Charlie   35   Chicago   85000       Tech
+emp004    David   42   Seattle   92000       Tech
+emp005      Eva   28     Miami   70000    Finance
+
+2. DataFrame without emp001 and emp005:
+           Name  Age     City  Salary Department
+emp002      Bob   30   Boston   72000      Sales
+emp003  Charlie   35  Chicago   85000       Tech
+emp004    David   42  Seattle   92000       Tech
+
+3. DataFrame with new employee:
+           Name  Age      City  Salary Department
+emp001    Alice   24  New York   65000         HR
+emp002      Bob   30    Boston   72000      Sales
+emp003  Charlie   35   Chicago   85000       Tech
+emp004    David   42   Seattle   92000       Tech
+emp005      Eva   28     Miami   70000    Finance
+emp006    Frank   38    Dallas   88000      Sales
+
+4. DataFrame with another new employee:
+           Name  Age      City  Salary Department
+emp001    Alice   24  New York   65000         HR
+emp002      Bob   30    Boston   72000      Sales
+emp003  Charlie   35   Chicago   85000       Tech
+emp004    David   42   Seattle   92000       Tech
+emp005      Eva   28     Miami   70000    Finance
+emp006    Frank   38    Dallas   88000      Sales
+emp007    Grace   27    Denver   67000         HR
+</pre></div>
+</div>
+</div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<ul class="simple">
+<li><p>Notice that we can add columns based on calculations from other columns - this is ideal for metrics and KPIs</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">drop()</span></code> function is powerful but doesn’t modify the original DataFrame unless you specify <code class="docutils literal notranslate"><span class="pre">inplace=True</span></code></p></li>
+<li><p>Adding rows is less common but useful for simulation, testing, or creating summary rows</p></li>
+<li><p>Always be careful with the <code class="docutils literal notranslate"><span class="pre">axis</span></code> parameter - <code class="docutils literal notranslate"><span class="pre">axis=0</span></code> is for rows, <code class="docutils literal notranslate"><span class="pre">axis=1</span></code> is for columns</p></li>
+</ul>
+</div>
+<div class="admonition-more-info instructor-note admonition" id="instructor-note-3">
+<p class="admonition-title">More info</p>
+<details>
+<summary>Additional notes: Additional info and exercise</summary>
+<p><strong>How Pandas Handles Series-to-DataFrame Conversions:</strong></p>
+<p>When converting a pandas Series to a DataFrame, there are several methods that produce different results</p>
+<ol class="arabic">
+<li><p>Direct Conversion: <code class="docutils literal notranslate"><span class="pre">pd.DataFrame(series)</span></code></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">new_employee</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">({</span>
+<span class="s1">&#39;Name&#39;</span><span class="p">:</span> <span class="s1">&#39;Grace&#39;</span><span class="p">,</span> <span class="s1">&#39;Age&#39;</span><span class="p">:</span> <span class="mi">27</span><span class="p">,</span> <span class="s1">&#39;City&#39;</span><span class="p">:</span> <span class="s1">&#39;Denver&#39;</span><span class="p">,</span> 
+<span class="s1">&#39;Salary&#39;</span><span class="p">:</span> <span class="mi">67000</span><span class="p">,</span> <span class="s1">&#39;Department&#39;</span><span class="p">:</span> <span class="s1">&#39;HR&#39;</span>
+<span class="p">},</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;emp007&#39;</span><span class="p">)</span>
+
+<span class="c1"># Direct conversion</span>
+<span class="n">df1</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">new_employee</span><span class="p">)</span>
+
+</pre></div>
+</div>
+<p>Output</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>              emp007
+Name          Grace
+Age              27
+City          Denver
+Salary        67000
+Department       HR
+
+* The Series values become a single column in the DataFrame
+* The Series keys become the row index of the DataFrame
+* The Series name becomes the column name in the DataFrame
+</pre></div>
+</div>
+</li>
+<li><p>Wrapped in a List: <code class="docutils literal notranslate"><span class="pre">pd.DataFrame([series])</span></code></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Wrapping in a list</span>
+<span class="n">df2</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">([</span><span class="n">new_employee</span><span class="p">])</span>
+</pre></div>
+</div>
+<p>Output</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Name  Age    City  Salary Department
+0  Grace   27  Denver   67000         HR
+
+* The Series becomes a single row in the DataFrame
+* The Series keys become the column names in the DataFrame
+* A default index (0) is created
+* The Series name is effectively ignored
+</pre></div>
+</div>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">to_frame()</span></code> Method</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># These produce identical results:</span>
+<span class="n">df1</span> <span class="o">=</span> <span class="n">new_employee</span><span class="o">.</span><span class="n">to_frame</span><span class="p">()</span>
+<span class="n">df2</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">new_employee</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Output</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>              emp007
+Name          Grace
+Age              27
+City          Denver
+Salary        67000
+Department       HR
+
+* The Series values become a single column
+* The Series index becomes the DataFrame&#39;s index
+* By default, the Series name becomes the column name
+* You can specify a different column name: `series.to_frame(&#39;new_column_name&#39;)`
+</pre></div>
+</div>
+</li>
+</ol>
+<div class="admonition-exercise exercise important admonition" id="exercise-0">
+<p class="admonition-title">Exercise</p>
+<p><strong>Adding and Removing Data:</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">products</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;Product_ID&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;P001&#39;</span><span class="p">,</span> <span class="s1">&#39;P002&#39;</span><span class="p">,</span> <span class="s1">&#39;P003&#39;</span><span class="p">,</span> <span class="s1">&#39;P004&#39;</span><span class="p">,</span> <span class="s1">&#39;P005&#39;</span><span class="p">,</span> <span class="s1">&#39;P006&#39;</span><span class="p">],</span>
+    <span class="s1">&#39;Product_Name&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;Laptop&#39;</span><span class="p">,</span> <span class="s1">&#39;Smartphone&#39;</span><span class="p">,</span> <span class="s1">&#39;Tablet&#39;</span><span class="p">,</span> <span class="s1">&#39;Monitor&#39;</span><span class="p">,</span> <span class="s1">&#39;Keyboard&#39;</span><span class="p">,</span> <span class="s1">&#39;Mouse&#39;</span><span class="p">],</span>
+    <span class="s1">&#39;Category&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;Electronics&#39;</span><span class="p">,</span> <span class="s1">&#39;Electronics&#39;</span><span class="p">,</span> <span class="s1">&#39;Electronics&#39;</span><span class="p">,</span> 
+                 <span class="s1">&#39;Electronics&#39;</span><span class="p">,</span> <span class="s1">&#39;Accessories&#39;</span><span class="p">,</span> <span class="s1">&#39;Accessories&#39;</span><span class="p">],</span>
+    <span class="s1">&#39;Price&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1200</span><span class="p">,</span> <span class="mi">800</span><span class="p">,</span> <span class="mi">350</span><span class="p">,</span> <span class="mi">250</span><span class="p">,</span> <span class="mi">75</span><span class="p">,</span> <span class="mi">25</span><span class="p">],</span>
+    <span class="s1">&#39;In_Stock&#39;</span><span class="p">:</span> <span class="p">[</span><span class="kc">True</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">False</span><span class="p">],</span>
+    <span class="s1">&#39;Units&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">15</span><span class="p">,</span> <span class="mi">28</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">45</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+<span class="p">}</span>
+<span class="n">inventory</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">products</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Use inventory dataframe and</p>
+<ul class="simple">
+<li><p>Add a ‘Value’ column that multiplies Price by Units</p></li>
+<li><p>Add a ‘Status’ column: ‘Available’ if In_Stock is True, ‘Out of Stock’ otherwise</p></li>
+<li><p>Remove the In_Stock column (now redundant with Status)</p></li>
+<li><p>Add a <code class="docutils literal notranslate"><span class="pre">new_product</span></code> row</p></li>
+</ul>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">new_product</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">({</span>
+    <span class="s1">&#39;Product_ID&#39;</span><span class="p">:</span> <span class="s1">&#39;P007&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;Product_Name&#39;</span><span class="p">:</span> <span class="s1">&#39;Headphones&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;Category&#39;</span><span class="p">:</span> <span class="s1">&#39;Accessories&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;Price&#39;</span><span class="p">:</span> <span class="mi">150</span><span class="p">,</span>
+    <span class="s1">&#39;Units&#39;</span><span class="p">:</span> <span class="mi">20</span><span class="p">,</span>
+    <span class="s1">&#39;Value&#39;</span><span class="p">:</span> <span class="mi">3000</span><span class="p">,</span>
+    <span class="s1">&#39;Status&#39;</span><span class="p">:</span> <span class="s1">&#39;Available&#39;</span>
+<span class="p">})</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Continue with the inventory DataFrame from Exercise 1</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Original inventory:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">inventory</span><span class="p">)</span>
+
+<span class="c1"># 1. Add a &#39;Value&#39; column that multiplies Price by Units</span>
+<span class="n">inventory</span><span class="p">[</span><span class="s1">&#39;Value&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">inventory</span><span class="p">[</span><span class="s1">&#39;Price&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="n">inventory</span><span class="p">[</span><span class="s1">&#39;Units&#39;</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Inventory with Value column:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">inventory</span><span class="p">)</span>
+
+<span class="c1"># 2. Add a &#39;Status&#39; column: &#39;Available&#39; if In_Stock is True, &#39;Out of Stock&#39; otherwise</span>
+<span class="n">inventory</span><span class="p">[</span><span class="s1">&#39;Status&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">inventory</span><span class="p">[</span><span class="s1">&#39;In_Stock&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">map</span><span class="p">({</span><span class="kc">True</span><span class="p">:</span> <span class="s1">&#39;Available&#39;</span><span class="p">,</span> <span class="kc">False</span><span class="p">:</span> <span class="s1">&#39;Out of Stock&#39;</span><span class="p">})</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Inventory with Status column:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">inventory</span><span class="p">)</span>
+
+<span class="c1"># 3. Remove the In_Stock column (now redundant with Status)</span>
+<span class="n">inventory_updated</span> <span class="o">=</span> <span class="n">inventory</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="s1">&#39;In_Stock&#39;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Inventory without In_Stock column:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">inventory_updated</span><span class="p">)</span>
+
+<span class="c1"># 4. Add a new product row</span>
+<span class="n">inventory_final</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">inventory_updated</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">([</span><span class="n">new_product</span><span class="p">])])</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Inventory with new product:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">inventory_final</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</details>
+</section>
+</section>
+<section id="dataframe-sorting">
+<h2>DataFrame Sorting<a class="headerlink" href="#dataframe-sorting" title="Link to this heading"></a></h2>
+<section id="sorting-functions">
+<h3>Sorting functions<a class="headerlink" href="#sorting-functions" title="Link to this heading"></a></h3>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Method</p></th>
+<th class="head"><p>Description</p></th>
+<th class="head"><p>Key Parameters</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">sort_values()</span></code></p></td>
+<td><p>Sort by column values</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">by</span></code>, <code class="docutils literal notranslate"><span class="pre">ascending</span></code>, <code class="docutils literal notranslate"><span class="pre">inplace</span></code>, <code class="docutils literal notranslate"><span class="pre">na_position</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">sort_index()</span></code></p></td>
+<td><p>Sort by index</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">ascending</span></code>, <code class="docutils literal notranslate"><span class="pre">inplace</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>Multi-column sorting</p></td>
+<td><p>Sort by multiple columns</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">by=['col1',</span> <span class="pre">'col2']</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>Custom sorting</p></td>
+<td><p>Sort with custom orders</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">by=col,</span> <span class="pre">key=function</span></code></p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="basic-sorting">
+<h3>Basic Sorting<a class="headerlink" href="#basic-sorting" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Sorting by a single column - ascending and descending</p></li>
+<li><p>Sorting by index</p></li>
+<li><p>Sorting by multiple columns</p></li>
+<li><p>Sorting with different directions for each column</p></li>
+</ul>
+<div class="admonition-demo demo admonition" id="demo-5">
+<p class="admonition-title">Demo</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;Name&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;Alice&#39;</span><span class="p">,</span> <span class="s1">&#39;Bob&#39;</span><span class="p">,</span> <span class="s1">&#39;Charlie&#39;</span><span class="p">,</span> <span class="s1">&#39;David&#39;</span><span class="p">,</span> <span class="s1">&#39;Eva&#39;</span><span class="p">],</span>
+    <span class="s1">&#39;Age&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">24</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">35</span><span class="p">,</span> <span class="mi">42</span><span class="p">,</span> <span class="mi">28</span><span class="p">],</span>
+    <span class="s1">&#39;City&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;New York&#39;</span><span class="p">,</span> <span class="s1">&#39;Boston&#39;</span><span class="p">,</span> <span class="s1">&#39;Chicago&#39;</span><span class="p">,</span> <span class="s1">&#39;Seattle&#39;</span><span class="p">,</span> <span class="s1">&#39;Miami&#39;</span><span class="p">],</span>
+    <span class="s1">&#39;Salary&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">65000</span><span class="p">,</span> <span class="mi">72000</span><span class="p">,</span> <span class="mi">85000</span><span class="p">,</span> <span class="mi">92000</span><span class="p">,</span> <span class="mi">70000</span><span class="p">],</span>
+    <span class="s1">&#39;Department&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;HR&#39;</span><span class="p">,</span> <span class="s1">&#39;Sales&#39;</span><span class="p">,</span> <span class="s1">&#39;Tech&#39;</span><span class="p">,</span> <span class="s1">&#39;Tech&#39;</span><span class="p">,</span> <span class="s1">&#39;Finance&#39;</span><span class="p">]</span>
+<span class="p">}</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+<span class="n">df</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;emp001&#39;</span><span class="p">,</span> <span class="s1">&#39;emp002&#39;</span><span class="p">,</span> <span class="s1">&#39;emp003&#39;</span><span class="p">,</span> <span class="s1">&#39;emp004&#39;</span><span class="p">,</span> <span class="s1">&#39;emp005&#39;</span><span class="p">]</span>  <span class="c1"># Custom index</span>
+
+<span class="c1"># Continuing with our employee DataFrame</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Original DataFrame:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+
+<span class="c1"># 1. Sorting by a single column (ascending by default)</span>
+<span class="n">df_by_age</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s1">&#39;Age&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">1. Sorted by Age (ascending):&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df_by_age</span><span class="p">)</span>
+
+<span class="c1"># 2. Sorting by a single column (descending)</span>
+<span class="n">df_by_salary_desc</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s1">&#39;Salary&#39;</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">2. Sorted by Salary (descending):&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df_by_salary_desc</span><span class="p">)</span>
+
+<span class="c1"># 3. Sorting by index</span>
+<span class="n">df_by_index</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">sort_index</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">3. Sorted by index:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df_by_index</span><span class="p">)</span>
+
+<span class="c1"># 4. Sorting by multiple columns</span>
+<span class="n">df_multi_sort</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">sort_values</span><span class="p">([</span><span class="s1">&#39;Department&#39;</span><span class="p">,</span> <span class="s1">&#39;Salary&#39;</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">4. Sorted by Department, then by Salary within each department:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df_multi_sort</span><span class="p">)</span>
+
+<span class="c1"># 5. Sorting with different directions for each column</span>
+<span class="n">df_complex</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">sort_values</span><span class="p">([</span><span class="s1">&#39;Department&#39;</span><span class="p">,</span> <span class="s1">&#39;Salary&#39;</span><span class="p">],</span> 
+                          <span class="n">ascending</span><span class="o">=</span><span class="p">[</span><span class="kc">True</span><span class="p">,</span> <span class="kc">False</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">5. Sorted by Department (asc), then by Salary (desc) within each department:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df_complex</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="admonition-output solution important dropdown admonition" id="solution-4">
+<p class="admonition-title">Output</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Original DataFrame:
+           Name  Age      City  Salary Department
+emp001    Alice   24  New York   65000         HR
+emp002      Bob   30    Boston   72000      Sales
+emp003  Charlie   35   Chicago   85000       Tech
+emp004    David   42   Seattle   92000       Tech
+emp005      Eva   28     Miami   70000    Finance
+
+1. Sorted by Age (ascending):
+           Name  Age      City  Salary Department
+emp001    Alice   24  New York   65000         HR
+emp005      Eva   28     Miami   70000    Finance
+emp002      Bob   30    Boston   72000      Sales
+emp003  Charlie   35   Chicago   85000       Tech
+emp004    David   42   Seattle   92000       Tech
+
+2. Sorted by Salary (descending):
+           Name  Age      City  Salary Department
+emp004    David   42   Seattle   92000       Tech
+emp003  Charlie   35   Chicago   85000       Tech
+emp002      Bob   30    Boston   72000      Sales
+emp005      Eva   28     Miami   70000    Finance
+emp001    Alice   24  New York   65000         HR
+
+3. Sorted by index:
+           Name  Age      City  Salary Department
+emp001    Alice   24  New York   65000         HR
+emp002      Bob   30    Boston   72000      Sales
+emp003  Charlie   35   Chicago   85000       Tech
+emp004    David   42   Seattle   92000       Tech
+emp005      Eva   28     Miami   70000    Finance
+
+4. Sorted by Department, then by Salary within each department:
+           Name  Age      City  Salary Department
+emp005      Eva   28     Miami   70000    Finance
+emp001    Alice   24  New York   65000         HR
+emp002      Bob   30    Boston   72000      Sales
+emp003  Charlie   35   Chicago   85000       Tech
+emp004    David   42   Seattle   92000       Tech
+
+5. Sorted by Department (asc), then by Salary (desc) within each department:
+           Name  Age      City  Salary Department
+emp005      Eva   28     Miami   70000    Finance
+emp001    Alice   24  New York   65000         HR
+emp002      Bob   30    Boston   72000      Sales
+emp004    David   42   Seattle   92000       Tech
+emp003  Charlie   35   Chicago   85000       Tech
+</pre></div>
+</div>
+</div>
+</div>
+<div class="admonition-more-info instructor-note admonition" id="instructor-note-4">
+<p class="admonition-title">More info</p>
+<details>
+<summary>Additional notes: Additional note</summary>
+<p><strong>Advanced Sorting:</strong></p>
+<ul class="simple">
+<li><p>Sort with NaNs at the beginning or end</p></li>
+<li><p>Custom categorical sorting (custom order)</p></li>
+</ul>
+<div class="admonition-demo demo admonition" id="demo-6">
+<p class="admonition-title">Demo</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 1. Sorting with NaN values</span>
+<span class="c1"># Create a DataFrame with some missing values</span>
+<span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;Name&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;Alice&#39;</span><span class="p">,</span> <span class="s1">&#39;Bob&#39;</span><span class="p">,</span> <span class="s1">&#39;Charlie&#39;</span><span class="p">,</span> <span class="s1">&#39;David&#39;</span><span class="p">,</span> <span class="s1">&#39;Eva&#39;</span><span class="p">],</span>
+    <span class="s1">&#39;Age&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">24</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">35</span><span class="p">,</span> <span class="mi">42</span><span class="p">,</span> <span class="mi">28</span><span class="p">],</span>
+    <span class="s1">&#39;City&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;New York&#39;</span><span class="p">,</span> <span class="s1">&#39;Boston&#39;</span><span class="p">,</span> <span class="s1">&#39;Chicago&#39;</span><span class="p">,</span> <span class="s1">&#39;Seattle&#39;</span><span class="p">,</span> <span class="s1">&#39;Miami&#39;</span><span class="p">],</span>
+    <span class="s1">&#39;Salary&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">65000</span><span class="p">,</span> <span class="mi">72000</span><span class="p">,</span> <span class="mi">85000</span><span class="p">,</span> <span class="mi">92000</span><span class="p">,</span> <span class="mi">70000</span><span class="p">],</span>
+    <span class="s1">&#39;Department&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;HR&#39;</span><span class="p">,</span> <span class="s1">&#39;Sales&#39;</span><span class="p">,</span> <span class="s1">&#39;Tech&#39;</span><span class="p">,</span> <span class="s1">&#39;Tech&#39;</span><span class="p">,</span> <span class="s1">&#39;Finance&#39;</span><span class="p">]</span>
+<span class="p">}</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+<span class="n">df</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;emp001&#39;</span><span class="p">,</span> <span class="s1">&#39;emp002&#39;</span><span class="p">,</span> <span class="s1">&#39;emp003&#39;</span><span class="p">,</span> <span class="s1">&#39;emp004&#39;</span><span class="p">,</span> <span class="s1">&#39;emp005&#39;</span><span class="p">]</span>  <span class="c1"># Custom index</span>
+
+<span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">&#39;emp001&#39;</span><span class="p">,</span> <span class="s1">&#39;City&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+<span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">&#39;emp003&#39;</span><span class="p">,</span> <span class="s1">&#39;City&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;1. DataFrame with NaN values:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+
+<span class="c1"># Sort with NaNs at the beginning</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">1a. Sorted with NaNs first:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s1">&#39;City&#39;</span><span class="p">,</span> <span class="n">na_position</span><span class="o">=</span><span class="s1">&#39;first&#39;</span><span class="p">))</span>
+
+<span class="c1"># Sort with NaNs at the end</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">1b. Sorted with NaNs last:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s1">&#39;City&#39;</span><span class="p">,</span> <span class="n">na_position</span><span class="o">=</span><span class="s1">&#39;last&#39;</span><span class="p">))</span>
+
+<span class="c1"># 3. Custom categorical sorting</span>
+<span class="c1"># Create a custom order for departments</span>
+<span class="n">dept_order</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;HR&#39;</span><span class="p">,</span> <span class="s1">&#39;Sales&#39;</span><span class="p">,</span> <span class="s1">&#39;Finance&#39;</span><span class="p">,</span> <span class="s1">&#39;Tech&#39;</span><span class="p">]</span>
+<span class="n">df</span><span class="p">[</span><span class="s1">&#39;Dept_Coded&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Categorical</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;Department&#39;</span><span class="p">],</span> 
+                                 <span class="n">categories</span><span class="o">=</span><span class="n">dept_order</span><span class="p">,</span> 
+                                 <span class="n">ordered</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">3. Custom department order sorting:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s1">&#39;Dept_Coded&#39;</span><span class="p">))</span>
+</pre></div>
+</div>
+<div class="admonition-output solution important dropdown admonition" id="solution-5">
+<p class="admonition-title">Output</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>1. DataFrame with NaN values:
+           Name  Age     City  Salary Department
+emp001    Alice   24      NaN   65000         HR
+emp002      Bob   30   Boston   72000      Sales
+emp003  Charlie   35      NaN   85000       Tech
+emp004    David   42  Seattle   92000       Tech
+emp005      Eva   28    Miami   70000    Finance
+
+1a. Sorted with NaNs first:
+           Name  Age     City  Salary Department
+emp001    Alice   24      NaN   65000         HR
+emp003  Charlie   35      NaN   85000       Tech
+emp002      Bob   30   Boston   72000      Sales
+emp005      Eva   28    Miami   70000    Finance
+emp004    David   42  Seattle   92000       Tech
+
+1b. Sorted with NaNs last:
+           Name  Age     City  Salary Department
+emp002      Bob   30   Boston   72000      Sales
+emp005      Eva   28    Miami   70000    Finance
+emp004    David   42  Seattle   92000       Tech
+emp001    Alice   24      NaN   65000         HR
+emp003  Charlie   35      NaN   85000       Tech
+
+3. Custom department order sorting:
+           Name  Age     City  Salary Department Dept_Coded
+emp001    Alice   24      NaN   65000         HR         HR
+emp002      Bob   30   Boston   72000      Sales      Sales
+emp005      Eva   28    Miami   70000    Finance    Finance
+emp003  Charlie   35      NaN   85000       Tech       Tech
+emp004    David   42  Seattle   92000       Tech       Tech
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>Sorting is essential for both data analysis and presentation.</p></li>
+<li><p>Multi-column sorting is particularly useful for hierarchical data.</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">ascending</span></code> parameter can be a single boolean or a list of booleans for multi-column sorts.</p></li>
+<li><p>Custom sorting allows for domain-specific ordering beyond simple alphabetical or numerical order.</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">inplace=True</span></code> parameter can be used to modify the original DataFrame rather than creating a new one.</p></li>
+</ul>
+<p><strong>Exercise: Multiple Column Sorting with Custom Orders:</strong></p>
+<p>This dataset represents results from three independent candidate gene studies investigating the association between common genetic variants and breast cancer risk, where odds ratios indicate the increased likelihood of developing breast cancer for carriers of each gene variant compared to non-carriers.</p>
+<ol class="arabic simple">
+<li><p>Create correct chromosome ordering: ‘Chr1’ to ‘ChrX’, ‘ChrY’</p></li>
+<li><p>Create study category with custom order: ‘Study1’, ‘Study2’, ‘Study3’</p></li>
+<li><p>Sort by Chromosome (numerical), then by Study (custom order)</p></li>
+<li><p>Sort by statistical significance (p-value) within each Chromosome</p></li>
+<li><p>Select genes sorted by P-value and effect size within each chromosome</p></li>
+</ol>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+
+<span class="c1"># Create a genetic dataset</span>
+<span class="n">genetic_data</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;Gene&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;BRCA1&#39;</span><span class="p">,</span> <span class="s1">&#39;TP53&#39;</span><span class="p">,</span> <span class="s1">&#39;APOE&#39;</span><span class="p">,</span> <span class="s1">&#39;PTEN&#39;</span><span class="p">,</span> <span class="s1">&#39;BRAF&#39;</span><span class="p">,</span> <span class="s1">&#39;KRAS&#39;</span><span class="p">,</span> 
+            <span class="s1">&#39;BRCA2&#39;</span><span class="p">,</span> <span class="s1">&#39;EGFR&#39;</span><span class="p">,</span> <span class="s1">&#39;TNF&#39;</span><span class="p">,</span> <span class="s1">&#39;IL6&#39;</span><span class="p">],</span>
+    <span class="s1">&#39;Chromosome&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;Chr17&#39;</span><span class="p">,</span> <span class="s1">&#39;Chr17&#39;</span><span class="p">,</span> <span class="s1">&#39;Chr19&#39;</span><span class="p">,</span> <span class="s1">&#39;Chr10&#39;</span><span class="p">,</span> <span class="s1">&#39;Chr7&#39;</span><span class="p">,</span> <span class="s1">&#39;Chr12&#39;</span><span class="p">,</span> 
+                  <span class="s1">&#39;Chr13&#39;</span><span class="p">,</span> <span class="s1">&#39;Chr7&#39;</span><span class="p">,</span> <span class="s1">&#39;Chr6&#39;</span><span class="p">,</span> <span class="s1">&#39;Chr7&#39;</span><span class="p">],</span>
+    <span class="s1">&#39;Study&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;Study1&#39;</span><span class="p">,</span> <span class="s1">&#39;Study2&#39;</span><span class="p">,</span> <span class="s1">&#39;Study1&#39;</span><span class="p">,</span> <span class="s1">&#39;Study3&#39;</span><span class="p">,</span> <span class="s1">&#39;Study2&#39;</span><span class="p">,</span> <span class="s1">&#39;Study3&#39;</span><span class="p">,</span> 
+             <span class="s1">&#39;Study1&#39;</span><span class="p">,</span> <span class="s1">&#39;Study2&#39;</span><span class="p">,</span> <span class="s1">&#39;Study3&#39;</span><span class="p">,</span> <span class="s1">&#39;Study1&#39;</span><span class="p">],</span>
+    <span class="s1">&#39;PValue&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.0001</span><span class="p">,</span> <span class="mf">0.0050</span><span class="p">,</span> <span class="mf">0.0200</span><span class="p">,</span> <span class="mf">0.0150</span><span class="p">,</span> <span class="mf">0.0300</span><span class="p">,</span> <span class="mf">0.0400</span><span class="p">,</span> 
+              <span class="mf">0.0005</span><span class="p">,</span> <span class="mf">0.0250</span><span class="p">,</span> <span class="mf">0.0100</span><span class="p">,</span> <span class="mf">0.0450</span><span class="p">],</span>
+    <span class="s1">&#39;EffectSize&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">2.5</span><span class="p">,</span> <span class="mf">1.8</span><span class="p">,</span> <span class="mf">3.2</span><span class="p">,</span> <span class="mf">2.1</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">,</span> <span class="mf">1.2</span><span class="p">,</span> <span class="mf">2.7</span><span class="p">,</span> <span class="mf">1.9</span><span class="p">,</span> <span class="mf">2.3</span><span class="p">,</span> <span class="mf">1.1</span><span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>Solution: Multiple Column Sorting with Custom Orders:</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">genetic_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">genetic_data</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Genetic DataFrame:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">genetic_df</span><span class="p">)</span>
+
+<span class="c1"># 1. Create correct chromosome ordering</span>
+<span class="n">chrom_order</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Chr1&#39;</span><span class="p">,</span> <span class="s1">&#39;Chr2&#39;</span><span class="p">,</span> <span class="s1">&#39;Chr3&#39;</span><span class="p">,</span> <span class="s1">&#39;Chr4&#39;</span><span class="p">,</span> <span class="s1">&#39;Chr5&#39;</span><span class="p">,</span> <span class="s1">&#39;Chr6&#39;</span><span class="p">,</span> <span class="s1">&#39;Chr7&#39;</span><span class="p">,</span> 
+               <span class="s1">&#39;Chr8&#39;</span><span class="p">,</span> <span class="s1">&#39;Chr9&#39;</span><span class="p">,</span> <span class="s1">&#39;Chr10&#39;</span><span class="p">,</span> <span class="s1">&#39;Chr11&#39;</span><span class="p">,</span> <span class="s1">&#39;Chr12&#39;</span><span class="p">,</span> <span class="s1">&#39;Chr13&#39;</span><span class="p">,</span> <span class="s1">&#39;Chr14&#39;</span><span class="p">,</span> 
+               <span class="s1">&#39;Chr15&#39;</span><span class="p">,</span> <span class="s1">&#39;Chr16&#39;</span><span class="p">,</span> <span class="s1">&#39;Chr17&#39;</span><span class="p">,</span> <span class="s1">&#39;Chr18&#39;</span><span class="p">,</span> <span class="s1">&#39;Chr19&#39;</span><span class="p">,</span> <span class="s1">&#39;Chr20&#39;</span><span class="p">,</span> <span class="s1">&#39;Chr21&#39;</span><span class="p">,</span> <span class="s1">&#39;Chr22&#39;</span><span class="p">,</span> <span class="s1">&#39;ChrX&#39;</span><span class="p">,</span> <span class="s1">&#39;ChrY&#39;</span><span class="p">]</span>
+<span class="n">genetic_df</span><span class="p">[</span><span class="s1">&#39;Chromosome_Sorted&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Categorical</span><span class="p">(</span><span class="n">genetic_df</span><span class="p">[</span><span class="s1">&#39;Chromosome&#39;</span><span class="p">],</span> 
+                                               <span class="n">categories</span><span class="o">=</span><span class="n">chrom_order</span><span class="p">,</span> 
+                                               <span class="n">ordered</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># 2. Create study category with custom order</span>
+<span class="n">study_order</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Study1&#39;</span><span class="p">,</span> <span class="s1">&#39;Study2&#39;</span><span class="p">,</span> <span class="s1">&#39;Study3&#39;</span><span class="p">]</span>
+<span class="n">genetic_df</span><span class="p">[</span><span class="s1">&#39;Study_Sorted&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Categorical</span><span class="p">(</span><span class="n">genetic_df</span><span class="p">[</span><span class="s1">&#39;Study&#39;</span><span class="p">],</span> 
+                                           <span class="n">categories</span><span class="o">=</span><span class="n">study_order</span><span class="p">,</span> 
+                                           <span class="n">ordered</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># 3. Sort by Chromosome (numerical), then by Study (custom order)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">1. Sorted by Chromosome, then by Study (custom orders):&quot;</span><span class="p">)</span>
+<span class="n">sorted_genetic</span> <span class="o">=</span> <span class="n">genetic_df</span><span class="o">.</span><span class="n">sort_values</span><span class="p">([</span><span class="s1">&#39;Chromosome_Sorted&#39;</span><span class="p">,</span> <span class="s1">&#39;Study_Sorted&#39;</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">sorted_genetic</span><span class="p">[[</span><span class="s1">&#39;Chromosome&#39;</span><span class="p">,</span> <span class="s1">&#39;Gene&#39;</span><span class="p">,</span> <span class="s1">&#39;Study&#39;</span><span class="p">]])</span>
+
+<span class="c1"># 4. Sort by statistical significance (p-value) within each Chromosome</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">2. Sorted by Chromosome, then by P-value (ascending) within each chromosome:&quot;</span><span class="p">)</span>
+<span class="n">genetic_by_pvalue</span> <span class="o">=</span> <span class="n">genetic_df</span><span class="o">.</span><span class="n">sort_values</span><span class="p">([</span><span class="s1">&#39;Chromosome_Sorted&#39;</span><span class="p">,</span> <span class="s1">&#39;PValue&#39;</span><span class="p">],</span> 
+                                         <span class="n">ascending</span><span class="o">=</span><span class="p">[</span><span class="kc">True</span><span class="p">,</span> <span class="kc">True</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">genetic_by_pvalue</span><span class="p">[[</span><span class="s1">&#39;Chromosome&#39;</span><span class="p">,</span> <span class="s1">&#39;Gene&#39;</span><span class="p">,</span> <span class="s1">&#39;PValue&#39;</span><span class="p">]])</span>
+
+<span class="c1"># 5. Rank genes by effect size within each chromosome</span>
+<span class="n">genetic_df</span><span class="p">[</span><span class="s1">&#39;EffectRank&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">genetic_df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;Chromosome&#39;</span><span class="p">)[</span><span class="s1">&#39;EffectSize&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">rank</span><span class="p">(</span><span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">3. Genes according to P-value and Effect Size within each Chromosome:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">genetic_df</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;PValue&quot;</span><span class="p">,</span><span class="s2">&quot;EffectSize&quot;</span><span class="p">,</span> <span class="s2">&quot;Chromosome_Sorted&quot;</span><span class="p">],</span> <span class="n">ascending</span><span class="o">=</span><span class="p">[</span><span class="kc">True</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">True</span><span class="p">])[</span><span class="s2">&quot;Gene&quot;</span><span class="p">])</span>
+</pre></div>
+</div>
+<p>The most significant findings are in the DNA repair genes BRCA1 and BRCA2 (p-values 0.0001 and 0.0005), with BRCA1 carriers showing 2.5 times higher odds and BRCA2 carriers showing 2.7 times higher odds of developing breast cancer. Other genes showing significant but less pronounced associations include inflammatory pathway genes (TNF) and key tumor suppressor genes (TP53, PTEN), highlighting the multifactorial genetic architecture of breast cancer susceptibility that spans DNA repair, cell cycle regulation, and inflammatory response pathways</p>
+</div>
+</div>
+</div>
+</details>
+</section>
+</section>
+<section id="key-takeaways">
+<h2>Key Takeaways<a class="headerlink" href="#key-takeaways" title="Link to this heading"></a></h2>
+<div class="admonition-keypoints keypoints admonition" id="keypoints-0">
+<p class="admonition-title">Keypoints</p>
+<ol class="arabic simple">
+<li><p><strong>Flexible Selection:</strong> Pandas provides multiple ways to select, filter, and extract data</p></li>
+<li><p><strong>Structure Modification:</strong> Adding and removing columns/rows enables dataset evolution</p></li>
+<li><p><strong>Meaningful Sorting:</strong> Proper sorting is essential for analysis and presentation</p></li>
+<li><p><strong>Custom Orders:</strong> Categorical data types allow you to enforce domain-specific ordering</p></li>
+<li><p><strong>Combined Operations:</strong> The real power comes from combining these techniques</p></li>
+</ol>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../9.Pandas_data_import_export/" class="btn btn-neutral float-left" title="Data Import and Export in Pandas" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../11.Pandas_indexing_slicing/" class="btn btn-neutral float-right" title="Indexing, Selection &amp; Slicing in Pandas" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025 Norwegian Ai Cloud.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

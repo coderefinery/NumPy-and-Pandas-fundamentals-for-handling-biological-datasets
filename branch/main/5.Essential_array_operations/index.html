@@ -1,0 +1,536 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Essential Array Operations with NumPy &mdash; NumPy and Pandas for biological data handling  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+      <link rel="stylesheet" type="text/css" href="../_static/sphinx_lesson.css?v=e9df6548" />
+      <link rel="stylesheet" type="text/css" href="../_static/term_role_formatting.css?v=4194e21c" />
+      <link rel="stylesheet" type="text/css" href="../_static/sphinx_rtd_theme_ext_color_contrast.css?v=8e8ea19f" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=187304be"></script>
+      <script src="../_static/doctools.js?v=9a2dae69"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../_static/copybutton.js?v=35a8b989"></script>
+      <script src="../_static/minipres.js?v=a0d29692"></script>
+      <script>let toggleHintShow = 'Click to show';</script>
+      <script>let toggleHintHide = 'Click to hide';</script>
+      <script>let toggleOpenOnPrint = 'true';</script>
+      <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+      <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+      <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex/" />
+    <link rel="search" title="Search" href="../search/" />
+    <link rel="next" title="Vectorized Operations in NumPy: Beyond Python Loops" href="../6.Vectorized_Operations_in_NumPy/" />
+    <link rel="prev" title="NumPy Boolean Masking and Filtering" href="../4.Advance_indexing_filtering/" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../" class="icon icon-home">
+            NumPy and Pandas for biological data handling
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search/" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Numpy for handling biological datasets</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../0.Numpy_for_bioinformatics/">Lesson plan</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1.numpy_intro/">Introduction to NumPy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../2.NumPy_Data_Types/">NumPy Data Types</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3.Indexing_and_Slicing/">Array Indexing and Slicing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../4.Advance_indexing_filtering/">NumPy Boolean Masking and Filtering</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Essential Array Operations with NumPy</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#introduction">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#reshaping-arrays">Reshaping Arrays</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#understanding-array-dimensions">Understanding Array Dimensions</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#array-concatenation">Array Concatenation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#summary-statistics">Summary Statistics</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../6.Vectorized_Operations_in_NumPy/">Vectorized Operations in NumPy: Beyond Python Loops</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../6.1.Numpy_hands_on/">Hands-on: RNA Expression Analysis - alternative method</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Pandas for handling biological datasets</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../7.Pandas_lesson plan/">Lesson plan</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8.Introduction_to_pandas/">Introduction to Pandas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../9.Pandas_data_import_export/">Data Import and Export in Pandas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../10.DataFrame_Manipulation/">DataFrame Manipulation &amp; Sorting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../11.Pandas_indexing_slicing/">Indexing, Selection &amp; Slicing in Pandas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../14.Pandas_summary_stats/">Summary Statistics &amp; Aggregations in Pandas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../15.Hands-on_expression_count_analysis/">Hands-on: RNA Expression Analysis - alternative method</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../12.Handling_Missing_Data/">Bonus Lesson 1: Handling Missing Data in Pandas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../13.Merging_DataFrames/">Bonus Lesson 2: Merging DataFrames in Pandas</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../">NumPy and Pandas for biological data handling</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Essential Array Operations with NumPy</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/coderefinery/content/blob/main/content/5.Essential_array_operations.md" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="essential-array-operations-with-numpy">
+<h1>Essential Array Operations with NumPy<a class="headerlink" href="#essential-array-operations-with-numpy" title="Link to this heading"></a></h1>
+<div class="admonition-objectives objectives admonition" id="objectives-0">
+<p class="admonition-title">Objectives</p>
+<ol class="arabic simple">
+<li><p>Reshape arrays to transform data structures while preserving values</p></li>
+<li><p>Combine arrays using concatenation operations along different axes</p></li>
+<li><p>Generate descriptive statistics from arrays using NumPy’s built-in functions</p></li>
+<li><p>Apply the axis parameter correctly to perform row-wise and column-wise operations</p></li>
+<li><p>Integrate reshaping, concatenation, and statistical functions to solve practical data problems</p></li>
+</ol>
+</div>
+<div class="admonition-instructor-note instructor-note admonition" id="instructor-note-0">
+<p class="admonition-title">Instructor note</p>
+<ul class="simple">
+<li><p>Teaching : 20 min</p></li>
+<li><p>Demo: 15 min</p></li>
+</ul>
+</div>
+<section id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Link to this heading"></a></h2>
+<p>NumPy is the foundation of Python’s data science ecosystem. At its core is the powerful ndarray object - an efficient, versatile container for large datasets. We’ll explore three essential capabilities:</p>
+<ul class="simple">
+<li><p>Reshaping arrays to organize data differently</p></li>
+<li><p>Combining arrays using concatenation</p></li>
+<li><p>Generating summary statistics to understand our data</p></li>
+</ul>
+<p>Let’s dive into how these operations can transform the way we work with numerical data.</p>
+</section>
+<section id="reshaping-arrays">
+<h2>Reshaping Arrays<a class="headerlink" href="#reshaping-arrays" title="Link to this heading"></a></h2>
+<section id="understanding-array-dimensions">
+<h3>Understanding Array Dimensions<a class="headerlink" href="#understanding-array-dimensions" title="Link to this heading"></a></h3>
+<p>Arrays can have different dimensions:</p>
+<ul class="simple">
+<li><p>1D arrays (vectors): Simple sequences of values</p></li>
+<li><p>2D arrays (matrices): Tables with rows and columns</p></li>
+<li><p>3D arrays and beyond: Multi-dimensional structures</p></li>
+</ul>
+<p><img alt="alt text" src="../_images/image-4.png" /></p>
+<p>The shape and dimension of an array tell us how data is organized:</p>
+<div class="admonition-demo demo admonition" id="demo-0">
+<p class="admonition-title">Demo</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+<span class="c1"># Create a simple 1D array</span>
+<span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="mi">6</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Original array:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Dimensions: </span><span class="si">{</span><span class="n">a</span><span class="o">.</span><span class="n">ndim</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>  <span class="c1"># Number of dimensions</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Shape: </span><span class="si">{</span><span class="n">a</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>      <span class="c1"># Tuple showing size in each dimension</span>
+</pre></div>
+</div>
+<div class="admonition-output solution important dropdown admonition" id="solution-0">
+<p class="admonition-title">Output:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Original array:
+[1. 1. 1. 1. 1. 1.]
+Dimensions: 1
+Shape: (6,)
+
+</pre></div>
+</div>
+</div>
+</div>
+<div class="docutils">
+<p class="rubric" id="reshaping-arrays-uisng-reshape">Reshaping Arrays uisng <code class="docutils literal notranslate"><span class="pre">reshape</span></code></p>
+<p><img alt="alt text" src="../_images/image-6.png" /></p>
+<ul class="simple">
+<li><p>Reshaping allows us to reorganize the same data into different dimensions</p></li>
+<li><p>The key rule: the total number of elements must remain the same</p></li>
+</ul>
+<div class="admonition-demo demo admonition" id="demo-1">
+<p class="admonition-title">Demo</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">7</span><span class="p">))</span>
+<span class="c1"># Reshape our 1D array with 6 elements into a 2D array (2 rows, 3 columns)</span>
+<span class="n">b</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Reshaped to 2x3 array:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Dimensions: </span><span class="si">{</span><span class="n">b</span><span class="o">.</span><span class="n">ndim</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Shape: </span><span class="si">{</span><span class="n">b</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="admonition-output solution important dropdown admonition" id="solution-1">
+<p class="admonition-title">Output</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Reshaped to 2x3 array:
+[[1 2 3]
+ [4 5 6]]
+Dimensions: 2
+Shape: (2, 3)
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="docutils">
+<div class="admonition-more-info instructor-note admonition" id="instructor-note-1">
+<p class="admonition-title">More info</p>
+<details>
+<summary>Additional notes: example</summary>
+<p><strong>Practical Example: Preparing a Simple Grayscale Image for an ML Model:</strong></p>
+<ul class="simple">
+<li><p>Imagine you have a tiny grayscale image, maybe from a very simple dataset. It’s represented as a 2D grid of pixel values. Many basic machine learning algorithms (like Logistic Regression or simple Neural Networks) expect input data where each row is a single sample (a single image) and each column is a feature (a single pixel value).</p></li>
+<li><p>Our task is to take a 2D image representation and “flatten” it into a 1D row vector suitable for these algorithms.</p></li>
+</ul>
+<div class="admonition-demo demo admonition" id="demo-2">
+<p class="admonition-title">Demo</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+<span class="c1"># 2. Imagine a tiny 3x3 pixel grayscale image</span>
+<span class="c1">#    Each number represents the brightness of a pixel (0=black, 255=white)</span>
+<span class="c1">#    This is a 2D NumPy array (a matrix)</span>
+<span class="n">image_2d</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span>
+    <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">30</span><span class="p">],</span>
+    <span class="p">[</span><span class="mi">40</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">60</span><span class="p">],</span>
+    <span class="p">[</span><span class="mi">70</span><span class="p">,</span> <span class="mi">80</span><span class="p">,</span> <span class="mi">90</span><span class="p">]</span>
+<span class="p">])</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Original 2D Image Array:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">image_2d</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Shape of original image:&quot;</span><span class="p">,</span> <span class="n">image_2d</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="c1"># Output: (3, 3) -&gt; 3 rows, 3 columns</span>
+
+<span class="c1"># 3. Prepare for ML: Flatten the image</span>
+<span class="c1">#    Many ML models expect each sample (our image) as a single row.</span>
+<span class="c1">#    We need to convert the 3x3 grid into a 1x9 row (1 row, 9 features/pixels).</span>
+<span class="c1">#    Total number of pixels = 3 * 3 = 9</span>
+
+<span class="c1">#    Using reshape:</span>
+<span class="c1">#    We want 1 row, and NumPy can figure out the number of columns needed.</span>
+<span class="c1">#    We use &#39;-1&#39; to tell NumPy: &quot;calculate the correct number of columns for me&quot;.</span>
+<span class="n">flattened_image</span> <span class="o">=</span> <span class="n">image_2d</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">9</span><span class="p">)</span>
+
+<span class="c1">#    Alternatively, we could be explicit:</span>
+<span class="c1">#    flattened_image = image_2d.reshape(1, 9)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Flattened Image Array (Ready for ML Model):&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">flattened_image</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Shape of flattened image:&quot;</span><span class="p">,</span> <span class="n">flattened_image</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="c1"># Output: (1, 9) -&gt; 1 row, 9 columns</span>
+
+</pre></div>
+</div>
+<p>Output</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Original 2D Image Array:
+[[10 20 30]
+ [40 50 60]
+ [70 80 90]]
+Shape of original image: (3, 3)
+
+Flattened Image Array (Ready for ML Model):
+[[10 20 30 40 50 60 70 80 90]]
+Shape of flattened image: (1, 9)
+</pre></div>
+</div>
+<p><strong>Using -1 as a Dimension:</strong></p>
+<p>NumPy can automatically calculate one dimension when you use -1:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">image_2d2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span>
+     <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">30</span><span class="p">],</span>
+     <span class="p">[</span><span class="mi">40</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">60</span><span class="p">],</span>
+     <span class="p">[</span><span class="mi">70</span><span class="p">,</span> <span class="mi">80</span><span class="p">,</span> <span class="mi">90</span><span class="p">],</span>
+     <span class="p">[</span><span class="mi">100</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">60</span><span class="p">],</span>
+     <span class="p">[</span><span class="mi">55</span><span class="p">,</span> <span class="mi">150</span><span class="p">,</span> <span class="mi">200</span><span class="p">],</span>
+     <span class="p">[</span><span class="mi">150</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">220</span><span class="p">]</span>
+ <span class="p">])</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Flattened image: </span><span class="si">{</span><span class="n">image_2d2</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">9</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Output</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>array([[ 10,  20,  30,  40,  50,  60,  70,  80,  90],
+       [100,  50,  60,  55, 150, 200, 150, 100, 220]])
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</details>
+</section>
+</section>
+<section id="array-concatenation">
+<h2>Array Concatenation<a class="headerlink" href="#array-concatenation" title="Link to this heading"></a></h2>
+<p>Concatenation lets us combine multiple arrays into a single larger array. This is essential when:</p>
+<ul class="simple">
+<li><p>Merging datasets</p></li>
+<li><p>Building up arrays piece by piece</p></li>
+<li><p>Combining results from different operations</p></li>
+</ul>
+<p><img alt="alt text" src="../_images/image-7.png" /></p>
+<div class="admonition-more-info instructor-note admonition" id="instructor-note-2">
+<p class="admonition-title">More info</p>
+<details>
+<summary>Additional notes: array concatenation</summary>
+<p class="rubric" id="d-array-concatenation">1D Array Concatenation</p>
+<p>Let’s start with the simplest case - joining two 1D arrays:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create two 1D arrays</span>
+<span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">])</span>
+<span class="n">b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">])</span>
+
+<span class="c1"># Concatenate them</span>
+<span class="n">combined</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Concatenated 1D arrays:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">combined</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Output</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Concatenated 1D arrays:
+[1 2 3 4 5 6 7 8]
+</pre></div>
+</div>
+<p><strong>2D Array Concatenation:</strong></p>
+<p>When working with 2D arrays, we need to specify the axis of concatenation:</p>
+<p>axis=0: Join vertically (collapse rows)
+axis=1: Join horizontally (collapse columns)</p>
+<p><strong>Vertical Concatenation (axis=0):</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create 2D arrays</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">]])</span>  <span class="c1"># 2x2 array</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">]])</span>          <span class="c1"># 1x2 array</span>
+
+<span class="c1"># Vertical concatenation (default is axis=0)</span>
+<span class="n">v_combined</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Vertical concatenation (axis=0):&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">v_combined</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Output</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Vertical concatenation (axis=0):
+[[1 2]
+ [3 4]
+ [5 6]]
+</pre></div>
+</div>
+<p><strong>Horizontal Concatenation (axis=1):</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create arrays for horizontal concatenation</span>
+<span class="n">p</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">]])</span>    <span class="c1"># 2x2 array</span>
+<span class="n">q</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">5</span><span class="p">],</span> <span class="p">[</span><span class="mi">6</span><span class="p">]])</span>          <span class="c1"># 2x1 array</span>
+
+<span class="c1"># Horizontal concatenation (axis=1)</span>
+<span class="n">h_combined</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">p</span><span class="p">,</span> <span class="n">q</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Horizontal concatenation (axis=1):&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">h_combined</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Output</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Horizontal concatenation (axis=1):
+[[1 2 5]
+ [3 4 6]]
+</pre></div>
+</div>
+<p><strong>Concatenation Requirements:</strong></p>
+<ul class="simple">
+<li><p>The key rule for numpy concatenation is:</p>
+<ul>
+<li><p>When concatenating along a specific axis, all dimensions <strong>except</strong> that axis must match exactly.</p></li>
+</ul>
+</li>
+</ul>
+<p><strong>Example 1 (fails):</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]])</span>    <span class="c1"># Shape: (1, 3)</span>
+<span class="n">b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">]])</span> <span class="c1"># Shape: (1, 4)</span>
+<span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>Concatenating along axis=0 (stacking rows)</p></li>
+<li><p>For axis=0 concatenation, all other dimensions must match</p></li>
+<li><p>a has 3 columns, b has 4 columns</p></li>
+<li><p>Since 3 ≠ 4, this raises an error</p></li>
+</ul>
+<p><strong>Example 2 (works):</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">c</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]])</span>    <span class="c1"># Shape: (1, 3)</span>
+<span class="n">d</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">]])</span> <span class="c1"># Shape: (1, 4)</span>
+<span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">c</span><span class="p">,</span><span class="n">d</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>Concatenating along axis=1 (stacking columns)</p></li>
+<li><p>For axis=1 concatenation, all other dimensions must match</p></li>
+<li><p>Both c and d have 1 row</p></li>
+<li><p>Since 1 = 1, this works and creates shape (1, 7)</p></li>
+</ul>
+<p><strong>Simple way to remember:</strong></p>
+<ul class="simple">
+<li><p>axis=0: Arrays must have the same number of columns</p></li>
+<li><p>axis=1: Arrays must have the same number of rows</p></li>
+<li><p>axis=2 (for 3D): Arrays must have matching dimensions in axes 0 and 1</p></li>
+</ul>
+<p>Think of it like stacking blocks:</p>
+<ul class="simple">
+<li><p>To stack vertically (axis=0), blocks must have the same width</p></li>
+<li><p>To stack horizontally (axis=1), blocks must have the same height</p></li>
+</ul>
+</div>
+</details>
+</section>
+<section id="summary-statistics">
+<h2>Summary Statistics<a class="headerlink" href="#summary-statistics" title="Link to this heading"></a></h2>
+<p>NumPy provides efficient functions to calculate statistical measures across arrays. These are essential for:</p>
+<ul class="simple">
+<li><p>Data exploration and understanding</p></li>
+<li><p>Identifying patterns and outliers</p></li>
+<li><p>Summarizing large datasets</p></li>
+</ul>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Function</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>np.sum()</p></td>
+<td><p>Sum of array elements</p></td>
+</tr>
+<tr class="row-odd"><td><p>np.min()</p></td>
+<td><p>Minimum value</p></td>
+</tr>
+<tr class="row-even"><td><p>np.max()</p></td>
+<td><p>Maximum value</p></td>
+</tr>
+<tr class="row-odd"><td><p>np.mean()</p></td>
+<td><p>Arithmetic mean (average)</p></td>
+</tr>
+<tr class="row-even"><td><p>np.median()</p></td>
+<td><p>Median value</p></td>
+</tr>
+<tr class="row-odd"><td><p>np.std()</p></td>
+<td><p>Standard deviation</p></td>
+</tr>
+<tr class="row-even"><td><p>np.var()</p></td>
+<td><p>Variance</p></td>
+</tr>
+</tbody>
+</table>
+<ul class="simple">
+<li><p>axis=None (default): Operate on all elements (flattened array)</p></li>
+<li><p>axis=0: Collapse rows and operate along columns (down)</p></li>
+<li><p>axis=1: Collapse columns and operate along rows (across)</p></li>
+</ul>
+<div class="admonition-demo demo admonition" id="demo-3">
+<p class="admonition-title">Demo</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create a 2D array</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span>
+                 <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">]])</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Our data:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+
+<span class="c1"># Sum of all elements</span>
+<span class="n">total</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Total sum: </span><span class="si">{</span><span class="n">total</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>  <span class="c1"># 21</span>
+
+<span class="c1"># Column sums (axis=0)</span>
+<span class="n">col_sums</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Column sums: </span><span class="si">{</span><span class="n">col_sums</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>  <span class="c1"># [5 7 9]</span>
+<span class="c1">## Collapse values in rows along the the column 0 and aggregate: [1, 4] = 5</span>
+<span class="c1">## Collapse values in rows along the the column 1 and aggregate: [2, 5] = 7</span>
+<span class="c1">## Collapse values in rows along the the column 2 and aggregate: [3, 6] = 9</span>
+
+<span class="c1"># Row sums (axis=1)</span>
+<span class="n">row_sums</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Row sums: </span><span class="si">{</span><span class="n">row_sums</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>  <span class="c1"># [6 15]</span>
+<span class="c1">## Collapse values in columns along the the row 0 and aggregate: [1, 2, 3] = 6</span>
+<span class="c1">## Collapse values in columns along the the row 1 and aggregate: [4, 5, 6] = 15</span>
+</pre></div>
+</div>
+<div class="admonition-output solution important dropdown admonition" id="solution-2">
+<p class="admonition-title">Output</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Our data:
+[[1 2 3]
+ [4 5 6]]
+
+Total sum: 21
+Column sums: [5 7 9]
+Row sums: [ 6 15]
+
+</pre></div>
+</div>
+</div>
+</div>
+<div class="admonition-keypoints keypoints admonition" id="keypoints-0">
+<p class="admonition-title">Keypoints</p>
+<ul class="simple">
+<li><p><strong>Reshaping Arrays:</strong> Maintain the total number of elements when reshaping; use -1 for automatic dimension calculation.</p></li>
+<li><p><strong>Concatenation of Arrays:</strong> Combine arrays while matching dimensions, except along the concatenation axis.</p></li>
+<li><p><strong>Statistical Functions:</strong> Utilize NumPy’s statistical functions for data analysis, operating across different axes.</p></li>
+<li><p><strong>Error Handling:</strong> Be aware of shape requirements for concatenation to avoid errors.</p></li>
+</ul>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../4.Advance_indexing_filtering/" class="btn btn-neutral float-left" title="NumPy Boolean Masking and Filtering" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../6.Vectorized_Operations_in_NumPy/" class="btn btn-neutral float-right" title="Vectorized Operations in NumPy: Beyond Python Loops" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025 Norwegian Ai Cloud.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

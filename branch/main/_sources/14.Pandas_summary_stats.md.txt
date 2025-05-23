@@ -1,0 +1,732 @@
+# Summary Statistics & Aggregations in Pandas
+
+:::{objectives}
+
+* We've learned how to load, clean, and combine data in Pandas, now we'll explore how to extract insights from that data.
+* Explore the use of summary statistics and aggregation operations to transform raw data into actionable information
+* Implement methods with Pandas’ intuitive syntax.
+
+:::
+
+:::{instructor-note}
+
+* Teaching : 5 min
+* Demo: 25 min
+
+:::
+
+* Data collection and cleaning are just the beginning
+* The real value comes from extracting meaningful insights
+* Summary statistics reduce complex data into understandable metrics
+* Aggregations allow us to analyze data at different levels of granularity
+* These operations form the foundation of data analysis (these methods connect directly to statistical concepts)
+* i.e., These techniques allow us to answer questions like 
+  * 'What's the average customer spending?' or
+  * 'How do sales compare across different regions?'"
+
+## Basic Descriptive Statistics
+
+### Built-in Statistical Methods
+
+| Method | Purpose | Returns |
+|--------|---------|---------|
+| `describe()` | Comprehensive summary | DataFrame with count, mean, std, min, quartiles, max |
+| `mean()`, `median()` | Central tendency | Series or scalar |
+| `min()`, `max()` | Range boundaries | Series or scalar |
+| `std()`, `var()` | Dispersion/spread | Series or scalar |
+| `quantile([0.25, 0.75])` | Distribution points | Series or DataFrame |
+| `count()` | Non-null count | Series or scalar |
+| `sum()` | Sum of values | Series or scalar |
+
+**Basic Statistical Methods:**
+
+:::{demo}
+
+* Comprehensive statistical summary
+* Include all columns (even non-numeric)
+* Basic statistical methods
+  * Mean, Median, Minimum, Maximum, Standard deviation
+
+```python
+import pandas as pd
+import numpy as np
+
+# Create a sample gene expression DataFrame
+np.random.seed(42)  # For reproducibility
+
+# Generate 15 sample genes
+data = {
+    'Gene_ID': [f'GENE{i:03d}' for i in range(1, 16)],
+    'Expression_Level': np.random.lognormal(4, 1, 15).round(2),  # Draw random samples Log-normal distribution for expression values
+    'Log2_Fold_Change': np.random.normal(0, 2, 15).round(2),  # Draw random samples from normal distribution for log2 fold changes
+    'P_Value': np.random.beta(1, 10, 15).round(4),  # Draw random samples Beta distribution for p-values
+    'Tissue_Type': np.random.choice(['Brain', 'Liver', 'Kidney', 'Heart', 'Lung'], 15),
+    'Chromosome': np.random.choice(['chr1', 'chr2', 'chr3', 'chr4', 'chrX', 'chrY'], 15)
+}
+
+df = pd.DataFrame(data)
+
+# Add some missing values for realism
+df.loc[4, 'P_Value'] = None
+df.loc[9, 'Log2_Fold_Change'] = None
+
+# Add a column for significance based on P_Value and Log2_Fold_Change
+df['Is_Significant'] = ((df['P_Value'] < 0.05) & (abs(df['Log2_Fold_Change']) > 1))
+
+print("Sample Gene Expression DataFrame:")
+print(df)
+
+# 1. Comprehensive statistical summary
+print("\n1. Comprehensive statistical summary with describe():")
+print(df.describe())
+
+# 2. Include all columns (even non-numeric)
+print("\n2. Describing all columns (including non-numeric):")
+print(df.describe(include='all'))
+
+# 3. Basic statistical methods
+print("\n3. Basic statistical methods:")
+print(f"Mean expression level: {df['Expression_Level'].mean():.2f}")
+print(f"Median log2 fold change: {df['Log2_Fold_Change'].median():.2f}")
+print(f"Minimum p-value: {df['P_Value'].min():.4f}")
+print(f"Number of significant genes: {df['Is_Significant'].sum()}")
+print(f"Standard deviation of expression: {df['Expression_Level'].std():.2f}")
+
+# 4. Multiple statistics at once
+print("\n4. Multiple statistics for Expression Level:")
+print(df['Expression_Level'].agg(['min', 'max', 'mean', 'median', 'std']))
+
+# 5. Quantiles/percentiles
+print("\n5. Expression level quartiles:")
+print(df['Expression_Level'].quantile([0, 0.25, 0.5, 0.75, 1.0]))
+```
+
+:::{solution} Output
+
+```none
+Sample Gene Expression DataFrame:
+    Gene_ID  Expression_Level  Log2_Fold_Change  P_Value Tissue_Type Chromosome  Is_Significant
+0   GENE001             89.72             -1.12   0.1445        Lung       chr4           False
+1   GENE002             47.55             -2.03   0.0038      Kidney       chrY            True
+2   GENE003            104.34              0.63   0.0458       Brain       chrX           False
+3   GENE004            250.39             -1.82   0.0555        Lung       chrX           False
+4   GENE005             43.20             -2.82      NaN       Liver       chr3           False
+5   GENE006             43.20              2.93   0.0073      Kidney       chrX            True
+6   GENE007            264.86             -0.45   0.0067       Brain       chr4           False
+7   GENE008            117.62              0.14   0.2418       Liver       chrX           False
+8   GENE009             34.14             -2.85   0.0479       Liver       chr3            True
+9   GENE010             93.93               NaN   0.0076       Heart       chr3           False
+10  GENE011             34.35              0.22   0.1132        Lung       chrY           False
+11  GENE012             34.27             -2.30   0.1041      Kidney       chr4           False
+12  GENE013             69.54              0.75   0.0723       Brain       chr2           False
+13  GENE014              8.06             -1.20   0.0268       Heart       chr2            True
+14  GENE015              9.73             -0.58   0.0947        Lung       chrX           False
+
+2. Describing all columns (including non-numeric):
+        Gene_ID  Expression_Level  Log2_Fold_Change    P_Value Tissue_Type Chromosome Is_Significant
+count        15         15.000000         14.000000  14.000000          15         15             15
+unique       15               NaN               NaN        NaN           5          5              2
+top     GENE001               NaN               NaN        NaN        Lung       chrX          False
+freq          1               NaN               NaN        NaN           4          5             11
+mean        NaN         82.993333         -0.750000   0.069429         NaN        NaN            NaN
+std         NaN         78.207700          1.611707   0.066835         NaN        NaN            NaN
+min         NaN          8.060000         -2.850000   0.003800         NaN        NaN            NaN
+25%         NaN         34.310000         -1.977500   0.012400         NaN        NaN            NaN
+50%         NaN         47.550000         -0.850000   0.051700         NaN        NaN            NaN
+75%         NaN         99.135000          0.200000   0.101750         NaN        NaN            NaN
+max         NaN        264.860000          2.930000   0.241800         NaN        NaN            NaN
+
+3. Basic statistical methods:
+Mean expression level: 82.99
+Median log2 fold change: -0.85
+Minimum p-value: 0.0038
+Number of significant genes: 4
+Standard deviation of expression: 78.21
+
+4. Multiple statistics for Expression Level:
+min         8.060000
+max       264.860000
+mean       82.993333
+median     47.550000
+std        78.207700
+Name: Expression_Level, dtype: float64
+
+5. Expression level quartiles:
+0.00      8.060
+0.25     34.310
+0.50     47.550
+0.75     99.135
+1.00    264.860
+Name: Expression_Level, dtype: float64
+```
+
+:::
+
+:::{Note}
+
+* The `describe()` method gives you a quick overview of your data's distribution.
+* Notice how Pandas handles missing values in statistical calculations - they're automatically excluded.
+* You can compute multiple statistics at once with the `agg()` method, which we'll explore further.
+* Statistical methods can be combined with grouping to compare metrics across categories.
+* Remember that these methods only make sense for numerical data - Pandas will ignore or handle non-numeric data differently.
+
+:::
+
+## Aggregation Functions
+
+* Aggregation functions help perform beyond Built-in Statistics
+
+| Approach | Use Case | Method |
+|----------|----------|--------|
+| Built-in aggregations | Common statistics | `.agg(['mean', 'median'])` |
+| Lambda functions | Simple custom calculations | `.agg(lambda x: x.max() - x.min())` |
+| Named functions | Complex custom calculations | `.agg(custom_function)` |
+| Dictionary approach | Different aggs per column | `.agg({'A': 'sum', 'B': 'mean'})` |
+| Multiple aggregations | Comprehensive analysis | `.agg(['count', 'mean', custom_func])` |
+
+:::{demo}
+
+* Define a custom function and use `agg`
+* Different aggregations for different columns
+
+```python
+
+# Create a sample gene expression DataFrame
+np.random.seed(42)  # For reproducibility
+
+# Generate 15 sample genes
+data = {
+    'Gene_ID': [f'GENE{i:03d}' for i in range(1, 16)],
+    'Expression_Level': np.random.lognormal(4, 1, 15).round(2),  # Log-normal for expression values
+    'Log2_Fold_Change': np.random.normal(0, 2, 15).round(2),  # Normal distribution for log2 fold changes
+    'P_Value': np.random.beta(1, 10, 15).round(4),  # Beta distribution for p-values
+    'Tissue_Type': np.random.choice(['Brain', 'Liver', 'Kidney', 'Heart', 'Lung'], 15),
+    'Chromosome': np.random.choice(['chr1', 'chr2', 'chr3', 'chr4', 'chrX', 'chrY'], 15)
+}
+
+df = pd.DataFrame(data)
+print("Original dataframe")
+print(df)
+
+# 1. Simple custom aggregation with custom function
+
+# Define a custom function
+def get_range(x):
+    """Get range"""
+    return x.max() - x.min()
+
+def range_ratio(x):
+    """Calculate the ratio of max to min value"""
+    return x.max() / x.min()
+
+
+range_calc = df['Expression_Level'].agg(get_range)
+print("\n1. Expression Level range using lambda function:")
+print(f"{range_calc:.2f}")
+
+print("\n2. Expression Level max/min ratio using custom function:")
+print(f"{df['Expression_Level'].agg(range_ratio):.2f}")
+
+# 3. Different aggregations for different columns
+print("\n3. Different aggregations per column:")
+mixed_aggs = df.agg({
+    'Expression_Level': ['min', 'max', 'mean'],
+    'Log2_Fold_Change': ['median', 'std'],
+    'P_Value': ['min', 'mean'],
+    'Is_Significant': 'sum'
+})
+print(mixed_aggs)
+
+# 4. Genomics-specific custom aggregation
+def differential_expression_score(x):
+    """Calculate a custom score based on fold change magnitude and significance"""
+    # Higher absolute fold change and lower p-values yield higher scores
+    return x.abs().mean() * (-np.log10(df['P_Value'].dropna().mean()))
+
+print("\n4. Custom differential expression score:")
+print(f"{df['Log2_Fold_Change'].agg(differential_expression_score):.2f}")
+```
+
+:::{solution} Output
+
+```none
+1. Expression Level range using lambda function:
+256.80
+
+2. Expression Level max/min ratio using custom function:
+32.86
+
+3. Different aggregations per column:
+        Expression_Level  Log2_Fold_Change   P_Value  Is_Significant
+min             8.060000               NaN  0.003800             NaN
+max           264.860000               NaN       NaN             NaN
+mean           82.993333               NaN  0.069429             NaN
+median               NaN         -0.850000       NaN             NaN
+std                  NaN          1.611707       NaN             NaN
+sum                  NaN               NaN       NaN             4.0
+
+4. Custom differential expression score:
+1.64
+```
+
+:::
+:::
+
+## Custom Aggregations with GroupBy
+
+* The `groupby()` function allows us to split data into groups based on some criteria
+* We can apply a function to each group independently, and combine the results
+* Think of it as a "split-apply-combine" strategy
+
+### Basic GroupBy Concept
+
+:::{instructor-note} Group dataframes on columns
+
+```python
+# Create a genetic dataset
+import pandas as pd
+import numpy as np
+
+genetic_data = {
+    'Gene': ['BRCA1', 'TP53', 'APOE', 'PTEN', 'BRAF', 'KRAS', 
+            'BRCA2', 'EGFR', 'TNF', 'IL6'],
+    'Chromosome': ['Chr17', 'Chr17', 'Chr19', 'Chr10', 'Chr7', 'Chr12', 
+                  'Chr13', 'Chr7', 'Chr6', 'Chr7'],
+    'Study': ['Study1', 'Study2', 'Study1', 'Study3', 'Study2', 'Study3', 
+             'Study1', 'Study2', 'Study3', 'Study1'],
+    'PValue': [0.0001, 0.0050, 0.0200, 0.0150, 0.0300, 0.0400, 
+              0.0005, 0.0250, 0.0100, 0.0450],
+    'EffectSize': [2.5, 1.8, 3.2, 2.1, 1.5, 1.2, 2.7, 1.9, 2.3, 1.1]
+}
+
+genetic_df = pd.DataFrame(genetic_data)
+print("Genetic DataFrame:")
+print(genetic_df)
+
+# Group by Chromosome
+chromosome_groups = genetic_df.groupby('Chromosome')
+
+# View the groups
+print("Available groups:")
+print(list(chromosome_groups.groups.keys()))
+
+# Access a specific group
+print("\nGenes on Chr17:")
+print(chromosome_groups.get_group('Chr17'))
+```
+
+:::{solution} Output
+
+```none
+Genetic DataFrame:
+    Gene Chromosome   Study  PValue  EffectSize
+0  BRCA1      Chr17  Study1  0.0001         2.5
+1   TP53      Chr17  Study2  0.0050         1.8
+2   APOE      Chr19  Study1  0.0200         3.2
+3   PTEN      Chr10  Study3  0.0150         2.1
+4   BRAF       Chr7  Study2  0.0300         1.5
+5   KRAS      Chr12  Study3  0.0400         1.2
+6  BRCA2      Chr13  Study1  0.0005         2.7
+7   EGFR       Chr7  Study2  0.0250         1.9
+8    TNF       Chr6  Study3  0.0100         2.3
+9    IL6       Chr7  Study1  0.0450         1.1
+Available groups:
+['Chr10', 'Chr12', 'Chr13', 'Chr17', 'Chr19', 'Chr6', 'Chr7']
+
+Genes on Chr17:
+    Gene Chromosome   Study  PValue  EffectSize
+0  BRCA1      Chr17  Study1  0.0001         2.5
+1   TP53      Chr17  Study2  0.0050         1.8
+```
+
+:::
+
+:::
+
+:::{demo}
+
+**Aggregations - The Core of GroupBy:**
+
+After grouping, we typically want to perform calculations on each group.
+
+### Basic Aggregation Functions
+
+```python
+# Calculate mean effect size and p-value for each chromosome
+chromosome_stats = genetic_df.groupby('Chromosome').agg({
+    'PValue': 'mean',
+    'EffectSize': 'mean'
+})
+
+print("Mean statistics by chromosome:")
+print(chromosome_stats)
+```
+
+:::{solution} Output
+
+```none
+Mean statistics by chromosome:
+              PValue  EffectSize
+Chromosome
+Chr10       0.015000        2.10
+Chr12       0.040000        1.20
+Chr13       0.000500        2.70
+Chr17       0.002550        2.15
+Chr19       0.020000        3.20
+Chr6        0.010000        2.30
+Chr7        0.033333        1.50
+```
+
+:::
+
+:::{instructor-note} More info
+<details>
+<summary>Additional notes: Multiple Aggregations</summary>
+
+**Multiple Aggregations:**
+
+We can apply multiple functions to each column:
+
+```python
+# Apply multiple aggregations
+multi_agg = genetic_df.groupby('Study').agg({
+    'PValue': ['min', 'max', 'mean'],
+    'EffectSize': ['min', 'max', 'mean', 'std']
+})
+
+print("Multiple aggregations by study:")
+print(multi_agg)multi_agg = genetic_df.groupby('Study').agg({
+    'PValue': ['min', 'max', 'mean'],
+    'EffectSize': ['min', 'max', 'mean', 'std']
+})
+
+print("Multiple aggregations by study:")
+print(multi_agg)
+```
+
+Output
+
+```none
+Multiple aggregations by study:
+        PValue                  EffectSize
+           min    max      mean        min  max      mean       std
+Study
+Study1  0.0001  0.045  0.016400        1.1  3.2  2.375000  0.899537
+Study2  0.0050  0.030  0.020000        1.5  1.9  1.733333  0.208167
+Study3  0.0100  0.040  0.021667        1.2  2.3  1.866667  0.585947
+```
+
+**Custom Aggregation Functions:**
+
+Sometimes built-in functions aren't enough. Let's create a custom function to calculate the coefficient of variation (CV):
+
+```python
+# Custom function for coefficient of variation
+def cv(x):
+    return x.std() / x.mean() if x.mean() != 0 else 0
+
+# Apply our custom function
+custom_agg = genetic_df.groupby('Chromosome').agg({
+    'EffectSize': [cv, 'count']
+})
+
+print("Custom aggregation by chromosome:")
+print(custom_agg)
+```
+
+Output
+
+```none
+Custom aggregation by chromosome:
+           EffectSize
+                   cv count
+Chromosome
+Chr10             NaN     1
+Chr12             NaN     1
+Chr13             NaN     1
+Chr17        0.230221     2
+Chr19             NaN     1
+Chr6              NaN     1
+Chr7         0.266667     3
+```
+
+**Grouping by Multiple Columns:**
+
+We can create hierarchical groups using multiple columns:
+
+```python
+# Group by both Chromosome and Study
+multi_group = genetic_df.groupby(['Chromosome', 'Study']).agg({
+    'PValue': 'mean',
+    'EffectSize': 'mean'
+})
+
+print("Grouping by multiple columns:")
+print(multi_group)
+```
+
+Output
+
+```none
+Grouping by multiple columns:
+                   PValue  EffectSize
+Chromosome Study
+Chr10      Study3  0.0150         2.1
+Chr12      Study3  0.0400         1.2
+Chr13      Study1  0.0005         2.7
+Chr17      Study1  0.0001         2.5
+           Study2  0.0050         1.8
+Chr19      Study1  0.0200         3.2
+Chr6       Study3  0.0100         2.3
+Chr7       Study1  0.0450         1.1
+           Study2  0.0275         1.7
+```
+
+
+Notes:
+
+* Built-in aggregations cover many common needs, but custom functions let you calculate any metric you can imagine.
+* Lambda functions are perfect for simple calculations that don't need to be reused.
+* Named functions are better for complex calculations or ones you'll reuse multiple times.
+* The dictionary approach gives you fine-grained control over which aggregations to apply to each column.
+* Custom aggregations really shine when combined with grouping operations.
+* Note how the result has a hierarchical index - flattening these can make the results more manageable.
+* These techniques are powerful because they let you create domain-specific metrics tailored to your analysis needs.
+
+**Exercises: Basic Statistics:**
+
+* Use `students` database and
+  * Generate a comprehensive statistical summary of all numeric columns
+  * Calculate the average score for each subject
+  * Find the highest and lowest scoring student in each subject
+
+```python
+# Create a dataset of student scores
+student_data = {
+    'Student_ID': range(1, 11),
+    'Math': [85, 90, 72, 95, 83, 78, 92, 86, 79, 88],
+    'Science': [92, 85, 76, 94, 88, 84, 90, 81, 74, 89],
+    'English': [78, 92, 88, 96, 82, 79, 91, 84, 76, 93],
+    'Class': ['A', 'B', 'A', 'B', 'A', 'B', 'A', 'B', 'A', 'B']
+}
+students = pd.DataFrame(student_data)
+```
+
+```python
+# Tasks:
+# 1. Generate a comprehensive statistical summary of all numeric columns
+print("1. Statistical summary of student scores:")
+print(students.describe())
+
+# 2. Calculate the average score for each subject
+subject_means = students[['Math', 'Science', 'English']].mean()
+print("\n2. Average scores by subject:")
+print(subject_means)
+
+# 3. Find the highest and lowest scoring student in each subject
+highest_math = students.loc[students['Math'].idxmax()]
+lowest_english = students.loc[students['English'].idxmin()]
+print("\n3. Highest scoring student in Math:")
+print(highest_math[['Student_ID', 'Math', 'Class']])
+print("\nLowest scoring student in English:")
+print(lowest_english[['Student_ID', 'English', 'Class']])
+
+# # 4. Compare average scores between classes
+# class_comparison = students.groupby('Class')[['Math', 'Science', 'English']].mean()
+# print("\n4. Average scores by class:")
+# print(class_comparison)
+```
+
+**Exercise: Custom Aggregations:**
+
+Use `students` dataframe and execute:
+
+* Calculate the range (max - min) for each subject
+* Define and apply a custom function to calculate the proportion of students scoring above 85
+  * Define a new function called `high_achievers` that takes in one parameter called `scores`. The `scores` parameter will be a series of scores for a particular subject
+  * Perform a Boolean Comparison - compare each score in the scores series to 85. This will result in a Boolean mask
+  * call `.mean()` on the Boolean series (average of the numerical representation of `True` and `False`) and calculate the percentage
+  * `agg()` applying `high_achievers` function
+* Calculate multiple statistics ('mean', 'max', high_achievers) by class
+
+```python
+
+student_data = {
+    'Student_ID': range(1, 11),
+    'Math': [85, 90, 72, 95, 83, 78, 92, 86, 79, 88],
+    'Science': [92, 85, 76, 94, 88, 84, 90, 81, 74, 89],
+    'English': [78, 92, 88, 96, 82, 79, 91, 84, 76, 93],
+    'Class': ['A', 'B', 'A', 'B', 'A', 'B', 'A', 'B', 'A', 'B']
+}
+students = pd.DataFrame(student_data)
+print("Student DataFrame:")
+print(students)
+```
+
+*Solution Exercise - Custom Aggregations:*
+
+```python
+# Tasks:
+# 1. Calculate the range (max - min) for each subject
+score_ranges = students.agg({
+    'Math': lambda x: x.max() - x.min(),
+    'Science': lambda x: x.max() - x.min(),
+    'English': lambda x: x.max() - x.min()
+})
+print("\n1. Score range for each subject:")
+print(score_ranges)
+
+# 2. Define and apply a custom function to calculate the proportion of students scoring above 85
+def high_achievers(scores):
+    return (scores > 85).mean() * 100  # Percentage of scores above 85
+
+high_performers = students[['Math', 'Science', 'English']].agg(high_achievers)
+print("\n2. Percentage of high achievers (>85) in each subject:")
+print(high_performers)
+
+# 3. Calculate multiple statistics by class
+class_stats = students.groupby('Class').agg({
+    'Math': ['mean', 'max', high_achievers],
+    'Science': ['mean', 'max', high_achievers],
+    'English': ['mean', 'max', high_achievers]
+})
+print("\n3. Multiple statistics by class:")
+print(class_stats)
+```
+
+:::
+</details>
+
+:::{instructor-note} More info
+<details>
+<summary>Additional notes: Homework</summary>
+
+## Homework
+
+:::{homework}
+
+### GroupBy Operations and the Split-Apply-Combine Pattern (7 minutes)
+
+**The Split-Apply-Combine Workflow:**
+
+Split-Apply-Combine Pattern
+
+| Phase | Description | Pandas Implementation |
+|-------|-------------|----------------------|
+| Split | Divide data into groups | `df.groupby('column')` |
+| Apply | Perform operation on each group | `.mean()`, `.sum()`, `.agg()`, etc. |
+| Combine | Bring results back together | Automatic in Pandas |
+
+**Basic GroupBy Operations:**
+
+```python
+# Create a more comprehensive dataset
+retail_data = {
+    'Date': pd.date_range(start='2023-01-01', periods=20),
+    'Product': np.random.choice(['Laptop', 'Phone', 'Tablet', 'Monitor'], 20),
+    'Category': np.random.choice(['Electronics', 'Accessories'], 20),
+    'Store': np.random.choice(['North', 'South', 'East', 'West'], 20),
+    'Units': np.random.randint(1, 10, 20),
+    'Unit_Price': np.random.choice([1200, 800, 300, 250], 20),
+    'Discount': np.random.choice([0, 0.1, 0.2], 20)
+}
+sales = pd.DataFrame(retail_data)
+sales['Revenue'] = sales['Units'] * sales['Unit_Price'] * (1 - sales['Discount'])
+
+print("Retail Sales DataFrame:")
+print(sales.head())
+
+# 1. Basic groupby with single column
+product_sales = sales.groupby('Product')['Units'].sum()
+print("\n1. Total units sold by product:")
+print(product_sales)
+
+# 2. Groupby with multiple aggregations
+product_summary = sales.groupby('Product').agg({
+    'Units': 'sum',
+    'Revenue': ['sum', 'mean'],
+    'Discount': 'mean'
+})
+print("\n2. Product sales summary:")
+print(product_summary)
+
+# 3. Groupby with multiple columns
+store_product = sales.groupby(['Store', 'Product'])['Revenue'].sum()
+print("\n3. Revenue by store and product:")
+print(store_product)
+
+# 4. Unstack to reshape result
+store_product_unstacked = store_product.unstack()
+print("\n4. Revenue by store and product (unstacked):")
+print(store_product_unstacked)
+
+# 5. Groupby with date components
+sales['Month'] = sales['Date'].dt.month
+monthly_sales = sales.groupby('Month')['Revenue'].sum()
+print("\n5. Total monthly revenue:")
+print(monthly_sales)
+```
+
+**Advanced GroupBy Operations:**
+
+```python
+# 1. Filter groups based on a condition
+high_volume_products = sales.groupby('Product').filter(lambda x: x['Units'].sum() > 30)
+print("1. Products with more than 30 total units sold:")
+print(high_volume_products['Product'].unique())
+
+# 2. Transform to fill missing values with group mean
+df_with_missing = sales.copy()
+df_with_missing.loc[2, 'Unit_Price'] = None
+df_with_missing.loc[5, 'Unit_Price'] = None
+print("\n2a. DataFrame with missing values:")
+print(df_with_missing[df_with_missing['Unit_Price'].isna()])
+
+# Fill with product-specific means
+filled_df = df_with_missing.copy()
+filled_df['Unit_Price'] = df_with_missing.groupby('Product')['Unit_Price'].transform(
+    lambda x: x.fillna(x.mean())
+)
+print("\n2b. After filling with product-specific means:")
+print(filled_df[df_with_missing['Unit_Price'].isna()])
+
+# 3. Apply to manipulate each group
+def top_revenue_product(group):
+    return group.nlargest(1, 'Revenue')
+
+top_by_store = sales.groupby('Store').apply(top_revenue_product)
+print("\n3. Highest revenue product in each store:")
+print(top_by_store[['Store', 'Product', 'Revenue']])
+
+# 4. Calculating group-specific ranks
+sales['Revenue_Rank'] = sales.groupby('Store')['Revenue'].rank(ascending=False)
+top_sellers = sales[sales['Revenue_Rank'] <= 2]
+print("\n4. Top 2 sales by revenue in each store:")
+print(top_sellers[['Store', 'Product', 'Revenue', 'Revenue_Rank']])
+```
+
+:::{Note}
+
+* The GroupBy operation is one of the most powerful features in Pandas, inspired by the 'split-apply-combine' pattern from R.
+* First, data is split into groups based on one or more columns.
+* Next, operations are applied to each group independently.
+* Finally, results are combined back into a coherent structure.
+* This pattern is incredibly flexible - you can group by any column(s) and apply virtually any operation."
+* The result of a groupby has a hierarchical index, which can be reshaped using `unstack()`."
+* Beyond simple aggregations, groupby supports filtering, transformation, and applying custom functions to groups.
+* The `transform()` method is particularly useful for filling missing values with group-specific statistics.
+* The `apply()` method allows for complex operations that operate on the entire group.
+* Groupby operations often form the backbone of business intelligence and reporting systems.
+:::
+
+:::
+
+## Key Takeaways
+
+:::{Keypoints}
+
+1. **Descriptive Statistics:** Pandas provides comprehensive methods for calculating summary statistics on your data
+2. **Custom Aggregations:** When built-in statistics aren't enough, you can create custom aggregation functions
+3. **GroupBy Power:** The split-apply-combine pattern enables sophisticated analyses across subsets of your data
+4. **Multiple Dimensions:** You can group by multiple columns to create hierarchical analyses
+:::

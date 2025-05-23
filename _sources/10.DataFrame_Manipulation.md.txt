@@ -1,0 +1,992 @@
+# DataFrame Manipulation & Sorting
+
+:::{objectives}
+
+* Demonstrate effective techniques for selecting specific rows and from DataFrames.
+* Equip participants with skills to add and remove columns within a DataFrame.
+* Implement sorting methods by values, by index, and perform multiple column sorting with custom orders.
+:::
+
+:::{instructor-note}
+
+* Teaching : 15 min
+* Demo: 25 min
+
+:::
+
+:::{Note}
+
+* Now that we can import data, we need to reshape and manipulate it for analysis
+* In real-world data analysis, you'll spend about 80% of your time cleaning and manipulating data, and only 20% on actual analysis
+* The skills we're covering in this session form the backbone of data wrangling in Python
+* Think of these operations as transforming raw data into analysis-ready information
+
+:::
+
+## Column and Row Selection
+
+**Different Ways to Select Data:**
+
+| Selection Type | Purpose | Example Syntax |
+|----------------|---------|----------------|
+| Single column | Get one variable | `df['column_name']` or `df.column_name` |
+| Multiple columns | Get specific variables | `df[['col1', 'col2']]` |
+| Row by index | Get specific observation | `df.loc['index_label']` |
+| Row by position | Get nth observation | `df.iloc[n]` |
+| Row and column | Get specific value(s) | `df.loc['index', 'column']` |
+| Slicing | Get ranges of data | `df.loc['idx1':'idx2', 'col1':'col2']` |
+
+### Basic Selection
+
+:::{demo}
+
+```python
+import pandas as pd
+import numpy as np
+
+# Create a sample dataset
+data = {
+    'Name': ['Alice', 'Bob', 'Charlie', 'David', 'Eva'],
+    'Age': [24, 30, 35, 42, 28],
+    'City': ['New York', 'Boston', 'Chicago', 'Seattle', 'Miami'],
+    'Salary': [65000, 72000, 85000, 92000, 70000],
+    'Department': ['HR', 'Sales', 'Tech', 'Tech', 'Finance']
+}
+df = pd.DataFrame(data)
+df.index = ['emp001', 'emp002', 'emp003', 'emp004', 'emp005']  # Custom index
+print("Original DataFrame:")
+print(df)
+
+```
+
+:::
+
+:::{instructor-note} More info
+
+<details>
+<summary>Additional notes: Dataframe set_index</summary>
+
+```python
+data = {
+    'Name': ['Alice', 'Bob', 'Charlie', 'David', 'Eva'],
+    'Age': [24, 30, 35, 42, 28],
+    'City': ['New York', 'Boston', 'Chicago', 'Seattle', 'Miami'],
+    'Salary': [65000, 72000, 85000, 92000, 70000],
+    'Department': ['HR', 'Sales', 'Tech', 'Tech', 'Finance'],
+    'employee_id': ['emp001', 'emp002', 'emp003', 'emp004', 'emp005'],
+}
+
+df = pd.DataFrame(data)
+df.set_index("employee_id", inplace=True)
+df.head()
+```
+
+:::
+</details>
+
+:::{demo}
+
+```python
+# Single column selection - two methods
+print("\n1. Single column as Series:")
+print(df['Age'])  # Returns a Series
+
+print("\n2. Alternative syntax for columns without spaces:")
+print(df.Age)  # Also returns a Series, but only works if column name has no spaces
+
+# Multiple column selection
+print("\n3. Selecting multiple columns:")
+print(df[['Name', 'Salary']])  # Returns a DataFrame
+
+# Row selection by index label using .loc
+print("\n4. Selecting row by index label:")
+print(df.loc['emp003'])  # Returns a Series representing the row
+
+# Row selection by position using .iloc
+print("\n5. Selecting row by position (third row):")
+print(df.iloc[2])  # Also returns a Series
+
+# Selecting a subset of rows
+print("\n6. Selecting multiple rows by position:")
+print(df.iloc[1:4])  # Row indices 1, 2, and 3 (not including 4)
+
+# Selecting specific cells
+print("\n7. Selecting specific value (cell):")
+print(df.loc['emp002', 'Salary'])  # Returns the value (72000)
+
+# Selecting a subset of rows and columns
+print("\n8. Selecting subset of rows and columns:")
+print(df.loc['emp001':'emp003', ['Name', 'Age', 'Salary']])
+## df.iloc[0:3, [0,1,3]] == df.loc['emp001':'emp003', ['Name', 'Age', 'Salary']] 
+```
+
+:::{solution} Output
+
+```none
+Original DataFrame:
+           Name  Age      City  Salary Department
+emp001    Alice   24  New York   65000         HR
+emp002      Bob   30    Boston   72000      Sales
+emp003  Charlie   35   Chicago   85000       Tech
+emp004    David   42   Seattle   92000       Tech
+emp005      Eva   28     Miami   70000    Finance
+
+1. Single column as Series:
+emp001    24
+emp002    30
+emp003    35
+emp004    42
+emp005    28
+Name: Age, dtype: int64
+
+2. Alternative syntax for columns without spaces:
+emp001    24
+emp002    30
+emp003    35
+emp004    42
+emp005    28
+Name: Age, dtype: int64
+
+3. Selecting multiple columns:
+           Name  Salary
+emp001    Alice   65000
+emp002      Bob   72000
+emp003  Charlie   85000
+emp004    David   92000
+emp005      Eva   70000
+
+4. Selecting row by index label:
+Name          Charlie
+Age                35
+City          Chicago
+Salary          85000
+Department       Tech
+Name: emp003, dtype: object
+
+5. Selecting row by position (third row):
+Name          Charlie
+Age                35
+City          Chicago
+Salary          85000
+Department       Tech
+Name: emp003, dtype: object
+
+6. Selecting multiple rows by position:
+           Name  Age     City  Salary Department
+emp002      Bob   30   Boston   72000      Sales
+emp003  Charlie   35  Chicago   85000       Tech
+emp004    David   42  Seattle   92000       Tech
+
+7. Selecting specific value (cell):
+72000
+
+8. Selecting subset of rows and columns:
+           Name  Age  Salary
+emp001    Alice   24   65000
+emp002      Bob   30   72000
+emp003  Charlie   35   85000
+```
+
+:::
+
+:::{Note}
+
+* Notice that selecting a single column returns a Series, while selecting multiple columns maintains the DataFrame structure
+* The `.loc` accessor is used for label-based indexing, while `.iloc` is for position-based indexing
+:::
+
+### Advanced Selection with Conditions
+
+:::{demo}
+
+```python
+# Boolean selection - rows where Age > 30
+print("\n9. Boolean selection - employees over 30:")
+print(df[df['Age'] > 30])
+
+# Multiple conditions using & (and) and | (or)
+print("\n10. Multiple conditions - Tech department with salary > 80000:")
+print(df[(df['Department'] == 'Tech') & (df['Salary'] > 80000)])
+
+# Using .query() method for cleaner syntax
+## .query() method allows you to use and/or
+## print("\n11. Using query method - same condition:")
+## print(df.query("Department == 'Tech' and Salary > 80000"))
+
+# Row selection with .isin()
+print("\n12. Using .isin() - employees in HR or Finance:")
+print(df[df['Department'].isin(['HR', 'Finance'])])
+```
+
+:::{solution} Output
+
+```none
+9. Boolean selection - employees over 30:
+           Name  Age     City  Salary Department
+emp003  Charlie   35  Chicago   85000       Tech
+emp004    David   42  Seattle   92000       Tech
+
+10. Multiple conditions - Tech department with salary > 80000:
+           Name  Age     City  Salary Department
+emp003  Charlie   35  Chicago   85000       Tech
+emp004    David   42  Seattle   92000       Tech
+
+11. Using query method - same condition:
+           Name  Age     City  Salary Department
+emp003  Charlie   35  Chicago   85000       Tech
+emp004    David   42  Seattle   92000       Tech
+
+12. Using .isin() - employees in HR or Finance:
+         Name  Age      City  Salary Department
+emp001  Alice   24  New York   65000         HR
+emp005    Eva   28     Miami   70000    Finance
+```
+
+:::
+
+:::{Note}
+
+* Boolean selection is incredibly powerful - it lets you filter data based on specific conditions
+* These selection methods can be combined in powerful ways to extract exactly the data you need
+
+:::
+
+:::{instructor-note} More info
+
+<details>
+<summary>Additional notes: Exercise</summary>
+
+**Selection Practice:**
+
+Use `inventory` dataframe and
+
+* Select just the Product_Name and Price columns
+* Select all products that are in stock (In_Stock is True)
+* Select all electronics that cost less than 500
+* Select the 2nd and 3rd products using position-based indexing 
+
+```python
+# Create a dataset of product inventory
+products = {
+    'Product_ID': ['P001', 'P002', 'P003', 'P004', 'P005', 'P006'],
+    'Product_Name': ['Laptop', 'Smartphone', 'Tablet', 'Monitor', 'Keyboard', 'Mouse'],
+    'Category': ['Electronics', 'Electronics', 'Electronics', 
+                 'Electronics', 'Accessories', 'Accessories'],
+    'Price': [1200, 800, 350, 250, 75, 25],
+    'In_Stock': [True, True, False, True, True, False],
+    'Units': [15, 28, 0, 10, 45, 0]
+}
+inventory = pd.DataFrame(products)
+```
+
+Solution
+
+```python
+# Tasks:
+# 1. Select just the Product_Name and Price columns
+names_prices = inventory[['Product_Name', 'Price']]
+print("Product names and prices:")
+print(names_prices)
+
+# 2. Select all products that are in stock (In_Stock is True)
+in_stock = inventory[inventory['In_Stock'] == True]
+print("\nProducts in stock:")
+print(in_stock)
+
+# 3. Select all electronics that cost less than 500
+cheap_electronics = inventory[(inventory['Category'] == 'Electronics') & 
+                              (inventory['Price'] < 500)]
+print("\nAffordable electronics:")
+print(cheap_electronics)
+
+# 4. Select the 2nd and 3rd products using position-based indexing
+second_third = inventory.iloc[1:3]
+print("\nSecond and third products:")
+print(second_third)
+```
+
+Understand the different ways to select data from a DataFrame, including column selection, row selection by label and position, boolean filtering, and combinations of these methods
+
+:::
+</details>
+
+## Adding and Removing Columns/Rows
+
+**Modifying DataFrame Structure:**
+
+| Operation | Method | Example |
+|-----------|--------|---------|
+| Add column | Direct assignment | `df['new_col'] = values` |
+| Add column | From existing columns | `df['new_col'] = df['col1'] + df['col2']` |
+| Add column | Using apply/lambda | `df['new_col'] = df.apply(lambda x: func(x), axis=1)` |
+| Remove column | Using drop | `df.drop('column', axis=1)` |
+| Remove row | Using drop | `df.drop('index_label')` |
+| Add row | Using loc | `df.loc['new_index'] = values` |
+| Add row | Using append/concat | `pd.concat([df, new_row])` |
+
+### Adding and Removing Columns
+
+* Adding new column with
+  * a scalar value
+  * a list of values
+  * a calculated values in a pandas series
+  * a column with conditional values
+* Removing
+  * a single column
+  * multiple columns
+  * columns in-place
+
+:::{demo}
+
+```python
+
+# Create a sample dataset
+data = {
+    'Name': ['Alice', 'Bob', 'Charlie', 'David', 'Eva'],
+    'Age': [24, 30, 35, 42, 28],
+    'City': ['New York', 'Boston', 'Chicago', 'Seattle', 'Miami'],
+    'Salary': [65000, 72000, 85000, 92000, 70000],
+    'Department': ['HR', 'Sales', 'Tech', 'Tech', 'Finance']
+}
+df = pd.DataFrame(data)
+df.index = ['emp001', 'emp002', 'emp003', 'emp004', 'emp005']  # Custom index
+print("Original DataFrame:")
+print(df)
+
+# 1. Adding a new column with scalar value
+df['Active'] = True
+print("\n1. Adding 'Active' column with same value for all rows:")
+print(df)
+
+# 2. Adding a column with a list of values
+df['Performance'] = [4.5, 4.0, 3.8, 4.7, 4.2]
+print("\n2. Adding 'Performance' column with different values:")
+print(df)
+
+# 3. Adding a calculated column
+df['Bonus'] = df['Salary'] * df['Performance'] / 100
+print("\n3. Adding calculated 'Bonus' column:")
+print(df)
+
+# 4. Adding a column with conditional values
+df['Experience'] = np.where(df['Age'] > 30, 'Senior', 'Junior')
+print("\n4. Adding conditional 'Experience' column:")
+print(df)
+
+# 5. Removing a single column
+df_no_city = df.drop('City', axis=1)
+print("\n5. Removing 'City' column:")
+print(df_no_city)
+
+# 6. Removing multiple columns
+df_minimal = df.drop(['Active', 'Performance', 'Bonus'], axis=1)
+print("\n6. Removing multiple columns:")
+print(df_minimal)
+
+# 7. Remove columns in-place
+df.drop(['City', 'Active'], axis=1, inplace=True)
+print("\n7. Removing multiple columns (inplace=True):")
+print(df)
+```
+
+:::{solution} Output
+
+```none
+Original DataFrame:
+           Name  Age      City  Salary Department
+emp001    Alice   24  New York   65000         HR
+emp002      Bob   30    Boston   72000      Sales
+emp003  Charlie   35   Chicago   85000       Tech
+emp004    David   42   Seattle   92000       Tech
+emp005      Eva   28     Miami   70000    Finance
+
+1. Adding 'Active' column with same value for all rows:
+           Name  Age      City  Salary Department  Active
+emp001    Alice   24  New York   65000         HR    True
+emp002      Bob   30    Boston   72000      Sales    True
+emp003  Charlie   35   Chicago   85000       Tech    True
+emp004    David   42   Seattle   92000       Tech    True
+emp005      Eva   28     Miami   70000    Finance    True
+
+2. Adding 'Performance' column with different values:
+           Name  Age      City  Salary Department  Active  Performance
+emp001    Alice   24  New York   65000         HR    True          4.5
+emp002      Bob   30    Boston   72000      Sales    True          4.0
+emp003  Charlie   35   Chicago   85000       Tech    True          3.8
+emp004    David   42   Seattle   92000       Tech    True          4.7
+emp005      Eva   28     Miami   70000    Finance    True          4.2
+
+3. Adding calculated 'Bonus' column:
+           Name  Age      City  Salary Department  Active  Performance   Bonus
+emp001    Alice   24  New York   65000         HR    True          4.5  2925.0
+emp002      Bob   30    Boston   72000      Sales    True          4.0  2880.0
+emp003  Charlie   35   Chicago   85000       Tech    True          3.8  3230.0
+emp004    David   42   Seattle   92000       Tech    True          4.7  4324.0
+emp005      Eva   28     Miami   70000    Finance    True          4.2  2940.0
+
+4. Adding conditional 'Experience' column:
+           Name  Age      City  Salary Department  Active  Performance   Bonus Experience
+emp001    Alice   24  New York   65000         HR    True          4.5  2925.0     Junior
+emp002      Bob   30    Boston   72000      Sales    True          4.0  2880.0     Junior
+emp003  Charlie   35   Chicago   85000       Tech    True          3.8  3230.0     Senior
+emp004    David   42   Seattle   92000       Tech    True          4.7  4324.0     Senior
+emp005      Eva   28     Miami   70000    Finance    True          4.2  2940.0     Junior
+
+5. Removing 'City' column:
+           Name  Age  Salary Department  Active  Performance   Bonus Experience
+emp001    Alice   24   65000         HR    True          4.5  2925.0     Junior
+emp002      Bob   30   72000      Sales    True          4.0  2880.0     Junior
+emp003  Charlie   35   85000       Tech    True          3.8  3230.0     Senior
+emp004    David   42   92000       Tech    True          4.7  4324.0     Senior
+emp005      Eva   28   70000    Finance    True          4.2  2940.0     Junior
+
+6. Removing multiple columns:
+           Name  Age      City  Salary Department Experience
+emp001    Alice   24  New York   65000         HR     Junior
+emp002      Bob   30    Boston   72000      Sales     Junior
+emp003  Charlie   35   Chicago   85000       Tech     Senior
+emp004    David   42   Seattle   92000       Tech     Senior
+emp005      Eva   28     Miami   70000    Finance     Junior
+
+7. Removing multiple columns (inplace=True):
+           Name  Age  Salary Department  Performance   Bonus
+emp001    Alice   24   65000         HR          4.5  2925.0
+emp002      Bob   30   72000      Sales          4.0  2880.0
+emp003  Charlie   35   85000       Tech          3.8  3230.0
+emp004    David   42   92000       Tech          4.7  4324.0
+emp005      Eva   28   70000    Finance          4.2  2940.0
+```
+
+:::
+
+### Adding and Removing Rows
+
+* Removing
+  * a row by index label
+  * multiple rows
+* Adding a new row
+  * with `.loc`
+  * with a Series
+
+:::{demo}
+
+```python
+
+data = {
+    'Name': ['Alice', 'Bob', 'Charlie', 'David', 'Eva'],
+    'Age': [24, 30, 35, 42, 28],
+    'City': ['New York', 'Boston', 'Chicago', 'Seattle', 'Miami'],
+    'Salary': [65000, 72000, 85000, 92000, 70000],
+    'Department': ['HR', 'Sales', 'Tech', 'Tech', 'Finance']
+}
+df = pd.DataFrame(data)
+df.index = ['emp001', 'emp002', 'emp003', 'emp004', 'emp005']  # Custom index
+
+# 1. Removing a row by index label
+df_no_bob = df.drop('emp002')
+print("\n1. DataFrame without Bob (emp002):")
+print(df_no_bob)
+
+# 2. Removing multiple rows
+df_reduced = df.drop(['emp001', 'emp005'])
+print("\n2. DataFrame without emp001 and emp005:")
+print(df_reduced)
+
+# 3. Adding a new row with .loc
+# Create a copy to avoid SettingWithCopyWarning
+df_new = df.copy()
+df_new.loc['emp006'] = ['Frank', 38, 'Dallas', 88000, 'Sales']
+print("\n3. DataFrame with new employee:")
+print(df_new)
+
+# 4. Adding a row with a Series
+new_employee = pd.Series({
+    'Name': 'Grace', 'Age': 27, 'City': 'Denver', 'Salary': 67000, 'Department': 'HR',
+}, name='emp007')
+
+df_newer = pd.concat([df_new, new_employee.to_frame().T])
+print("\n4. DataFrame with another new employee:")
+print(df_newer)
+```
+
+:::{solution} Output
+
+```none
+1. DataFrame without Bob (emp002):
+           Name  Age      City  Salary Department
+emp001    Alice   24  New York   65000         HR
+emp003  Charlie   35   Chicago   85000       Tech
+emp004    David   42   Seattle   92000       Tech
+emp005      Eva   28     Miami   70000    Finance
+
+2. DataFrame without emp001 and emp005:
+           Name  Age     City  Salary Department
+emp002      Bob   30   Boston   72000      Sales
+emp003  Charlie   35  Chicago   85000       Tech
+emp004    David   42  Seattle   92000       Tech
+
+3. DataFrame with new employee:
+           Name  Age      City  Salary Department
+emp001    Alice   24  New York   65000         HR
+emp002      Bob   30    Boston   72000      Sales
+emp003  Charlie   35   Chicago   85000       Tech
+emp004    David   42   Seattle   92000       Tech
+emp005      Eva   28     Miami   70000    Finance
+emp006    Frank   38    Dallas   88000      Sales
+
+4. DataFrame with another new employee:
+           Name  Age      City  Salary Department
+emp001    Alice   24  New York   65000         HR
+emp002      Bob   30    Boston   72000      Sales
+emp003  Charlie   35   Chicago   85000       Tech
+emp004    David   42   Seattle   92000       Tech
+emp005      Eva   28     Miami   70000    Finance
+emp006    Frank   38    Dallas   88000      Sales
+emp007    Grace   27    Denver   67000         HR
+```
+
+:::
+
+:::{Note}
+
+* Notice that we can add columns based on calculations from other columns - this is ideal for metrics and KPIs
+* The `drop()` function is powerful but doesn't modify the original DataFrame unless you specify `inplace=True`
+* Adding rows is less common but useful for simulation, testing, or creating summary rows
+* Always be careful with the `axis` parameter - `axis=0` is for rows, `axis=1` is for columns
+
+:::
+
+:::{instructor-note} More info
+<details>
+<summary>Additional notes: Additional info and exercise</summary>
+
+**How Pandas Handles Series-to-DataFrame Conversions:**
+
+When converting a pandas Series to a DataFrame, there are several methods that produce different results
+
+1. Direct Conversion: `pd.DataFrame(series)`
+
+    ```python
+    new_employee = pd.Series({
+    'Name': 'Grace', 'Age': 27, 'City': 'Denver', 
+    'Salary': 67000, 'Department': 'HR'
+    }, name='emp007')
+
+    # Direct conversion
+    df1 = pd.DataFrame(new_employee)
+
+    ```
+
+    Output
+
+    ```none
+                  emp007
+    Name          Grace
+    Age              27
+    City          Denver
+    Salary        67000
+    Department       HR
+
+    * The Series values become a single column in the DataFrame
+    * The Series keys become the row index of the DataFrame
+    * The Series name becomes the column name in the DataFrame
+    ```
+
+2. Wrapped in a List: `pd.DataFrame([series])`
+
+    ```python
+    # Wrapping in a list
+    df2 = pd.DataFrame([new_employee])
+    ```
+
+    Output
+
+    ```none
+    Name  Age    City  Salary Department
+    0  Grace   27  Denver   67000         HR
+
+    * The Series becomes a single row in the DataFrame
+    * The Series keys become the column names in the DataFrame
+    * A default index (0) is created
+    * The Series name is effectively ignored
+    ```
+
+3. `to_frame()` Method
+
+    ```python
+    # These produce identical results:
+    df1 = new_employee.to_frame()
+    df2 = pd.DataFrame(new_employee)
+    ```
+
+    Output
+
+    ```none
+                  emp007
+    Name          Grace
+    Age              27
+    City          Denver
+    Salary        67000
+    Department       HR
+
+    * The Series values become a single column
+    * The Series index becomes the DataFrame's index
+    * By default, the Series name becomes the column name
+    * You can specify a different column name: `series.to_frame('new_column_name')`
+    ```
+
+:::{exercise}
+
+**Adding and Removing Data:**
+
+```python
+products = {
+    'Product_ID': ['P001', 'P002', 'P003', 'P004', 'P005', 'P006'],
+    'Product_Name': ['Laptop', 'Smartphone', 'Tablet', 'Monitor', 'Keyboard', 'Mouse'],
+    'Category': ['Electronics', 'Electronics', 'Electronics', 
+                 'Electronics', 'Accessories', 'Accessories'],
+    'Price': [1200, 800, 350, 250, 75, 25],
+    'In_Stock': [True, True, False, True, True, False],
+    'Units': [15, 28, 0, 10, 45, 0]
+}
+inventory = pd.DataFrame(products)
+```
+
+Use inventory dataframe and
+
+* Add a 'Value' column that multiplies Price by Units
+* Add a 'Status' column: 'Available' if In_Stock is True, 'Out of Stock' otherwise
+* Remove the In_Stock column (now redundant with Status)
+* Add a `new_product` row
+
+```python
+new_product = pd.Series({
+    'Product_ID': 'P007',
+    'Product_Name': 'Headphones',
+    'Category': 'Accessories',
+    'Price': 150,
+    'Units': 20,
+    'Value': 3000,
+    'Status': 'Available'
+})
+```
+
+```python
+# Continue with the inventory DataFrame from Exercise 1
+print("Original inventory:")
+print(inventory)
+
+# 1. Add a 'Value' column that multiplies Price by Units
+inventory['Value'] = inventory['Price'] * inventory['Units']
+print("\nInventory with Value column:")
+print(inventory)
+
+# 2. Add a 'Status' column: 'Available' if In_Stock is True, 'Out of Stock' otherwise
+inventory['Status'] = inventory['In_Stock'].map({True: 'Available', False: 'Out of Stock'})
+print("\nInventory with Status column:")
+print(inventory)
+
+# 3. Remove the In_Stock column (now redundant with Status)
+inventory_updated = inventory.drop('In_Stock', axis=1)
+print("\nInventory without In_Stock column:")
+print(inventory_updated)
+
+# 4. Add a new product row
+inventory_final = pd.concat([inventory_updated, pd.DataFrame([new_product])])
+print("\nInventory with new product:")
+print(inventory_final)
+```
+
+:::
+</details>
+
+## DataFrame Sorting
+
+### Sorting functions
+
+| Method | Description | Key Parameters |
+|--------|-------------|----------------|
+| `sort_values()` | Sort by column values | `by`, `ascending`, `inplace`, `na_position` |
+| `sort_index()` | Sort by index | `ascending`, `inplace` |
+| Multi-column sorting | Sort by multiple columns | `by=['col1', 'col2']` |
+| Custom sorting | Sort with custom orders | `by=col, key=function` |
+
+### Basic Sorting
+
+* Sorting by a single column - ascending and descending
+* Sorting by index
+* Sorting by multiple columns
+* Sorting with different directions for each column
+
+:::{demo}
+
+```python
+data = {
+    'Name': ['Alice', 'Bob', 'Charlie', 'David', 'Eva'],
+    'Age': [24, 30, 35, 42, 28],
+    'City': ['New York', 'Boston', 'Chicago', 'Seattle', 'Miami'],
+    'Salary': [65000, 72000, 85000, 92000, 70000],
+    'Department': ['HR', 'Sales', 'Tech', 'Tech', 'Finance']
+}
+df = pd.DataFrame(data)
+df.index = ['emp001', 'emp002', 'emp003', 'emp004', 'emp005']  # Custom index
+
+# Continuing with our employee DataFrame
+print("Original DataFrame:")
+print(df)
+
+# 1. Sorting by a single column (ascending by default)
+df_by_age = df.sort_values('Age')
+print("\n1. Sorted by Age (ascending):")
+print(df_by_age)
+
+# 2. Sorting by a single column (descending)
+df_by_salary_desc = df.sort_values('Salary', ascending=False)
+print("\n2. Sorted by Salary (descending):")
+print(df_by_salary_desc)
+
+# 3. Sorting by index
+df_by_index = df.sort_index()
+print("\n3. Sorted by index:")
+print(df_by_index)
+
+# 4. Sorting by multiple columns
+df_multi_sort = df.sort_values(['Department', 'Salary'])
+print("\n4. Sorted by Department, then by Salary within each department:")
+print(df_multi_sort)
+
+# 5. Sorting with different directions for each column
+df_complex = df.sort_values(['Department', 'Salary'], 
+                          ascending=[True, False])
+print("\n5. Sorted by Department (asc), then by Salary (desc) within each department:")
+print(df_complex)
+```
+
+:::{solution} Output
+
+```none
+Original DataFrame:
+           Name  Age      City  Salary Department
+emp001    Alice   24  New York   65000         HR
+emp002      Bob   30    Boston   72000      Sales
+emp003  Charlie   35   Chicago   85000       Tech
+emp004    David   42   Seattle   92000       Tech
+emp005      Eva   28     Miami   70000    Finance
+
+1. Sorted by Age (ascending):
+           Name  Age      City  Salary Department
+emp001    Alice   24  New York   65000         HR
+emp005      Eva   28     Miami   70000    Finance
+emp002      Bob   30    Boston   72000      Sales
+emp003  Charlie   35   Chicago   85000       Tech
+emp004    David   42   Seattle   92000       Tech
+
+2. Sorted by Salary (descending):
+           Name  Age      City  Salary Department
+emp004    David   42   Seattle   92000       Tech
+emp003  Charlie   35   Chicago   85000       Tech
+emp002      Bob   30    Boston   72000      Sales
+emp005      Eva   28     Miami   70000    Finance
+emp001    Alice   24  New York   65000         HR
+
+3. Sorted by index:
+           Name  Age      City  Salary Department
+emp001    Alice   24  New York   65000         HR
+emp002      Bob   30    Boston   72000      Sales
+emp003  Charlie   35   Chicago   85000       Tech
+emp004    David   42   Seattle   92000       Tech
+emp005      Eva   28     Miami   70000    Finance
+
+4. Sorted by Department, then by Salary within each department:
+           Name  Age      City  Salary Department
+emp005      Eva   28     Miami   70000    Finance
+emp001    Alice   24  New York   65000         HR
+emp002      Bob   30    Boston   72000      Sales
+emp003  Charlie   35   Chicago   85000       Tech
+emp004    David   42   Seattle   92000       Tech
+
+5. Sorted by Department (asc), then by Salary (desc) within each department:
+           Name  Age      City  Salary Department
+emp005      Eva   28     Miami   70000    Finance
+emp001    Alice   24  New York   65000         HR
+emp002      Bob   30    Boston   72000      Sales
+emp004    David   42   Seattle   92000       Tech
+emp003  Charlie   35   Chicago   85000       Tech
+```
+
+:::
+
+:::{instructor-note} More info
+<details>
+<summary>Additional notes: Additional note</summary>
+
+**Advanced Sorting:**
+
+* Sort with NaNs at the beginning or end
+* Custom categorical sorting (custom order)
+
+:::{demo}
+
+```python
+# 1. Sorting with NaN values
+# Create a DataFrame with some missing values
+data = {
+    'Name': ['Alice', 'Bob', 'Charlie', 'David', 'Eva'],
+    'Age': [24, 30, 35, 42, 28],
+    'City': ['New York', 'Boston', 'Chicago', 'Seattle', 'Miami'],
+    'Salary': [65000, 72000, 85000, 92000, 70000],
+    'Department': ['HR', 'Sales', 'Tech', 'Tech', 'Finance']
+}
+df = pd.DataFrame(data)
+df.index = ['emp001', 'emp002', 'emp003', 'emp004', 'emp005']  # Custom index
+
+df.loc['emp001', 'City'] = np.nan
+df.loc['emp003', 'City'] = np.nan
+
+print("1. DataFrame with NaN values:")
+print(df)
+
+# Sort with NaNs at the beginning
+print("\n1a. Sorted with NaNs first:")
+print(df.sort_values('City', na_position='first'))
+
+# Sort with NaNs at the end
+print("\n1b. Sorted with NaNs last:")
+print(df.sort_values('City', na_position='last'))
+
+# 3. Custom categorical sorting
+# Create a custom order for departments
+dept_order = ['HR', 'Sales', 'Finance', 'Tech']
+df['Dept_Coded'] = pd.Categorical(df['Department'], 
+                                 categories=dept_order, 
+                                 ordered=True)
+
+print("\n3. Custom department order sorting:")
+print(df.sort_values('Dept_Coded'))
+```
+
+:::{solution} Output
+
+```none
+1. DataFrame with NaN values:
+           Name  Age     City  Salary Department
+emp001    Alice   24      NaN   65000         HR
+emp002      Bob   30   Boston   72000      Sales
+emp003  Charlie   35      NaN   85000       Tech
+emp004    David   42  Seattle   92000       Tech
+emp005      Eva   28    Miami   70000    Finance
+
+1a. Sorted with NaNs first:
+           Name  Age     City  Salary Department
+emp001    Alice   24      NaN   65000         HR
+emp003  Charlie   35      NaN   85000       Tech
+emp002      Bob   30   Boston   72000      Sales
+emp005      Eva   28    Miami   70000    Finance
+emp004    David   42  Seattle   92000       Tech
+
+1b. Sorted with NaNs last:
+           Name  Age     City  Salary Department
+emp002      Bob   30   Boston   72000      Sales
+emp005      Eva   28    Miami   70000    Finance
+emp004    David   42  Seattle   92000       Tech
+emp001    Alice   24      NaN   65000         HR
+emp003  Charlie   35      NaN   85000       Tech
+
+3. Custom department order sorting:
+           Name  Age     City  Salary Department Dept_Coded
+emp001    Alice   24      NaN   65000         HR         HR
+emp002      Bob   30   Boston   72000      Sales      Sales
+emp005      Eva   28    Miami   70000    Finance    Finance
+emp003  Charlie   35      NaN   85000       Tech       Tech
+emp004    David   42  Seattle   92000       Tech       Tech
+```
+
+
+* Sorting is essential for both data analysis and presentation.
+* Multi-column sorting is particularly useful for hierarchical data.
+* The `ascending` parameter can be a single boolean or a list of booleans for multi-column sorts.
+* Custom sorting allows for domain-specific ordering beyond simple alphabetical or numerical order.
+* The `inplace=True` parameter can be used to modify the original DataFrame rather than creating a new one.
+
+**Exercise: Multiple Column Sorting with Custom Orders:**
+
+This dataset represents results from three independent candidate gene studies investigating the association between common genetic variants and breast cancer risk, where odds ratios indicate the increased likelihood of developing breast cancer for carriers of each gene variant compared to non-carriers.
+
+1. Create correct chromosome ordering: 'Chr1' to 'ChrX', 'ChrY'
+2. Create study category with custom order: 'Study1', 'Study2', 'Study3'
+3. Sort by Chromosome (numerical), then by Study (custom order)
+4. Sort by statistical significance (p-value) within each Chromosome
+5. Select genes sorted by P-value and effect size within each chromosome
+
+```python
+import pandas as pd
+
+# Create a genetic dataset
+genetic_data = {
+    'Gene': ['BRCA1', 'TP53', 'APOE', 'PTEN', 'BRAF', 'KRAS', 
+            'BRCA2', 'EGFR', 'TNF', 'IL6'],
+    'Chromosome': ['Chr17', 'Chr17', 'Chr19', 'Chr10', 'Chr7', 'Chr12', 
+                  'Chr13', 'Chr7', 'Chr6', 'Chr7'],
+    'Study': ['Study1', 'Study2', 'Study1', 'Study3', 'Study2', 'Study3', 
+             'Study1', 'Study2', 'Study3', 'Study1'],
+    'PValue': [0.0001, 0.0050, 0.0200, 0.0150, 0.0300, 0.0400, 
+              0.0005, 0.0250, 0.0100, 0.0450],
+    'EffectSize': [2.5, 1.8, 3.2, 2.1, 1.5, 1.2, 2.7, 1.9, 2.3, 1.1]
+}
+```
+
+**Solution: Multiple Column Sorting with Custom Orders:**
+
+```python
+genetic_df = pd.DataFrame(genetic_data)
+print("Genetic DataFrame:")
+print(genetic_df)
+
+# 1. Create correct chromosome ordering
+chrom_order = ['Chr1', 'Chr2', 'Chr3', 'Chr4', 'Chr5', 'Chr6', 'Chr7', 
+               'Chr8', 'Chr9', 'Chr10', 'Chr11', 'Chr12', 'Chr13', 'Chr14', 
+               'Chr15', 'Chr16', 'Chr17', 'Chr18', 'Chr19', 'Chr20', 'Chr21', 'Chr22', 'ChrX', 'ChrY']
+genetic_df['Chromosome_Sorted'] = pd.Categorical(genetic_df['Chromosome'], 
+                                               categories=chrom_order, 
+                                               ordered=True)
+
+# 2. Create study category with custom order
+study_order = ['Study1', 'Study2', 'Study3']
+genetic_df['Study_Sorted'] = pd.Categorical(genetic_df['Study'], 
+                                           categories=study_order, 
+                                           ordered=True)
+
+# 3. Sort by Chromosome (numerical), then by Study (custom order)
+print("\n1. Sorted by Chromosome, then by Study (custom orders):")
+sorted_genetic = genetic_df.sort_values(['Chromosome_Sorted', 'Study_Sorted'])
+print(sorted_genetic[['Chromosome', 'Gene', 'Study']])
+
+# 4. Sort by statistical significance (p-value) within each Chromosome
+print("\n2. Sorted by Chromosome, then by P-value (ascending) within each chromosome:")
+genetic_by_pvalue = genetic_df.sort_values(['Chromosome_Sorted', 'PValue'], 
+                                         ascending=[True, True])
+print(genetic_by_pvalue[['Chromosome', 'Gene', 'PValue']])
+
+# 5. Rank genes by effect size within each chromosome
+genetic_df['EffectRank'] = genetic_df.groupby('Chromosome')['EffectSize'].rank(ascending=False)
+print("\n3. Genes according to P-value and Effect Size within each Chromosome:")
+print(genetic_df.sort_values(by=["PValue","EffectSize", "Chromosome_Sorted"], ascending=[True, False, True])["Gene"])
+```
+
+The most significant findings are in the DNA repair genes BRCA1 and BRCA2 (p-values 0.0001 and 0.0005), with BRCA1 carriers showing 2.5 times higher odds and BRCA2 carriers showing 2.7 times higher odds of developing breast cancer. Other genes showing significant but less pronounced associations include inflammatory pathway genes (TNF) and key tumor suppressor genes (TP53, PTEN), highlighting the multifactorial genetic architecture of breast cancer susceptibility that spans DNA repair, cell cycle regulation, and inflammatory response pathways
+
+:::
+
+</details>
+
+## Key Takeaways
+
+:::{Keypoints}
+
+1. **Flexible Selection:** Pandas provides multiple ways to select, filter, and extract data
+2. **Structure Modification:** Adding and removing columns/rows enables dataset evolution
+3. **Meaningful Sorting:** Proper sorting is essential for analysis and presentation
+4. **Custom Orders:** Categorical data types allow you to enforce domain-specific ordering
+5. **Combined Operations:** The real power comes from combining these techniques
+
+:::

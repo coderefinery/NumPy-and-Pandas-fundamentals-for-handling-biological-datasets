@@ -1,0 +1,808 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Indexing, Selection &amp; Slicing in Pandas &mdash; NumPy and Pandas for biological data handling  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+      <link rel="stylesheet" type="text/css" href="../_static/sphinx_lesson.css?v=e9df6548" />
+      <link rel="stylesheet" type="text/css" href="../_static/term_role_formatting.css?v=4194e21c" />
+      <link rel="stylesheet" type="text/css" href="../_static/sphinx_rtd_theme_ext_color_contrast.css?v=8e8ea19f" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=187304be"></script>
+      <script src="../_static/doctools.js?v=9a2dae69"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../_static/copybutton.js?v=35a8b989"></script>
+      <script src="../_static/minipres.js?v=a0d29692"></script>
+      <script>let toggleHintShow = 'Click to show';</script>
+      <script>let toggleHintHide = 'Click to hide';</script>
+      <script>let toggleOpenOnPrint = 'true';</script>
+      <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+      <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+      <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex/" />
+    <link rel="search" title="Search" href="../search/" />
+    <link rel="next" title="Summary Statistics &amp; Aggregations in Pandas" href="../14.Pandas_summary_stats/" />
+    <link rel="prev" title="DataFrame Manipulation &amp; Sorting" href="../10.DataFrame_Manipulation/" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../" class="icon icon-home">
+            NumPy and Pandas for biological data handling
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search/" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Numpy for handling biological datasets</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../0.Numpy_for_bioinformatics/">Lesson plan</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1.numpy_intro/">Introduction to NumPy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../2.NumPy_Data_Types/">NumPy Data Types</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3.Indexing_and_Slicing/">Array Indexing and Slicing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../4.Advance_indexing_filtering/">NumPy Boolean Masking and Filtering</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../5.Essential_array_operations/">Essential Array Operations with NumPy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../6.Vectorized_Operations_in_NumPy/">Vectorized Operations in NumPy: Beyond Python Loops</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../6.1.Numpy_hands_on/">Hands-on: RNA Expression Analysis - alternative method</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Pandas for handling biological datasets</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../7.Pandas_lesson plan/">Lesson plan</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8.Introduction_to_pandas/">Introduction to Pandas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../9.Pandas_data_import_export/">Data Import and Export in Pandas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../10.DataFrame_Manipulation/">DataFrame Manipulation &amp; Sorting</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Indexing, Selection &amp; Slicing in Pandas</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#label-vs-position-based-indexing">Label vs. Position-based Indexing</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#creating-a-dataframe-with-meaningful-indices">Creating a DataFrame with Meaningful Indices</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#use-label-and-position-based-indexing">Use Label and Position-based Indexing</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#boolean-indexing">Boolean Indexing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#key-takeaways">Key Takeaways</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../14.Pandas_summary_stats/">Summary Statistics &amp; Aggregations in Pandas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../15.Hands-on_expression_count_analysis/">Hands-on: RNA Expression Analysis - alternative method</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../12.Handling_Missing_Data/">Bonus Lesson 1: Handling Missing Data in Pandas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../13.Merging_DataFrames/">Bonus Lesson 2: Merging DataFrames in Pandas</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../">NumPy and Pandas for biological data handling</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Indexing, Selection &amp; Slicing in Pandas</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/coderefinery/content/blob/main/content/11.Pandas_indexing_slicing.md" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="indexing-selection-slicing-in-pandas">
+<h1>Indexing, Selection &amp; Slicing in Pandas<a class="headerlink" href="#indexing-selection-slicing-in-pandas" title="Link to this heading"></a></h1>
+<div class="admonition-objectives objectives admonition" id="objectives-0">
+<p class="admonition-title">Objectives</p>
+<ul class="simple">
+<li><p>Differentiate between label-based and position-based indexing and apply each method appropriately.</p></li>
+<li><p>Use Boolean indexing to filter data based on specific conditions, connecting concepts from NumPy.</p></li>
+<li><p>Apply <code class="docutils literal notranslate"><span class="pre">.loc</span></code>, <code class="docutils literal notranslate"><span class="pre">.iloc</span></code>, and <code class="docutils literal notranslate"><span class="pre">.at</span></code> selection methods to extract desired data, and employ multi-level slicing techniques.</p></li>
+</ul>
+</div>
+<div class="admonition-instructor-note instructor-note admonition" id="instructor-note-0">
+<p class="admonition-title">Instructor note</p>
+<ul class="simple">
+<li><p>Teaching : 5 min</p></li>
+<li><p>Demo: 25 min</p></li>
+</ul>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<ul class="simple">
+<li><p>In the previous session, we introduced some basic ways to select data. Now we’ll dive deeper into Pandas’ powerful indexing systems.</p></li>
+<li><p>Think of these techniques as the surgical tools that let you precisely extract exactly the data you need.</p></li>
+<li><p>Understanding the differences between these indexing methods will make your code more efficient and help you avoid common errors.</p></li>
+<li><p>These concepts build directly on your NumPy knowledge, but with added capabilities for labeled data.</p></li>
+</ul>
+</div>
+<ul class="simple">
+<li><p>Precise data access is the foundation of efficient data analysis</p></li>
+<li><p>Pandas offers multiple ways to access data, each with specific use cases</p></li>
+</ul>
+<section id="label-vs-position-based-indexing">
+<h2>Label vs. Position-based Indexing<a class="headerlink" href="#label-vs-position-based-indexing" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>Two Fundamental Indexing Approaches</p></li>
+</ul>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Indexing Type</p></th>
+<th class="head"><p>Method</p></th>
+<th class="head"><p>Use Case</p></th>
+<th class="head"><p>NumPy Equivalent</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Label-based</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">.loc[]</span></code></p></td>
+<td><p>When you know the labels</p></td>
+<td><p>N/A (NumPy is position-based)</p></td>
+</tr>
+<tr class="row-odd"><td><p>Position-based</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">.iloc[]</span></code></p></td>
+<td><p>When you know the positions</p></td>
+<td><p>Standard NumPy indexing</p></td>
+</tr>
+<tr class="row-even"><td><p>Mixed</p></td>
+<td><p>Direct <code class="docutils literal notranslate"><span class="pre">[]</span></code></p></td>
+<td><p>Simple selection (but less explicit)</p></td>
+<td><p>N/A</p></td>
+</tr>
+</tbody>
+</table>
+<section id="creating-a-dataframe-with-meaningful-indices">
+<h3>Creating a DataFrame with Meaningful Indices<a class="headerlink" href="#creating-a-dataframe-with-meaningful-indices" title="Link to this heading"></a></h3>
+<div class="admonition-demo demo admonition" id="demo-0">
+<p class="admonition-title">Demo</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create a DataFrame with custom indices</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+
+<span class="c1"># Create a genetic dataset</span>
+<span class="n">genetic_data</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;Gene&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;BRCA1&#39;</span><span class="p">,</span> <span class="s1">&#39;TP53&#39;</span><span class="p">,</span> <span class="s1">&#39;APOE&#39;</span><span class="p">,</span> <span class="s1">&#39;PTEN&#39;</span><span class="p">,</span> <span class="s1">&#39;BRAF&#39;</span><span class="p">,</span> <span class="s1">&#39;KRAS&#39;</span><span class="p">,</span> 
+            <span class="s1">&#39;BRCA2&#39;</span><span class="p">,</span> <span class="s1">&#39;EGFR&#39;</span><span class="p">,</span> <span class="s1">&#39;TNF&#39;</span><span class="p">,</span> <span class="s1">&#39;IL6&#39;</span><span class="p">],</span>
+    <span class="s1">&#39;Chromosome&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;Chr17&#39;</span><span class="p">,</span> <span class="s1">&#39;Chr17&#39;</span><span class="p">,</span> <span class="s1">&#39;Chr19&#39;</span><span class="p">,</span> <span class="s1">&#39;Chr10&#39;</span><span class="p">,</span> <span class="s1">&#39;Chr7&#39;</span><span class="p">,</span> <span class="s1">&#39;Chr12&#39;</span><span class="p">,</span> 
+                  <span class="s1">&#39;Chr13&#39;</span><span class="p">,</span> <span class="s1">&#39;Chr7&#39;</span><span class="p">,</span> <span class="s1">&#39;Chr6&#39;</span><span class="p">,</span> <span class="s1">&#39;Chr7&#39;</span><span class="p">],</span>
+    <span class="s1">&#39;Study&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;Study1&#39;</span><span class="p">,</span> <span class="s1">&#39;Study2&#39;</span><span class="p">,</span> <span class="s1">&#39;Study1&#39;</span><span class="p">,</span> <span class="s1">&#39;Study3&#39;</span><span class="p">,</span> <span class="s1">&#39;Study2&#39;</span><span class="p">,</span> <span class="s1">&#39;Study3&#39;</span><span class="p">,</span> 
+             <span class="s1">&#39;Study1&#39;</span><span class="p">,</span> <span class="s1">&#39;Study2&#39;</span><span class="p">,</span> <span class="s1">&#39;Study3&#39;</span><span class="p">,</span> <span class="s1">&#39;Study1&#39;</span><span class="p">],</span>
+    <span class="s1">&#39;PValue&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.0001</span><span class="p">,</span> <span class="mf">0.0050</span><span class="p">,</span> <span class="mf">0.0200</span><span class="p">,</span> <span class="mf">0.0150</span><span class="p">,</span> <span class="mf">0.0300</span><span class="p">,</span> <span class="mf">0.0400</span><span class="p">,</span> 
+              <span class="mf">0.0005</span><span class="p">,</span> <span class="mf">0.0250</span><span class="p">,</span> <span class="mf">0.0100</span><span class="p">,</span> <span class="mf">0.0450</span><span class="p">],</span>
+    <span class="s1">&#39;EffectSize&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">2.5</span><span class="p">,</span> <span class="mf">1.8</span><span class="p">,</span> <span class="mf">3.2</span><span class="p">,</span> <span class="mf">2.1</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">,</span> <span class="mf">1.2</span><span class="p">,</span> <span class="mf">2.7</span><span class="p">,</span> <span class="mf">1.9</span><span class="p">,</span> <span class="mf">2.3</span><span class="p">,</span> <span class="mf">1.1</span><span class="p">]</span>
+<span class="p">}</span>
+
+<span class="n">genetic_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">genetic_data</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Genetic DataFrame:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">genetic_df</span><span class="p">)</span>
+
+<span class="c1"># Set a meaningful index from an existing column</span>
+<span class="n">genetic_df</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s1">&#39;Gene&#39;</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;DataFrame with &#39;Gene&#39; as index:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">genetic_df</span><span class="p">)</span>
+
+<span class="c1"># Reset index to return to default integer indexing</span>
+<span class="n">df_reset</span> <span class="o">=</span> <span class="n">genetic_df</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">DataFrame with default integer index:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df_reset</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="admonition-output solution important dropdown admonition" id="solution-0">
+<p class="admonition-title">Output</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Genetic DataFrame:
+    Gene Chromosome   Study  PValue  EffectSize
+0  BRCA1      Chr17  Study1  0.0001         2.5
+1   TP53      Chr17  Study2  0.0050         1.8
+2   APOE      Chr19  Study1  0.0200         3.2
+3   PTEN      Chr10  Study3  0.0150         2.1
+4   BRAF       Chr7  Study2  0.0300         1.5
+5   KRAS      Chr12  Study3  0.0400         1.2
+6  BRCA2      Chr13  Study1  0.0005         2.7
+7   EGFR       Chr7  Study2  0.0250         1.9
+8    TNF       Chr6  Study3  0.0100         2.3
+9    IL6       Chr7  Study1  0.0450         1.1
+
+DataFrame with &#39;Gene&#39; as index:
+      Chromosome   Study  PValue  EffectSize
+Gene
+BRCA1      Chr17  Study1  0.0001         2.5
+TP53       Chr17  Study2  0.0050         1.8
+APOE       Chr19  Study1  0.0200         3.2
+PTEN       Chr10  Study3  0.0150         2.1
+BRAF        Chr7  Study2  0.0300         1.5
+KRAS       Chr12  Study3  0.0400         1.2
+BRCA2      Chr13  Study1  0.0005         2.7
+EGFR        Chr7  Study2  0.0250         1.9
+TNF         Chr6  Study3  0.0100         2.3
+IL6         Chr7  Study1  0.0450         1.1
+
+DataFrame with default integer index:
+    Gene Chromosome   Study  PValue  EffectSize
+0  BRCA1      Chr17  Study1  0.0001         2.5
+1   TP53      Chr17  Study2  0.0050         1.8
+2   APOE      Chr19  Study1  0.0200         3.2
+3   PTEN      Chr10  Study3  0.0150         2.1
+4   BRAF       Chr7  Study2  0.0300         1.5
+5   KRAS      Chr12  Study3  0.0400         1.2
+6  BRCA2      Chr13  Study1  0.0005         2.7
+7   EGFR       Chr7  Study2  0.0250         1.9
+8    TNF       Chr6  Study3  0.0100         2.3
+9    IL6       Chr7  Study1  0.0450         1.1
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="use-label-and-position-based-indexing">
+<h3>Use Label and Position-based Indexing<a class="headerlink" href="#use-label-and-position-based-indexing" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Label-based indexing with <code class="docutils literal notranslate"><span class="pre">.loc</span></code></p></li>
+<li><p>Select multiple rows by label</p></li>
+<li><p>Select rows and columns by label</p></li>
+<li><p>Slicing dataframe using labels</p></li>
+<li><p>Position-based indexing with <code class="docutils literal notranslate"><span class="pre">.iloc</span></code></p></li>
+<li><p>Select multiple rows by position</p></li>
+<li><p>Slicing dataframe using indices (Select rows and columns by position)</p></li>
+</ul>
+<div class="admonition-demo demo admonition" id="demo-1">
+<p class="admonition-title">Demo</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Using the genetic_df with &#39;Gene&#39; as the index</span>
+
+<span class="c1"># 1. Label-based indexing with .loc</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">1.1. Label-based selection (.loc):&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Data for &#39;BRCA1&#39;:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">genetic_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">&#39;BRCA1&#39;</span><span class="p">])</span>
+
+<span class="c1"># Select multiple rows by label</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">1.2. Data for &#39;TP53&#39; and &#39;APOE&#39;:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">genetic_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[[</span><span class="s1">&#39;TP53&#39;</span><span class="p">,</span> <span class="s1">&#39;APOE&#39;</span><span class="p">]])</span>
+
+<span class="c1"># Select rows and columns by label</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">1.3. Chromosome and PValue for &#39;BRAF&#39; and &#39;KRAS&#39;:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">genetic_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[[</span><span class="s1">&#39;BRAF&#39;</span><span class="p">,</span> <span class="s1">&#39;KRAS&#39;</span><span class="p">],</span> <span class="p">[</span><span class="s1">&#39;Chromosome&#39;</span><span class="p">,</span> <span class="s1">&#39;PValue&#39;</span><span class="p">]])</span>
+
+<span class="c1"># Slicing dataframe using labels</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">1.4. All the rows of Chromosome and PValue columns:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">genetic_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,</span> <span class="p">[</span><span class="s1">&#39;Chromosome&#39;</span><span class="p">,</span> <span class="s1">&#39;PValue&#39;</span><span class="p">]])</span>
+<span class="n">gene_set</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;BRCA1&quot;</span><span class="p">,</span> <span class="s2">&quot;BRCA2&quot;</span><span class="p">,</span> <span class="s2">&quot;TP53&quot;</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">1.5. row indices in gene_set array and column indices - Study, EffectSize:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">genetic_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[[</span><span class="s2">&quot;BRCA1&quot;</span><span class="p">,</span><span class="s2">&quot;BRAF&quot;</span><span class="p">],</span> <span class="p">[</span><span class="s2">&quot;Study&quot;</span><span class="p">,</span><span class="s2">&quot;EffectSize&quot;</span><span class="p">]])</span>
+
+<span class="c1"># 2. Position-based indexing with .iloc</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">2.1. Position-based selection (.iloc):&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Third row (index position 2):&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">genetic_df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+
+<span class="c1"># Select multiple rows by position</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">2.2. First and fourth rows (positions 0 and 3):&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">genetic_df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">]])</span>
+
+<span class="c1"># Slicing dataframe using indices - Select rows and columns by position</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">2.3. Rows 1-3, columns 0-1:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">genetic_df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="mi">4</span><span class="p">,</span> <span class="mi">0</span><span class="p">:</span><span class="mi">2</span><span class="p">])</span>
+
+<span class="c1"># 3. Mixed indexing (direct [])</span>
+<span class="c1"># Mixing approaches (not recommended but sometimes seen)</span>
+<span class="c1"># print(&quot;\nFirst two rows of &#39;Study&#39; column:&quot;)</span>
+<span class="c1"># print(genetic_df[&#39;Study&#39;][0:2])  # Chained indexing - can lead to issues</span>
+</pre></div>
+</div>
+<div class="admonition-output solution important dropdown admonition" id="solution-1">
+<p class="admonition-title">Output</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>1.1. Label-based selection (.loc):
+Data for &#39;BRCA1&#39;:
+Chromosome     Chr17
+Study         Study1
+PValue        0.0001
+EffectSize       2.5
+Name: BRCA1, dtype: object
+
+1.2. Data for &#39;TP53&#39; and &#39;APOE&#39;:
+     Chromosome   Study  PValue  EffectSize
+Gene
+TP53      Chr17  Study2   0.005         1.8
+APOE      Chr19  Study1   0.020         3.2
+
+1.3. Chromosome and PValue for &#39;BRAF&#39; and &#39;KRAS&#39;:
+     Chromosome  PValue
+Gene
+BRAF       Chr7    0.03
+KRAS      Chr12    0.04
+
+1.4. All the rows of Chromosome and PValue columns:
+      Chromosome  PValue
+Gene
+BRCA1      Chr17  0.0001
+TP53       Chr17  0.0050
+APOE       Chr19  0.0200
+PTEN       Chr10  0.0150
+BRAF        Chr7  0.0300
+KRAS       Chr12  0.0400
+BRCA2      Chr13  0.0005
+EGFR        Chr7  0.0250
+TNF         Chr6  0.0100
+IL6         Chr7  0.0450
+
+1.5. row indices in gene_set array and column indices - Study, EffectSize:
+        Study  EffectSize
+Gene
+BRCA1  Study1         2.5
+BRAF   Study2         1.5
+
+2.1. Position-based selection (.iloc):
+Third row (index position 2):
+Chromosome     Chr19
+Study         Study1
+PValue          0.02
+EffectSize       3.2
+Name: APOE, dtype: object
+
+2.2. First and fourth rows (positions 0 and 3):
+      Chromosome   Study  PValue  EffectSize
+Gene
+BRCA1      Chr17  Study1  0.0001         2.5
+PTEN       Chr10  Study3  0.0150         2.1
+
+2.3. Rows 1-3, columns 0-1:
+     Chromosome   Study
+Gene
+TP53      Chr17  Study2
+APOE      Chr19  Study1
+PTEN      Chr10  Study3
+</pre></div>
+</div>
+</div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<ul class="simple">
+<li><p>The key distinction is that <code class="docutils literal notranslate"><span class="pre">.loc</span></code> uses labels, while <code class="docutils literal notranslate"><span class="pre">.iloc</span></code> uses integer positions.</p></li>
+<li><p>Think of <code class="docutils literal notranslate"><span class="pre">.loc</span></code> as looking up data in a dictionary by key, and <code class="docutils literal notranslate"><span class="pre">.iloc</span></code> as accessing a list by position.</p></li>
+<li><p>Label-based indexing is more intuitive when working with real-world data that has meaningful labels.</p></li>
+<li><p>Position-based indexing connects directly to your NumPy knowledge and is useful for algorithms that need specific positions.</p></li>
+<li><p>Using the direct <code class="docutils literal notranslate"><span class="pre">[]</span></code> approach is convenient but can be ambiguous and lead to unexpected behavior.</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">df[mask]</span></code> can be thought as shorthand for <code class="docutils literal notranslate"><span class="pre">df.loc[mask,</span> <span class="pre">:]</span></code></p></li>
+<li><p>Using <code class="docutils literal notranslate"><span class="pre">.loc</span></code> is more explicit and makes your intentions clearer - you’re specifically asking for label-based indexing</p></li>
+</ul>
+</li>
+<li><p>When filtering data with conditions, particularly with missing values, <code class="docutils literal notranslate"><span class="pre">.loc</span></code> is generally safer.</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">.loc</span></code> generally handles missing values more gracefully. If your mask involves columns containing NaN values, direct indexing might raise unexpected errors while <code class="docutils literal notranslate"><span class="pre">.loc</span></code> will typically handle them correctly</p></li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+</section>
+<section id="boolean-indexing">
+<h2>Boolean Indexing<a class="headerlink" href="#boolean-indexing" title="Link to this heading"></a></h2>
+<p><strong>Boolean Indexing and Filtering:</strong></p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Concept</p></th>
+<th class="head"><p>Description</p></th>
+<th class="head"><p>Connection to NumPy</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Boolean masks</p></td>
+<td><p>Arrays of True/False values</p></td>
+<td><p>Direct equivalent in NumPy</p></td>
+</tr>
+<tr class="row-odd"><td><p>Comparison operators</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">&gt;,</span> <span class="pre">&lt;,</span> <span class="pre">==,</span> <span class="pre">!=,</span> <span class="pre">&gt;=,</span> <span class="pre">&lt;=</span></code></p></td>
+<td><p>Same as NumPy</p></td>
+</tr>
+<tr class="row-even"><td><p>Compound conditions</p></td>
+<td><p>Combined with `&amp;,</p></td>
+<td><p>, ~`</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">query()</span></code> method</p></td>
+<td><p>SQL-like filtering</p></td>
+<td><p>Pandas-specific, no NumPy equivalent</p></td>
+</tr>
+</tbody>
+</table>
+<div class="admonition-demo demo admonition" id="demo-2">
+<p class="admonition-title">Demo</p>
+<ul class="simple">
+<li><p>Simple boolean mask</p></li>
+<li><p>Using the mask to filter rows</p></li>
+<li><p>Inline boolean indexing</p></li>
+<li><p>Multiple conditions with &amp; (and), | (or)</p></li>
+</ul>
+<p><strong>Creating and Using Boolean Masks:</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Reset example</span>
+<span class="n">genetic_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">genetic_data</span><span class="p">)</span>
+<span class="n">genetic_df</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s1">&#39;Gene&#39;</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Original DataFrame:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">genetic_df</span><span class="p">)</span>
+
+<span class="c1"># 1. Simple boolean mask</span>
+<span class="n">low_pvalue_mask</span> <span class="o">=</span> <span class="n">genetic_df</span><span class="p">[</span><span class="s1">&#39;PValue&#39;</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mf">0.01</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">1. Boolean mask for low P-values:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">low_pvalue_mask</span><span class="p">)</span>
+
+<span class="c1"># Using the mask to filter rows</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Genes with low P-values:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">genetic_df</span><span class="p">[</span><span class="n">low_pvalue_mask</span><span class="p">])</span>
+
+<span class="c1"># 2. Inline boolean indexing</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">2. Genes on Chromosome 7:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">genetic_df</span><span class="p">[</span><span class="n">genetic_df</span><span class="p">[</span><span class="s1">&#39;Chromosome&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;Chr7&#39;</span><span class="p">])</span>
+
+<span class="c1"># 3. Multiple conditions with &amp; (and), | (or)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">3a. Genes from Study1 with large effect size:&quot;</span><span class="p">)</span>
+<span class="n">multi_cond_and</span> <span class="o">=</span> <span class="p">(</span><span class="n">genetic_df</span><span class="p">[</span><span class="s1">&#39;Study&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;Study1&#39;</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">genetic_df</span><span class="p">[</span><span class="s1">&#39;EffectSize&#39;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mf">2.5</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">genetic_df</span><span class="p">[</span><span class="n">multi_cond_and</span><span class="p">])</span> <span class="c1"># print(genetic_df.loc[multi_cond_and, :])</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">3b. Genes with either very low P-value or large effect size:&quot;</span><span class="p">)</span>
+<span class="n">multi_cond_or</span> <span class="o">=</span> <span class="p">(</span><span class="n">genetic_df</span><span class="p">[</span><span class="s1">&#39;PValue&#39;</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mf">0.005</span><span class="p">)</span> <span class="o">|</span> <span class="p">(</span><span class="n">genetic_df</span><span class="p">[</span><span class="s1">&#39;EffectSize&#39;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mf">3.0</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">genetic_df</span><span class="p">[</span><span class="n">multi_cond_or</span><span class="p">])</span> <span class="c1"># print(genetic_df.loc[multi_cond_or, :])</span>
+
+<span class="c1"># 4. Using .loc with boolean masks</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">4.a Using .loc with boolean mask:&quot;</span><span class="p">)</span>
+<span class="n">chr17_genes</span> <span class="o">=</span> <span class="p">(</span><span class="n">genetic_df</span><span class="p">[</span><span class="s1">&#39;Chromosome&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;Chr17&#39;</span><span class="p">)</span>
+<span class="n">col_list</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Study&#39;</span><span class="p">,</span> <span class="s1">&#39;EffectSize&#39;</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">genetic_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">chr17_genes</span><span class="p">,</span> <span class="n">col_list</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">4.b Using .loc with boolean mask:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">genetic_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">multi_cond_and</span><span class="p">,</span> <span class="n">col_list</span><span class="p">])</span>
+</pre></div>
+</div>
+<div class="admonition-output solution important dropdown admonition" id="solution-2">
+<p class="admonition-title">Output</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Original DataFrame:
+      Chromosome   Study  PValue  EffectSize
+Gene
+BRCA1      Chr17  Study1  0.0001         2.5
+TP53       Chr17  Study2  0.0050         1.8
+APOE       Chr19  Study1  0.0200         3.2
+PTEN       Chr10  Study3  0.0150         2.1
+BRAF        Chr7  Study2  0.0300         1.5
+KRAS       Chr12  Study3  0.0400         1.2
+BRCA2      Chr13  Study1  0.0005         2.7
+EGFR        Chr7  Study2  0.0250         1.9
+TNF         Chr6  Study3  0.0100         2.3
+IL6         Chr7  Study1  0.0450         1.1
+
+1. Boolean mask for low P-values:
+Gene
+BRCA1     True
+TP53      True
+APOE     False
+PTEN     False
+BRAF     False
+KRAS     False
+BRCA2     True
+EGFR     False
+TNF      False
+IL6      False
+Name: PValue, dtype: bool
+
+Genes with low P-values:
+      Chromosome   Study  PValue  EffectSize
+Gene
+BRCA1      Chr17  Study1  0.0001         2.5
+TP53       Chr17  Study2  0.0050         1.8
+BRCA2      Chr13  Study1  0.0005         2.7
+
+2. Genes on Chromosome 7:
+     Chromosome   Study  PValue  EffectSize
+Gene
+BRAF       Chr7  Study2   0.030         1.5
+EGFR       Chr7  Study2   0.025         1.9
+IL6        Chr7  Study1   0.045         1.1
+
+3a. Genes from Study1 with large effect size:
+      Chromosome   Study  PValue  EffectSize
+Gene
+APOE       Chr19  Study1  0.0200         3.2
+BRCA2      Chr13  Study1  0.0005         2.7
+
+3b. Genes with either very low P-value or large effect size:
+      Chromosome   Study  PValue  EffectSize
+Gene
+BRCA1      Chr17  Study1  0.0001         2.5
+APOE       Chr19  Study1  0.0200         3.2
+BRCA2      Chr13  Study1  0.0005         2.7
+
+4.a Using .loc with boolean mask:
+        Study  EffectSize
+Gene
+BRCA1  Study1         2.5
+TP53   Study2         1.8
+
+4.b Using .loc with boolean mask:
+        Study  EffectSize
+Gene
+APOE   Study1         3.2
+BRCA2  Study1         2.7
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="key-takeaways">
+<h2>Key Takeaways<a class="headerlink" href="#key-takeaways" title="Link to this heading"></a></h2>
+<div class="admonition-keypoints keypoints admonition" id="keypoints-0">
+<p class="admonition-title">Keypoints</p>
+<ol class="arabic simple">
+<li><p><strong>Selection Toolkit:</strong> Different indexing methods are optimized for different tasks</p></li>
+<li><p><strong>Label vs. Position:</strong> <code class="docutils literal notranslate"><span class="pre">.loc</span></code> uses labels, <code class="docutils literal notranslate"><span class="pre">.iloc</span></code> uses positions - choose based on what you know</p></li>
+<li><p><strong>Boolean Filtering:</strong> Powerful way to extract data matching specific conditions</p></li>
+</ol>
+</div>
+<div class="admonition-more-info instructor-note admonition" id="instructor-note-1">
+<p class="admonition-title">More info</p>
+<details>
+<summary>Additional notes: Advanced Boolean Indexing</summary>
+<p class="rubric" id="advanced-boolean-indexing-techniques">Advanced Boolean Indexing Techniques</p>
+<ul class="simple">
+<li><p>String methods with boolean indexing</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">.isin()</span></code> for multiple value matching</p></li>
+<li><p>Combining with function application</p></li>
+</ul>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 1. String methods with boolean indexing</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">1. Chromosomes starting with &#39;Chr1&#39;:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">genetic_df</span><span class="p">[</span><span class="n">genetic_df</span><span class="p">[</span><span class="s1">&#39;Chromosome&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;Chr1&#39;</span><span class="p">)])</span>
+
+<span class="c1"># 2. isin() for multiple value matching</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">2. Genes from Study1 or Study3:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">genetic_df</span><span class="p">[</span><span class="n">genetic_df</span><span class="p">[</span><span class="s1">&#39;Study&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">([</span><span class="s1">&#39;Study1&#39;</span><span class="p">,</span> <span class="s1">&#39;Study3&#39;</span><span class="p">])])</span>
+
+<span class="c1"># 3. Combining with function application</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">is_significant</span><span class="p">(</span><span class="n">p_value</span><span class="p">):</span>
+    <span class="c1"># Consider p-values below P-value threshold as highly significant</span>
+    <span class="k">return</span> <span class="n">p_value</span> <span class="o">&lt;</span> <span class="mf">0.001</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">3. Highly significant genes using a function:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">genetic_df</span><span class="p">[</span><span class="n">genetic_df</span><span class="p">[</span><span class="s1">&#39;PValue&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">is_significant</span><span class="p">)])</span>
+</pre></div>
+</div>
+<p>Output</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>1. Chromosomes starting with &#39;Chr1&#39;:
+      Chromosome   Study  PValue  EffectSize
+Gene
+BRCA1      Chr17  Study1  0.0001         2.5
+TP53       Chr17  Study2  0.0050         1.8
+APOE       Chr19  Study1  0.0200         3.2
+PTEN       Chr10  Study3  0.0150         2.1
+KRAS       Chr12  Study3  0.0400         1.2
+BRCA2      Chr13  Study1  0.0005         2.7
+
+2. Genes from Study1 or Study3:
+      Chromosome   Study  PValue  EffectSize
+Gene
+BRCA1      Chr17  Study1  0.0001         2.5
+APOE       Chr19  Study1  0.0200         3.2
+PTEN       Chr10  Study3  0.0150         2.1
+KRAS       Chr12  Study3  0.0400         1.2
+BRCA2      Chr13  Study1  0.0005         2.7
+TNF         Chr6  Study3  0.0100         2.3
+IL6         Chr7  Study1  0.0450         1.1
+
+3. Highly significant genes using a function:
+      Chromosome   Study  PValue  EffectSize
+Gene
+BRCA1      Chr17  Study1  0.0001         2.5
+BRCA2      Chr13  Study1  0.0005         2.7
+</pre></div>
+</div>
+<p>Note:</p>
+<ul class="simple">
+<li><p>Boolean indexing is one of the most powerful features in Pandas and NumPy - it lets you filter data based on conditions.</p></li>
+<li><p>The syntax is very similar to NumPy’s boolean masking, which you’re already familiar with.</p></li>
+<li><p>Remember that when combining conditions, you need to use <code class="docutils literal notranslate"><span class="pre">&amp;</span></code> for AND and <code class="docutils literal notranslate"><span class="pre">|</span></code> for OR,</p>
+<ul>
+<li><p>not the Python keywords ‘and’ and ‘or’.</p></li>
+<li><p>Each condition needs to be wrapped in parentheses when combining them - this is a common source of errors.</p></li>
+</ul>
+</li>
+<li><p>You can combine boolean indexing with <code class="docutils literal notranslate"><span class="pre">.loc</span></code> to filter rows and select specific columns in one operation.</p></li>
+</ul>
+<p>Exercise: Boolean indexing using <code class="docutils literal notranslate"><span class="pre">students</span></code> dataframe to</p>
+<ol class="arabic simple">
+<li><p>Find all students who scored 90 or above</p></li>
+<li><p>Find all Math students with grades below 80</p></li>
+<li><p>Find all Science or Art students who are 17 years old</p></li>
+</ol>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create a DataFrame of student data</span>
+<span class="n">students</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span>
+    <span class="s1">&#39;Name&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;Emma&#39;</span><span class="p">,</span> <span class="s1">&#39;Noah&#39;</span><span class="p">,</span> <span class="s1">&#39;Olivia&#39;</span><span class="p">,</span> <span class="s1">&#39;Liam&#39;</span><span class="p">,</span> <span class="s1">&#39;Ava&#39;</span><span class="p">,</span> <span class="s1">&#39;William&#39;</span><span class="p">,</span> <span class="s1">&#39;Sophia&#39;</span><span class="p">,</span> <span class="s1">&#39;Mason&#39;</span><span class="p">],</span>
+    <span class="s1">&#39;Grade&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">85</span><span class="p">,</span> <span class="mi">92</span><span class="p">,</span> <span class="mi">78</span><span class="p">,</span> <span class="mi">95</span><span class="p">,</span> <span class="mi">89</span><span class="p">,</span> <span class="mi">79</span><span class="p">,</span> <span class="mi">88</span><span class="p">,</span> <span class="mi">91</span><span class="p">],</span>
+    <span class="s1">&#39;Subject&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;Math&#39;</span><span class="p">,</span> <span class="s1">&#39;Science&#39;</span><span class="p">,</span> <span class="s1">&#39;Math&#39;</span><span class="p">,</span> <span class="s1">&#39;Science&#39;</span><span class="p">,</span> <span class="s1">&#39;Art&#39;</span><span class="p">,</span> <span class="s1">&#39;Math&#39;</span><span class="p">,</span> <span class="s1">&#39;Science&#39;</span><span class="p">,</span> <span class="s1">&#39;Art&#39;</span><span class="p">],</span>
+    <span class="s1">&#39;Age&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">16</span><span class="p">,</span> <span class="mi">17</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">18</span><span class="p">,</span> <span class="mi">17</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">17</span><span class="p">,</span> <span class="mi">18</span><span class="p">]</span>
+<span class="p">})</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Students DataFrame:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">students</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Exercise: solution</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Tasks:</span>
+<span class="c1"># 1. Find all students who scored 90 or above</span>
+<span class="n">high_performers</span> <span class="o">=</span> <span class="n">students</span><span class="p">[</span><span class="n">students</span><span class="p">[</span><span class="s1">&#39;Grade&#39;</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mi">90</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">1. High performers (90+ grade):&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">high_performers</span><span class="p">)</span>
+
+<span class="c1"># 2. Find all Math students with grades below 80</span>
+<span class="n">struggling_math</span> <span class="o">=</span> <span class="n">students</span><span class="p">[(</span><span class="n">students</span><span class="p">[</span><span class="s1">&#39;Subject&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;Math&#39;</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">students</span><span class="p">[</span><span class="s1">&#39;Grade&#39;</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">80</span><span class="p">)]</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">2. Math students with grades below 80:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">struggling_math</span><span class="p">)</span>
+
+<span class="c1"># 3. Find all Science or Art students who are 17 years old</span>
+<span class="n">science_art_17</span> <span class="o">=</span> <span class="n">students</span><span class="p">[(</span><span class="n">students</span><span class="p">[</span><span class="s1">&#39;Subject&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">([</span><span class="s1">&#39;Science&#39;</span><span class="p">,</span> <span class="s1">&#39;Art&#39;</span><span class="p">]))</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">students</span><span class="p">[</span><span class="s1">&#39;Age&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">17</span><span class="p">)]</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">3. Science or Art students who are 17:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">science_art_17</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</details>
+<div class="admonition-more-info instructor-note admonition" id="instructor-note-2">
+<p class="admonition-title">More info</p>
+<details>
+<summary>Additional notes: Homework</summary>
+<p class="rubric" id="homework">Homework</p>
+<div class="admonition-homework homework important admonition" id="homework-0">
+<p class="admonition-title">Homework</p>
+<p class="rubric" id="loc-iloc-and-at-selection-methods"><code class="docutils literal notranslate"><span class="pre">.loc</span></code>, .<code class="docutils literal notranslate"><span class="pre">iloc</span></code>, and <code class="docutils literal notranslate"><span class="pre">.at</span></code> Selection Methods</p>
+<p><strong>Specialized Selection Methods:</strong></p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Method</p></th>
+<th class="head"><p>Purpose</p></th>
+<th class="head"><p>Use Case</p></th>
+<th class="head"><p>Performance</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">.loc[]</span></code></p></td>
+<td><p>Label-based selection</p></td>
+<td><p>Slicing, multi-label selection</p></td>
+<td><p>Good for ranges</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">.iloc[]</span></code></p></td>
+<td><p>Position-based selection</p></td>
+<td><p>Numerical indexing</p></td>
+<td><p>Good for ranges</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">.at[]</span></code></p></td>
+<td><p>Single value by label</p></td>
+<td><p>Fast scalar lookup</p></td>
+<td><p>Fastest for single values</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">.iat[]</span></code></p></td>
+<td><p>Single value by position</p></td>
+<td><p>Fast scalar lookup</p></td>
+<td><p>Fastest for single values</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Comparing Selection Methods:</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;Name&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;Alice&#39;</span><span class="p">,</span> <span class="s1">&#39;Bob&#39;</span><span class="p">,</span> <span class="s1">&#39;Charlie&#39;</span><span class="p">,</span> <span class="s1">&#39;David&#39;</span><span class="p">,</span> <span class="s1">&#39;Eva&#39;</span><span class="p">],</span>
+    <span class="s1">&#39;Department&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;HR&#39;</span><span class="p">,</span> <span class="s1">&#39;Engineering&#39;</span><span class="p">,</span> <span class="s1">&#39;Sales&#39;</span><span class="p">,</span> <span class="s1">&#39;Management&#39;</span><span class="p">,</span> <span class="s1">&#39;Engineering&#39;</span><span class="p">],</span>
+    <span class="s1">&#39;Salary&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">75000</span><span class="p">,</span> <span class="mi">85000</span><span class="p">,</span> <span class="mi">62000</span><span class="p">,</span> <span class="mi">95000</span><span class="p">,</span> <span class="mi">78000</span><span class="p">],</span>
+    <span class="s1">&#39;Hire_Date&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;2019-05-10&#39;</span><span class="p">,</span> <span class="s1">&#39;2018-03-25&#39;</span><span class="p">,</span> <span class="s1">&#39;2020-11-15&#39;</span><span class="p">,</span> <span class="s1">&#39;2017-08-01&#39;</span><span class="p">,</span> <span class="s1">&#39;2020-07-12&#39;</span><span class="p">],</span>
+    <span class="s1">&#39;Performance&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">4.2</span><span class="p">,</span> <span class="mf">4.5</span><span class="p">,</span> <span class="mf">3.9</span><span class="p">,</span> <span class="mf">4.7</span><span class="p">,</span> <span class="mf">4.1</span><span class="p">]</span>
+<span class="p">}</span>
+
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+<span class="n">df</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s1">&#39;Name&#39;</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Original DataFrame:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+
+<span class="c1"># 1. Using .loc for single value (by label)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">1a. Bob&#39;s Department using .loc:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">&#39;Bob&#39;</span><span class="p">,</span> <span class="s1">&#39;Department&#39;</span><span class="p">])</span>
+
+<span class="c1"># 2. Using .iloc for single value (by position)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">2a. Value at row 1, column 0 using .iloc:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
+
+<span class="c1"># 3. Using .at for single value access (fastest)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">3. Bob&#39;s Department using .at (fastest):&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="s1">&#39;Bob&#39;</span><span class="p">,</span> <span class="s1">&#39;Department&#39;</span><span class="p">])</span>
+
+<span class="c1"># 4. Using .iat for position-based single value access</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">4. Value at row 1, column 0 using .iat (fastest):&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">iat</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
+
+<span class="c1"># 5. Performance comparison for large DataFrame</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
+
+<span class="c1"># Create a larger DataFrame</span>
+<span class="n">large_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">10000</span><span class="p">,</span> <span class="mi">100</span><span class="p">))</span>
+
+<span class="c1"># Time comparison</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">5. Performance comparison:&quot;</span><span class="p">)</span>
+
+<span class="n">start</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+<span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1000</span><span class="p">):</span>
+    <span class="n">value</span> <span class="o">=</span> <span class="n">large_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">5000</span><span class="p">,</span> <span class="mi">50</span><span class="p">]</span>
+<span class="n">loc_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;loc time: </span><span class="si">{</span><span class="n">loc_time</span><span class="si">:</span><span class="s2">.6f</span><span class="si">}</span><span class="s2"> seconds&quot;</span><span class="p">)</span>
+
+<span class="n">start</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+<span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1000</span><span class="p">):</span>
+    <span class="n">value</span> <span class="o">=</span> <span class="n">large_df</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="mi">5000</span><span class="p">,</span> <span class="mi">50</span><span class="p">]</span>
+<span class="n">at_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;at time: </span><span class="si">{</span><span class="n">at_time</span><span class="si">:</span><span class="s2">.6f</span><span class="si">}</span><span class="s2"> seconds&quot;</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;.at is approximately </span><span class="si">{</span><span class="n">loc_time</span><span class="o">/</span><span class="n">at_time</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">x faster than .loc for single value access&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<ul class="simple">
+<li><p>While <code class="docutils literal notranslate"><span class="pre">.loc</span></code> and <code class="docutils literal notranslate"><span class="pre">.iloc</span></code> are versatile, <code class="docutils literal notranslate"><span class="pre">.at</span></code> and <code class="docutils literal notranslate"><span class="pre">.iat</span></code> are optimized for single value lookup</p></li>
+<li><p>Use <code class="docutils literal notranslate"><span class="pre">.at</span></code> and <code class="docutils literal notranslate"><span class="pre">.iat</span></code> when you need to access individual values repeatedly, such as in a loop.</p></li>
+<li><p>The performance difference becomes significant with larger DataFrames</p></li>
+<li><p>The general rule: Use the most specific tool for the job</p></li>
+<li><p>For single value access: <code class="docutils literal notranslate"><span class="pre">.at</span></code>/<code class="docutils literal notranslate"><span class="pre">.iat</span></code> &gt; <code class="docutils literal notranslate"><span class="pre">.loc</span></code>/<code class="docutils literal notranslate"><span class="pre">.iloc</span></code> &gt; direct indexing with <code class="docutils literal notranslate"><span class="pre">[]</span></code>.</p></li>
+</ul>
+</div>
+</div>
+</div>
+<div class="docutils">
+</details>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../10.DataFrame_Manipulation/" class="btn btn-neutral float-left" title="DataFrame Manipulation &amp; Sorting" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../14.Pandas_summary_stats/" class="btn btn-neutral float-right" title="Summary Statistics &amp; Aggregations in Pandas" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025 Norwegian Ai Cloud.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

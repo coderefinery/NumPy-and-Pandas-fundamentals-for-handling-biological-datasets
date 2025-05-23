@@ -1,0 +1,505 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NumPy Boolean Masking and Filtering &mdash; NumPy and Pandas for biological data handling  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+      <link rel="stylesheet" type="text/css" href="../_static/sphinx_lesson.css?v=e9df6548" />
+      <link rel="stylesheet" type="text/css" href="../_static/term_role_formatting.css?v=4194e21c" />
+      <link rel="stylesheet" type="text/css" href="../_static/sphinx_rtd_theme_ext_color_contrast.css?v=8e8ea19f" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=187304be"></script>
+      <script src="../_static/doctools.js?v=9a2dae69"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../_static/copybutton.js?v=35a8b989"></script>
+      <script src="../_static/minipres.js?v=a0d29692"></script>
+      <script>let toggleHintShow = 'Click to show';</script>
+      <script>let toggleHintHide = 'Click to hide';</script>
+      <script>let toggleOpenOnPrint = 'true';</script>
+      <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+      <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+      <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex/" />
+    <link rel="search" title="Search" href="../search/" />
+    <link rel="next" title="Essential Array Operations with NumPy" href="../5.Essential_array_operations/" />
+    <link rel="prev" title="Array Indexing and Slicing" href="../3.Indexing_and_Slicing/" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../" class="icon icon-home">
+            NumPy and Pandas for biological data handling
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search/" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Numpy for handling biological datasets</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../0.Numpy_for_bioinformatics/">Lesson plan</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1.numpy_intro/">Introduction to NumPy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../2.NumPy_Data_Types/">NumPy Data Types</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3.Indexing_and_Slicing/">Array Indexing and Slicing</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">NumPy Boolean Masking and Filtering</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#introduction-to-advanced-indexing">Introduction to Advanced Indexing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#boolean-masking-the-concept">Boolean Masking: The Concept</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#using-np-where-finding-positions">Using <code class="docutils literal notranslate"><span class="pre">np.where()</span></code>: Finding Positions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#np-isin-function"><code class="docutils literal notranslate"><span class="pre">np.isin()</span></code> Function</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#key-takeaways">Key Takeaways</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../5.Essential_array_operations/">Essential Array Operations with NumPy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../6.Vectorized_Operations_in_NumPy/">Vectorized Operations in NumPy: Beyond Python Loops</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../6.1.Numpy_hands_on/">Hands-on: RNA Expression Analysis - alternative method</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Pandas for handling biological datasets</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../7.Pandas_lesson plan/">Lesson plan</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8.Introduction_to_pandas/">Introduction to Pandas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../9.Pandas_data_import_export/">Data Import and Export in Pandas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../10.DataFrame_Manipulation/">DataFrame Manipulation &amp; Sorting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../11.Pandas_indexing_slicing/">Indexing, Selection &amp; Slicing in Pandas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../14.Pandas_summary_stats/">Summary Statistics &amp; Aggregations in Pandas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../15.Hands-on_expression_count_analysis/">Hands-on: RNA Expression Analysis - alternative method</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../12.Handling_Missing_Data/">Bonus Lesson 1: Handling Missing Data in Pandas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../13.Merging_DataFrames/">Bonus Lesson 2: Merging DataFrames in Pandas</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../">NumPy and Pandas for biological data handling</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">NumPy Boolean Masking and Filtering</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/coderefinery/content/blob/main/content/4.Advance_indexing_filtering.md" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="numpy-boolean-masking-and-filtering">
+<h1>NumPy Boolean Masking and Filtering<a class="headerlink" href="#numpy-boolean-masking-and-filtering" title="Link to this heading"></a></h1>
+<div class="admonition-objectives objectives admonition" id="objectives-0">
+<p class="admonition-title">Objectives</p>
+<ol class="arabic simple">
+<li><p>Create boolean masks for array filtering using comparison operators</p></li>
+<li><p>Apply boolean masks to select specific elements from arrays</p></li>
+<li><p>Combine multiple conditions using logical operators (<code class="docutils literal notranslate"><span class="pre">&amp;</span></code>, <code class="docutils literal notranslate"><span class="pre">|</span></code>, <code class="docutils literal notranslate"><span class="pre">~</span></code>)</p></li>
+<li><p>Use <code class="docutils literal notranslate"><span class="pre">np.where()</span></code> to find indices where conditions are met</p></li>
+<li><p>Apply <code class="docutils literal notranslate"><span class="pre">np.where()</span></code> for conditional value assignment</p></li>
+<li><p>Implement <code class="docutils literal notranslate"><span class="pre">np.isin()</span></code> to check array membership</p></li>
+<li><p>Apply these techniques to solve common data analysis problems</p></li>
+</ol>
+</div>
+<div class="admonition-instructor-note instructor-note admonition" id="instructor-note-0">
+<p class="admonition-title">Instructor note</p>
+<ul class="simple">
+<li><p>Teaching : 10 min</p></li>
+<li><p>Demo: 5 min</p></li>
+</ul>
+</div>
+<section id="introduction-to-advanced-indexing">
+<h2>Introduction to Advanced Indexing<a class="headerlink" href="#introduction-to-advanced-indexing" title="Link to this heading"></a></h2>
+<p>When working with data, we often need to focus on specific elements that meet certain criteria. NumPy provides elegant and efficient ways to accomplish this through:</p>
+<ol class="arabic simple">
+<li><p>Boolean masking</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">np.where()</span></code> function</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">np.isin()</span></code> function</p></li>
+</ol>
+<p>Let’s explore each technique in detail.</p>
+</section>
+<section id="boolean-masking-the-concept">
+<h2>Boolean Masking: The Concept<a class="headerlink" href="#boolean-masking-the-concept" title="Link to this heading"></a></h2>
+<p>Boolean masking is a fundamental technique in NumPy that allows us to filter arrays based on conditions. The process happens in two steps:</p>
+<p><strong>Step 1: Create a Boolean Mask:</strong></p>
+<ul class="simple">
+<li><p>We apply a condition to an array</p></li>
+<li><p>This produces a new array of the same shape filled with <code class="docutils literal notranslate"><span class="pre">True</span></code> and <code class="docutils literal notranslate"><span class="pre">False</span></code> values</p></li>
+<li><p>Elements that satisfy our condition are marked as <code class="docutils literal notranslate"><span class="pre">True</span></code></p></li>
+<li><p>Elements that don’t satisfy our condition are marked as <code class="docutils literal notranslate"><span class="pre">False</span></code></p></li>
+</ul>
+<p><strong>Step 2: Apply the Mask:</strong></p>
+<ul class="simple">
+<li><p>We use this boolean array to index into our original array</p></li>
+<li><p>Only elements corresponding to <code class="docutils literal notranslate"><span class="pre">True</span></code> values are selected</p></li>
+</ul>
+<p>Let’s see this in action:</p>
+<div class="admonition-demo demo admonition" id="demo-0">
+<p class="admonition-title">Demo</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+<span class="c1"># Create a sample array</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Original array:&quot;</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+
+<span class="c1"># Create a boolean mask for elements greater than 3</span>
+<span class="n">mask</span> <span class="o">=</span> <span class="n">data</span> <span class="o">&gt;</span> <span class="mi">3</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Boolean mask (data &gt; 3):&quot;</span><span class="p">,</span> <span class="n">mask</span><span class="p">)</span>
+<span class="c1"># This produces: [False, True, False, True, False]</span>
+
+<span class="c1"># Apply the mask to select elements</span>
+<span class="n">selected_data</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">mask</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Selected elements:&quot;</span><span class="p">,</span> <span class="n">selected_data</span><span class="p">)</span>
+<span class="c1"># This produces: [4, 5]</span>
+
+<span class="c1">## Elegant approach -  mask array has the exact same shape as data array</span>
+<span class="c1">## Each position containing information about whether that element meets our criteria</span>
+</pre></div>
+</div>
+<div class="admonition-output solution important dropdown admonition" id="solution-0">
+<p class="admonition-title">Output</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Original array: [1 4 2 5 3]
+Boolean mask (data &gt; 3): [False  True False  True False]
+Selected elements: [4 5]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="docutils">
+<p class="rubric" id="combining-multiple-conditions">Combining Multiple Conditions</p>
+<p>We can combine multiple conditions using logical operators:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">&amp;</span></code> for logical AND</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">|</span></code> for logical OR</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">~</span></code> for logical NOT</p></li>
+</ul>
+<div class="admonition-additional-info instructor-note admonition" id="instructor-note-1">
+<p class="admonition-title">Additional info</p>
+<details>
+<summary>Additional notes: Combining Multiple Conditions</summary>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Creating a 2D array for demonstration</span>
+<span class="n">arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">15</span><span class="p">],</span> 
+                <span class="p">[</span><span class="mi">20</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="mi">30</span><span class="p">],</span>
+                <span class="p">[</span><span class="mi">35</span><span class="p">,</span> <span class="mi">40</span><span class="p">,</span> <span class="mi">45</span><span class="p">]])</span>
+
+<span class="c1"># Elements greater than 20 AND less than 40</span>
+<span class="n">mask</span> <span class="o">=</span> <span class="p">(</span><span class="n">arr</span> <span class="o">&gt;</span> <span class="mi">20</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">arr</span> <span class="o">&lt;</span> <span class="mi">40</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Elements between 20 and 40:&quot;</span><span class="p">,</span> <span class="n">arr</span><span class="p">[</span><span class="n">mask</span><span class="p">])</span>
+<span class="c1"># This produces: [25 30 35]</span>
+
+<span class="c1"># Elements less than 15 OR greater than 40</span>
+<span class="n">mask</span> <span class="o">=</span> <span class="p">(</span><span class="n">arr</span> <span class="o">&lt;</span> <span class="mi">15</span><span class="p">)</span> <span class="o">|</span> <span class="p">(</span><span class="n">arr</span> <span class="o">&gt;</span> <span class="mi">40</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Elements less than 15 or greater than 40:&quot;</span><span class="p">,</span> <span class="n">arr</span><span class="p">[</span><span class="n">mask</span><span class="p">])</span>
+<span class="c1"># This produces: [ 5 10 45]</span>
+</pre></div>
+</div>
+</div>
+</div>
+</details>
+<p><strong>Important:</strong> When combining conditions, always use parentheses around each individual condition to ensure proper precedence.</p>
+</section>
+<section id="using-np-where-finding-positions">
+<h2>Using <code class="docutils literal notranslate"><span class="pre">np.where()</span></code>: Finding Positions<a class="headerlink" href="#using-np-where-finding-positions" title="Link to this heading"></a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">np.where()</span></code> function gives us even more capabilities. In its simplest form, it returns the indices where a condition is True:</p>
+<div class="admonition-demo demo admonition" id="demo-1">
+<p class="admonition-title">Demo</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create an array with a sequence</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>  <span class="c1"># [0, 3, 6, 9, 12, 15, 18]</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Original array:&quot;</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+
+<span class="c1"># Find indices where elements are even</span>
+<span class="n">indices</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">data</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Indices of even elements:&quot;</span><span class="p">,</span> <span class="n">indices</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="c1"># This produces: [0, 2, 4, 6]</span>
+
+<span class="c1"># Use these indices to get the actual values</span>
+<span class="n">even_elements</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">indices</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Even elements:&quot;</span><span class="p">,</span> <span class="n">even_elements</span><span class="p">)</span>
+<span class="c1"># This produces: [ 0,  6, 12, 18]</span>
+</pre></div>
+</div>
+<div class="admonition-output solution important dropdown admonition" id="solution-1">
+<p class="admonition-title">Output</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Original array: [ 0  3  6  9 12 15 18]
+Indices of even elements: [0 2 4 6]
+Even elements: [ 0  6 12 18]
+
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>The result of <code class="docutils literal notranslate"><span class="pre">np.where()</span></code> is a tuple of arrays, one for each dimension of the input array. Since we’re working with a 1D array here, we access the first (and only) element of this tuple with <code class="docutils literal notranslate"><span class="pre">indices[0]</span></code>.</p></li>
+</ul>
+</div>
+</div>
+<div class="docutils">
+<p class="rubric" id="using-np-where-conditional-assignment">Using <code class="docutils literal notranslate"><span class="pre">np.where()</span></code>: Conditional Assignment</p>
+<p>The real power of <code class="docutils literal notranslate"><span class="pre">np.where()</span></code> comes from its three-argument form:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">condition</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>This works like a vectorized if-else statement:</p>
+<ul class="simple">
+<li><p>Where the condition is <code class="docutils literal notranslate"><span class="pre">True</span></code>, take values from <code class="docutils literal notranslate"><span class="pre">x</span></code></p></li>
+<li><p>Where the condition is <code class="docutils literal notranslate"><span class="pre">False</span></code>, take values from <code class="docutils literal notranslate"><span class="pre">y</span></code></p></li>
+</ul>
+<div class="admonition-additional-info instructor-note admonition" id="instructor-note-2">
+<p class="admonition-title">Additional info</p>
+<details>
+<summary>Additional notes: `np.where(cond, x, y)`</summary>
+<div class="admonition-demo demo admonition" id="demo-2">
+<p class="admonition-title">Demo</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Original array: [0, 3, 6, 9, 12, 15, 18]</span>
+
+<span class="c1"># Replace odd numbers with zeros</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">data</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Even numbers preserved, odd numbers replaced with 0:&quot;</span><span class="p">,</span> <span class="n">result</span><span class="p">)</span>
+<span class="c1"># This produces: [ 0,  0,  6,  0, 12,  0, 18]</span>
+
+<span class="c1"># Another example: create an array that shows whether each element is even or odd</span>
+<span class="n">labels</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">data</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;even&quot;</span><span class="p">,</span> <span class="s2">&quot;odd&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Labels for each element:&quot;</span><span class="p">,</span> <span class="n">labels</span><span class="p">)</span>
+<span class="c1"># This produces: [&#39;even&#39; &#39;odd&#39; &#39;even&#39; &#39;odd&#39; &#39;even&#39; &#39;odd&#39; &#39;even&#39;]</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</details>
+<p>This is much more concise and efficient than using loops or other conditional constructs.</p>
+</section>
+<section id="np-isin-function">
+<h2><code class="docutils literal notranslate"><span class="pre">np.isin()</span></code> Function<a class="headerlink" href="#np-isin-function" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">np.isin()</span></code> useful when we have a specific set of values we’re interested in.</p></li>
+</ul>
+<div class="admonition-additional-info instructor-note admonition" id="instructor-note-3">
+<p class="admonition-title">Additional info</p>
+<details>
+<summary>Additional notes: The `np.isin()` Function</summary>
+<p><strong><code class="docutils literal notranslate"><span class="pre">np.isin()</span></code>:</strong></p>
+<p>The <code class="docutils literal notranslate"><span class="pre">np.isin()</span></code> function checks whether elements in one array are present in another array. It creates a boolean mask that we can use for filtering:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Original array: [0, 3, 6, 9, 12, 15, 18]</span>
+
+<span class="c1"># Check which elements are in a set of values</span>
+<span class="n">test_values</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">15</span><span class="p">]</span>
+<span class="n">mask</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">test_values</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Elements that are in test_values:&quot;</span><span class="p">,</span> <span class="n">data</span><span class="p">[</span><span class="n">mask</span><span class="p">])</span>
+<span class="c1"># This produces: [ 0,  6, 15]</span>
+</pre></div>
+</div>
+</details>
+<details>
+<summary>Additional notes: Practical Applications</summary>
+<p><strong>Practical Applications:</strong></p>
+<p>These techniques are foundational for data analysis tasks:</p>
+<ol class="arabic">
+<li><p>Data Cleaning: Filter out missing or invalid values</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">clean_data</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="o">~</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">data</span><span class="p">)]</span>  <span class="c1"># Remove NaN values</span>
+</pre></div>
+</div>
+</li>
+<li><p>Feature Selection: Extract data points that meet specific criteria</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">high_importance</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">data</span> <span class="o">&gt;</span> <span class="n">threshold</span><span class="p">]</span>
+</pre></div>
+</div>
+</li>
+<li><p>Conditional Transformations: Apply different operations to different elements</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">normalized</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">data</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">,</span> <span class="n">data</span><span class="o">/</span><span class="n">data</span><span class="o">.</span><span class="n">max</span><span class="p">(),</span> <span class="n">data</span><span class="o">/</span><span class="nb">abs</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">min</span><span class="p">()))</span>
+</pre></div>
+</div>
+</li>
+</ol>
+</details>
+<details>
+<summary>Additional notes: Exercise 2 & 3</summary>
+<div class="admonition-exercise exercise important admonition" id="exercise-0">
+<p class="admonition-title">Exercise</p>
+<p><strong>Exercise 1: NumPy Boolean Masking and Advanced Filtering:</strong></p>
+<p>Create a NumPy array of 20 random integers between 0 and 100. Then:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>  <span class="c1"># for reproducibility</span>
+<span class="n">numbers</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">101</span><span class="p">,</span> <span class="mi">20</span><span class="p">)</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>Create a boolean mask to identify all numbers divisible by 7</p></li>
+<li><p>Use the mask to extract these numbers</p></li>
+<li><p>Count how many numbers are divisible by 7</p></li>
+</ul>
+<p>Solution</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+<span class="c1"># Create an array of 20 random integers between 0 and 100</span>
+<span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>  <span class="c1"># for reproducibility</span>
+<span class="n">numbers</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">101</span><span class="p">,</span> <span class="mi">20</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Original array:&quot;</span><span class="p">,</span> <span class="n">numbers</span><span class="p">)</span>
+
+<span class="c1"># Create a boolean mask for numbers divisible by 7</span>
+<span class="n">mask</span> <span class="o">=</span> <span class="n">numbers</span> <span class="o">%</span> <span class="mi">7</span> <span class="o">==</span> <span class="mi">0</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Boolean mask:&quot;</span><span class="p">,</span> <span class="n">mask</span><span class="p">)</span>
+
+<span class="c1"># Extract numbers divisible by 7</span>
+<span class="n">divisible_by_7</span> <span class="o">=</span> <span class="n">numbers</span><span class="p">[</span><span class="n">mask</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Numbers divisible by 7:&quot;</span><span class="p">,</span> <span class="n">divisible_by_7</span><span class="p">)</span>
+
+<span class="c1"># Count how many numbers are divisible by 7</span>
+<span class="n">count</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">mask</span><span class="p">)</span>  <span class="c1"># True values are treated as 1, False as 0</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Count of numbers divisible by 7: </span><span class="si">{</span><span class="n">count</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Output</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Original array: [51 92 14 71 60 20 82 86 74 74 87 99 23  2 21 52  1 87 29 37]
+Boolean mask: [False False  True False False False False False False False False False
+ False False  True False False False False False]
+Numbers divisible by 7: [14 21]
+Count of numbers divisible by 7: 2
+</pre></div>
+</div>
+<p><strong>Exercise 2 - np.where() for Conditional Assignment:</strong></p>
+<p>Create a 4x4 matrix of random integers between 1 and 20. Then:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>
+<span class="n">matrix</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">21</span><span class="p">,</span> <span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>Use np.where() to replace all odd numbers with -1 while keeping even numbers unchanged</p></li>
+</ul>
+<p><strong>Exercise 2 - Solution:</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create a 4x4 matrix of random integers between 1 and 20</span>
+<span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>
+<span class="n">matrix</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">21</span><span class="p">,</span> <span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Original matrix:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">matrix</span><span class="p">)</span>
+
+<span class="c1"># Replace odd numbers with -1, keep even numbers</span>
+<span class="n">odd_replaced</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">matrix</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span><span class="p">,</span> <span class="n">matrix</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Matrix with odd numbers replaced by -1:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">odd_replaced</span><span class="p">)</span>
+
+</pre></div>
+</div>
+<p>Output</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Original matrix:
+[[ 7 20 15 11]
+ [ 8  7 19 11]
+ [11  4  8  3]
+ [ 2 12  6  2]]
+
+Matrix with odd numbers replaced by -1:
+[[-1 20 -1 -1]
+ [ 8 -1 -1 -1]
+ [-1  4  8 -1]
+ [ 2 12  6  2]]
+</pre></div>
+</div>
+<p><strong>Exercise 3 - DNA Sequence Analysis:</strong></p>
+<p>You are given a DNA sequence as a NumPy array of characters (A, T, G, C).</p>
+<ul class="simple">
+<li><p>Create a random DNA sequence of length 50 using <code class="docutils literal notranslate"><span class="pre">np.random.choice(['A',</span> <span class="pre">'T',</span> <span class="pre">'G',</span> <span class="pre">'C'],</span> <span class="pre">50)</span></code></p></li>
+<li><p>Use boolean masking to Count the number of each nucleotide (A, T, G, C)</p></li>
+</ul>
+<p><strong>Exercise 3 - Solution:</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+<span class="c1"># Create a random DNA sequence</span>
+<span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>  <span class="c1"># for reproducibility</span>
+<span class="n">dna_sequence</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">([</span><span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="s1">&#39;T&#39;</span><span class="p">,</span> <span class="s1">&#39;G&#39;</span><span class="p">,</span> <span class="s1">&#39;C&#39;</span><span class="p">],</span> <span class="mi">50</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;DNA sequence:&quot;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">dna_sequence</span><span class="p">))</span>
+
+<span class="c1"># Count the number of each nucleotide</span>
+<span class="n">a_count</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">dna_sequence</span> <span class="o">==</span> <span class="s1">&#39;A&#39;</span><span class="p">)</span>
+<span class="n">t_count</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">dna_sequence</span> <span class="o">==</span> <span class="s1">&#39;T&#39;</span><span class="p">)</span>
+<span class="n">g_count</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">dna_sequence</span> <span class="o">==</span> <span class="s1">&#39;G&#39;</span><span class="p">)</span>
+<span class="n">c_count</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">dna_sequence</span> <span class="o">==</span> <span class="s1">&#39;C&#39;</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;A: </span><span class="si">{</span><span class="n">a_count</span><span class="si">}</span><span class="s2">, T: </span><span class="si">{</span><span class="n">t_count</span><span class="si">}</span><span class="s2">, G: </span><span class="si">{</span><span class="n">g_count</span><span class="si">}</span><span class="s2">, C: </span><span class="si">{</span><span class="n">c_count</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+</pre></div>
+</div>
+<p>Output</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>DNA sequence: GCAGGCAAGTGGGGCACCCGTATCCTTTCCAACTTACAAGGGTCCCCGTT
+A: 10, T: 11, G: 13, C: 16
+</pre></div>
+</div>
+</div>
+</div>
+</details>
+</section>
+<section id="key-takeaways">
+<h2>Key Takeaways<a class="headerlink" href="#key-takeaways" title="Link to this heading"></a></h2>
+<div class="admonition-keypoints keypoints admonition" id="keypoints-0">
+<p class="admonition-title">Keypoints</p>
+<ul class="simple">
+<li><p>Boolean masking and <code class="docutils literal notranslate"><span class="pre">np.where()</span></code> operations are highly optimized in NumPy. They:</p>
+<ul>
+<li><p>Avoid explicit loops in Python</p></li>
+<li><p>Execute at C-speed under the hood</p></li>
+<li><p>Allow vectorized operations on large datasets</p></li>
+</ul>
+</li>
+<li><p>For large datasets, these techniques are drastically faster than traditional iteration.</p></li>
+<li><p>Boolean masking provides an intuitive way to filter arrays based on conditions</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">np.where()</span></code> in its single-argument form finds indices where conditions are true</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">np.where(condition,</span> <span class="pre">x,</span> <span class="pre">y)</span></code> acts as a vectorized if-else statement</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">np.isin()</span></code> lets us filter based on membership in a set of values</p></li>
+</ul>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../3.Indexing_and_Slicing/" class="btn btn-neutral float-left" title="Array Indexing and Slicing" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../5.Essential_array_operations/" class="btn btn-neutral float-right" title="Essential Array Operations with NumPy" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025 Norwegian Ai Cloud.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

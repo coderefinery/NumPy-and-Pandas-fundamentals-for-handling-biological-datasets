@@ -1,0 +1,589 @@
+# Indexing, Selection & Slicing in Pandas
+
+:::{objectives}
+
+* Differentiate between label-based and position-based indexing and apply each method appropriately.
+* Use Boolean indexing to filter data based on specific conditions, connecting concepts from NumPy.
+* Apply `.loc`, `.iloc`, and `.at` selection methods to extract desired data, and employ multi-level slicing techniques.
+:::
+
+:::{instructor-note}
+
+* Teaching : 5 min
+* Demo: 25 min
+
+:::
+
+:::{Note}
+
+* In the previous session, we introduced some basic ways to select data. Now we'll dive deeper into Pandas' powerful indexing systems.
+* Think of these techniques as the surgical tools that let you precisely extract exactly the data you need.
+* Understanding the differences between these indexing methods will make your code more efficient and help you avoid common errors.
+* These concepts build directly on your NumPy knowledge, but with added capabilities for labeled data.
+:::
+
+* Precise data access is the foundation of efficient data analysis
+* Pandas offers multiple ways to access data, each with specific use cases
+
+## Label vs. Position-based Indexing
+
+* Two Fundamental Indexing Approaches
+
+| Indexing Type | Method | Use Case | NumPy Equivalent |
+|---------------|--------|----------|------------------|
+| Label-based | `.loc[]` | When you know the labels | N/A (NumPy is position-based) |
+| Position-based | `.iloc[]` | When you know the positions | Standard NumPy indexing |
+| Mixed | Direct `[]` | Simple selection (but less explicit) | N/A |
+
+### Creating a DataFrame with Meaningful Indices
+
+:::{demo}
+
+```python
+# Create a DataFrame with custom indices
+import pandas as pd
+
+# Create a genetic dataset
+genetic_data = {
+    'Gene': ['BRCA1', 'TP53', 'APOE', 'PTEN', 'BRAF', 'KRAS', 
+            'BRCA2', 'EGFR', 'TNF', 'IL6'],
+    'Chromosome': ['Chr17', 'Chr17', 'Chr19', 'Chr10', 'Chr7', 'Chr12', 
+                  'Chr13', 'Chr7', 'Chr6', 'Chr7'],
+    'Study': ['Study1', 'Study2', 'Study1', 'Study3', 'Study2', 'Study3', 
+             'Study1', 'Study2', 'Study3', 'Study1'],
+    'PValue': [0.0001, 0.0050, 0.0200, 0.0150, 0.0300, 0.0400, 
+              0.0005, 0.0250, 0.0100, 0.0450],
+    'EffectSize': [2.5, 1.8, 3.2, 2.1, 1.5, 1.2, 2.7, 1.9, 2.3, 1.1]
+}
+
+genetic_df = pd.DataFrame(genetic_data)
+print("Genetic DataFrame:")
+print(genetic_df)
+
+# Set a meaningful index from an existing column
+genetic_df.set_index('Gene', inplace=True)
+print("DataFrame with 'Gene' as index:")
+print(genetic_df)
+
+# Reset index to return to default integer indexing
+df_reset = genetic_df.reset_index()
+print("\nDataFrame with default integer index:")
+print(df_reset)
+```
+
+:::{solution} Output
+
+```none
+Genetic DataFrame:
+    Gene Chromosome   Study  PValue  EffectSize
+0  BRCA1      Chr17  Study1  0.0001         2.5
+1   TP53      Chr17  Study2  0.0050         1.8
+2   APOE      Chr19  Study1  0.0200         3.2
+3   PTEN      Chr10  Study3  0.0150         2.1
+4   BRAF       Chr7  Study2  0.0300         1.5
+5   KRAS      Chr12  Study3  0.0400         1.2
+6  BRCA2      Chr13  Study1  0.0005         2.7
+7   EGFR       Chr7  Study2  0.0250         1.9
+8    TNF       Chr6  Study3  0.0100         2.3
+9    IL6       Chr7  Study1  0.0450         1.1
+
+DataFrame with 'Gene' as index:
+      Chromosome   Study  PValue  EffectSize
+Gene
+BRCA1      Chr17  Study1  0.0001         2.5
+TP53       Chr17  Study2  0.0050         1.8
+APOE       Chr19  Study1  0.0200         3.2
+PTEN       Chr10  Study3  0.0150         2.1
+BRAF        Chr7  Study2  0.0300         1.5
+KRAS       Chr12  Study3  0.0400         1.2
+BRCA2      Chr13  Study1  0.0005         2.7
+EGFR        Chr7  Study2  0.0250         1.9
+TNF         Chr6  Study3  0.0100         2.3
+IL6         Chr7  Study1  0.0450         1.1
+
+DataFrame with default integer index:
+    Gene Chromosome   Study  PValue  EffectSize
+0  BRCA1      Chr17  Study1  0.0001         2.5
+1   TP53      Chr17  Study2  0.0050         1.8
+2   APOE      Chr19  Study1  0.0200         3.2
+3   PTEN      Chr10  Study3  0.0150         2.1
+4   BRAF       Chr7  Study2  0.0300         1.5
+5   KRAS      Chr12  Study3  0.0400         1.2
+6  BRCA2      Chr13  Study1  0.0005         2.7
+7   EGFR       Chr7  Study2  0.0250         1.9
+8    TNF       Chr6  Study3  0.0100         2.3
+9    IL6       Chr7  Study1  0.0450         1.1
+```
+
+:::
+
+### Use Label and Position-based Indexing
+
+* Label-based indexing with `.loc`
+* Select multiple rows by label
+* Select rows and columns by label
+* Slicing dataframe using labels
+* Position-based indexing with `.iloc`
+* Select multiple rows by position
+* Slicing dataframe using indices (Select rows and columns by position)
+
+:::{demo}
+
+```python
+# Using the genetic_df with 'Gene' as the index
+
+# 1. Label-based indexing with .loc
+print("\n1.1. Label-based selection (.loc):")
+print("Data for 'BRCA1':")
+print(genetic_df.loc['BRCA1'])
+
+# Select multiple rows by label
+print("\n1.2. Data for 'TP53' and 'APOE':")
+print(genetic_df.loc[['TP53', 'APOE']])
+
+# Select rows and columns by label
+print("\n1.3. Chromosome and PValue for 'BRAF' and 'KRAS':")
+print(genetic_df.loc[['BRAF', 'KRAS'], ['Chromosome', 'PValue']])
+
+# Slicing dataframe using labels
+print("\n1.4. All the rows of Chromosome and PValue columns:")
+print(genetic_df.loc[:, ['Chromosome', 'PValue']])
+gene_set = ["BRCA1", "BRCA2", "TP53"]
+print("\n1.5. row indices in gene_set array and column indices - Study, EffectSize:")
+print(genetic_df.loc[["BRCA1","BRAF"], ["Study","EffectSize"]])
+
+# 2. Position-based indexing with .iloc
+print("\n2.1. Position-based selection (.iloc):")
+print("Third row (index position 2):")
+print(genetic_df.iloc[2])
+
+# Select multiple rows by position
+print("\n2.2. First and fourth rows (positions 0 and 3):")
+print(genetic_df.iloc[[0, 3]])
+
+# Slicing dataframe using indices - Select rows and columns by position
+print("\n2.3. Rows 1-3, columns 0-1:")
+print(genetic_df.iloc[1:4, 0:2])
+
+# 3. Mixed indexing (direct [])
+# Mixing approaches (not recommended but sometimes seen)
+# print("\nFirst two rows of 'Study' column:")
+# print(genetic_df['Study'][0:2])  # Chained indexing - can lead to issues
+```
+
+:::{solution} Output
+
+```none
+1.1. Label-based selection (.loc):
+Data for 'BRCA1':
+Chromosome     Chr17
+Study         Study1
+PValue        0.0001
+EffectSize       2.5
+Name: BRCA1, dtype: object
+
+1.2. Data for 'TP53' and 'APOE':
+     Chromosome   Study  PValue  EffectSize
+Gene
+TP53      Chr17  Study2   0.005         1.8
+APOE      Chr19  Study1   0.020         3.2
+
+1.3. Chromosome and PValue for 'BRAF' and 'KRAS':
+     Chromosome  PValue
+Gene
+BRAF       Chr7    0.03
+KRAS      Chr12    0.04
+
+1.4. All the rows of Chromosome and PValue columns:
+      Chromosome  PValue
+Gene
+BRCA1      Chr17  0.0001
+TP53       Chr17  0.0050
+APOE       Chr19  0.0200
+PTEN       Chr10  0.0150
+BRAF        Chr7  0.0300
+KRAS       Chr12  0.0400
+BRCA2      Chr13  0.0005
+EGFR        Chr7  0.0250
+TNF         Chr6  0.0100
+IL6         Chr7  0.0450
+
+1.5. row indices in gene_set array and column indices - Study, EffectSize:
+        Study  EffectSize
+Gene
+BRCA1  Study1         2.5
+BRAF   Study2         1.5
+
+2.1. Position-based selection (.iloc):
+Third row (index position 2):
+Chromosome     Chr19
+Study         Study1
+PValue          0.02
+EffectSize       3.2
+Name: APOE, dtype: object
+
+2.2. First and fourth rows (positions 0 and 3):
+      Chromosome   Study  PValue  EffectSize
+Gene
+BRCA1      Chr17  Study1  0.0001         2.5
+PTEN       Chr10  Study3  0.0150         2.1
+
+2.3. Rows 1-3, columns 0-1:
+     Chromosome   Study
+Gene
+TP53      Chr17  Study2
+APOE      Chr19  Study1
+PTEN      Chr10  Study3
+```
+
+:::
+
+:::{Note}
+
+* The key distinction is that `.loc` uses labels, while `.iloc` uses integer positions.
+* Think of `.loc` as looking up data in a dictionary by key, and `.iloc` as accessing a list by position.
+* Label-based indexing is more intuitive when working with real-world data that has meaningful labels.
+* Position-based indexing connects directly to your NumPy knowledge and is useful for algorithms that need specific positions.
+* Using the direct `[]` approach is convenient but can be ambiguous and lead to unexpected behavior.
+  * `df[mask]` can be thought as shorthand for `df.loc[mask, :]`
+  * Using `.loc` is more explicit and makes your intentions clearer - you're specifically asking for label-based indexing
+* When filtering data with conditions, particularly with missing values, `.loc` is generally safer.
+  * `.loc` generally handles missing values more gracefully. If your mask involves columns containing NaN values, direct indexing might raise unexpected errors while `.loc` will typically handle them correctly
+
+:::
+
+## Boolean Indexing
+
+**Boolean Indexing and Filtering:**
+
+| Concept | Description | Connection to NumPy |
+|---------|-------------|---------------------|
+| Boolean masks | Arrays of True/False values | Direct equivalent in NumPy |
+| Comparison operators | `>, <, ==, !=, >=, <=` | Same as NumPy |
+| Compound conditions | Combined with `&, |, ~` | Same as NumPy but requires parentheses |
+| `query()` method | SQL-like filtering | Pandas-specific, no NumPy equivalent |
+
+:::{demo}
+
+* Simple boolean mask
+* Using the mask to filter rows
+* Inline boolean indexing
+* Multiple conditions with & (and), | (or)
+
+**Creating and Using Boolean Masks:**
+
+```python
+# Reset example
+genetic_df = pd.DataFrame(genetic_data)
+genetic_df.set_index('Gene', inplace=True)
+print("Original DataFrame:")
+print(genetic_df)
+
+# 1. Simple boolean mask
+low_pvalue_mask = genetic_df['PValue'] < 0.01
+print("\n1. Boolean mask for low P-values:")
+print(low_pvalue_mask)
+
+# Using the mask to filter rows
+print("\nGenes with low P-values:")
+print(genetic_df[low_pvalue_mask])
+
+# 2. Inline boolean indexing
+print("\n2. Genes on Chromosome 7:")
+print(genetic_df[genetic_df['Chromosome'] == 'Chr7'])
+
+# 3. Multiple conditions with & (and), | (or)
+print("\n3a. Genes from Study1 with large effect size:")
+multi_cond_and = (genetic_df['Study'] == 'Study1') & (genetic_df['EffectSize'] > 2.5)
+print(genetic_df[multi_cond_and]) # print(genetic_df.loc[multi_cond_and, :])
+
+print("\n3b. Genes with either very low P-value or large effect size:")
+multi_cond_or = (genetic_df['PValue'] < 0.005) | (genetic_df['EffectSize'] > 3.0)
+print(genetic_df[multi_cond_or]) # print(genetic_df.loc[multi_cond_or, :])
+
+# 4. Using .loc with boolean masks
+print("\n4.a Using .loc with boolean mask:")
+chr17_genes = (genetic_df['Chromosome'] == 'Chr17')
+col_list = ['Study', 'EffectSize']
+print(genetic_df.loc[chr17_genes, col_list])
+print("\n4.b Using .loc with boolean mask:")
+print(genetic_df.loc[multi_cond_and, col_list])
+```
+
+:::{solution} Output
+
+```none
+Original DataFrame:
+      Chromosome   Study  PValue  EffectSize
+Gene
+BRCA1      Chr17  Study1  0.0001         2.5
+TP53       Chr17  Study2  0.0050         1.8
+APOE       Chr19  Study1  0.0200         3.2
+PTEN       Chr10  Study3  0.0150         2.1
+BRAF        Chr7  Study2  0.0300         1.5
+KRAS       Chr12  Study3  0.0400         1.2
+BRCA2      Chr13  Study1  0.0005         2.7
+EGFR        Chr7  Study2  0.0250         1.9
+TNF         Chr6  Study3  0.0100         2.3
+IL6         Chr7  Study1  0.0450         1.1
+
+1. Boolean mask for low P-values:
+Gene
+BRCA1     True
+TP53      True
+APOE     False
+PTEN     False
+BRAF     False
+KRAS     False
+BRCA2     True
+EGFR     False
+TNF      False
+IL6      False
+Name: PValue, dtype: bool
+
+Genes with low P-values:
+      Chromosome   Study  PValue  EffectSize
+Gene
+BRCA1      Chr17  Study1  0.0001         2.5
+TP53       Chr17  Study2  0.0050         1.8
+BRCA2      Chr13  Study1  0.0005         2.7
+
+2. Genes on Chromosome 7:
+     Chromosome   Study  PValue  EffectSize
+Gene
+BRAF       Chr7  Study2   0.030         1.5
+EGFR       Chr7  Study2   0.025         1.9
+IL6        Chr7  Study1   0.045         1.1
+
+3a. Genes from Study1 with large effect size:
+      Chromosome   Study  PValue  EffectSize
+Gene
+APOE       Chr19  Study1  0.0200         3.2
+BRCA2      Chr13  Study1  0.0005         2.7
+
+3b. Genes with either very low P-value or large effect size:
+      Chromosome   Study  PValue  EffectSize
+Gene
+BRCA1      Chr17  Study1  0.0001         2.5
+APOE       Chr19  Study1  0.0200         3.2
+BRCA2      Chr13  Study1  0.0005         2.7
+
+4.a Using .loc with boolean mask:
+        Study  EffectSize
+Gene
+BRCA1  Study1         2.5
+TP53   Study2         1.8
+
+4.b Using .loc with boolean mask:
+        Study  EffectSize
+Gene
+APOE   Study1         3.2
+BRCA2  Study1         2.7
+```
+
+:::
+
+## Key Takeaways
+
+:::{Keypoints}
+
+1. **Selection Toolkit:** Different indexing methods are optimized for different tasks
+2. **Label vs. Position:** `.loc` uses labels, `.iloc` uses positions - choose based on what you know
+3. **Boolean Filtering:** Powerful way to extract data matching specific conditions
+:::
+
+:::{instructor-note} More info
+<details>
+<summary>Additional notes: Advanced Boolean Indexing</summary>
+
+### Advanced Boolean Indexing Techniques
+
+* String methods with boolean indexing
+* `.isin()` for multiple value matching
+* Combining with function application
+
+```python
+# 1. String methods with boolean indexing
+print("\n1. Chromosomes starting with 'Chr1':")
+print(genetic_df[genetic_df['Chromosome'].str.startswith('Chr1')])
+
+# 2. isin() for multiple value matching
+print("\n2. Genes from Study1 or Study3:")
+print(genetic_df[genetic_df['Study'].isin(['Study1', 'Study3'])])
+
+# 3. Combining with function application
+def is_significant(p_value):
+    # Consider p-values below P-value threshold as highly significant
+    return p_value < 0.001
+
+print("\n3. Highly significant genes using a function:")
+print(genetic_df[genetic_df['PValue'].apply(is_significant)])
+```
+
+Output
+
+```none
+1. Chromosomes starting with 'Chr1':
+      Chromosome   Study  PValue  EffectSize
+Gene
+BRCA1      Chr17  Study1  0.0001         2.5
+TP53       Chr17  Study2  0.0050         1.8
+APOE       Chr19  Study1  0.0200         3.2
+PTEN       Chr10  Study3  0.0150         2.1
+KRAS       Chr12  Study3  0.0400         1.2
+BRCA2      Chr13  Study1  0.0005         2.7
+
+2. Genes from Study1 or Study3:
+      Chromosome   Study  PValue  EffectSize
+Gene
+BRCA1      Chr17  Study1  0.0001         2.5
+APOE       Chr19  Study1  0.0200         3.2
+PTEN       Chr10  Study3  0.0150         2.1
+KRAS       Chr12  Study3  0.0400         1.2
+BRCA2      Chr13  Study1  0.0005         2.7
+TNF         Chr6  Study3  0.0100         2.3
+IL6         Chr7  Study1  0.0450         1.1
+
+3. Highly significant genes using a function:
+      Chromosome   Study  PValue  EffectSize
+Gene
+BRCA1      Chr17  Study1  0.0001         2.5
+BRCA2      Chr13  Study1  0.0005         2.7
+```
+
+Note:
+
+* Boolean indexing is one of the most powerful features in Pandas and NumPy - it lets you filter data based on conditions.
+* The syntax is very similar to NumPy's boolean masking, which you're already familiar with.
+* Remember that when combining conditions, you need to use `&` for AND and `|` for OR,
+  * not the Python keywords 'and' and 'or'.
+  * Each condition needs to be wrapped in parentheses when combining them - this is a common source of errors.
+* You can combine boolean indexing with `.loc` to filter rows and select specific columns in one operation.
+
+Exercise: Boolean indexing using `students` dataframe to
+
+1. Find all students who scored 90 or above
+2. Find all Math students with grades below 80
+3. Find all Science or Art students who are 17 years old
+
+```python
+# Create a DataFrame of student data
+students = pd.DataFrame({
+    'Name': ['Emma', 'Noah', 'Olivia', 'Liam', 'Ava', 'William', 'Sophia', 'Mason'],
+    'Grade': [85, 92, 78, 95, 89, 79, 88, 91],
+    'Subject': ['Math', 'Science', 'Math', 'Science', 'Art', 'Math', 'Science', 'Art'],
+    'Age': [16, 17, 16, 18, 17, 16, 17, 18]
+})
+
+print("Students DataFrame:")
+print(students)
+```
+
+Exercise: solution
+
+```python
+# Tasks:
+# 1. Find all students who scored 90 or above
+high_performers = students[students['Grade'] >= 90]
+print("\n1. High performers (90+ grade):")
+print(high_performers)
+
+# 2. Find all Math students with grades below 80
+struggling_math = students[(students['Subject'] == 'Math') & (students['Grade'] < 80)]
+print("\n2. Math students with grades below 80:")
+print(struggling_math)
+
+# 3. Find all Science or Art students who are 17 years old
+science_art_17 = students[(students['Subject'].isin(['Science', 'Art'])) & (students['Age'] == 17)]
+print("\n3. Science or Art students who are 17:")
+print(science_art_17)
+```
+
+:::
+</details>
+
+:::{instructor-note} More info
+<details>
+<summary>Additional notes: Homework</summary>
+
+## Homework
+
+:::{homework}
+
+### `.loc`, .`iloc`, and `.at` Selection Methods
+
+**Specialized Selection Methods:**
+
+| Method | Purpose | Use Case | Performance |
+|--------|---------|----------|-------------|
+| `.loc[]` | Label-based selection | Slicing, multi-label selection | Good for ranges |
+| `.iloc[]` | Position-based selection | Numerical indexing | Good for ranges |
+| `.at[]` | Single value by label | Fast scalar lookup | Fastest for single values |
+| `.iat[]` | Single value by position | Fast scalar lookup | Fastest for single values |
+
+**Comparing Selection Methods:**
+
+```python
+data = {
+    'Name': ['Alice', 'Bob', 'Charlie', 'David', 'Eva'],
+    'Department': ['HR', 'Engineering', 'Sales', 'Management', 'Engineering'],
+    'Salary': [75000, 85000, 62000, 95000, 78000],
+    'Hire_Date': ['2019-05-10', '2018-03-25', '2020-11-15', '2017-08-01', '2020-07-12'],
+    'Performance': [4.2, 4.5, 3.9, 4.7, 4.1]
+}
+
+df = pd.DataFrame(data)
+df.set_index('Name', inplace=True)
+print("Original DataFrame:")
+print(df)
+
+# 1. Using .loc for single value (by label)
+print("\n1a. Bob's Department using .loc:")
+print(df.loc['Bob', 'Department'])
+
+# 2. Using .iloc for single value (by position)
+print("\n2a. Value at row 1, column 0 using .iloc:")
+print(df.iloc[1, 0])
+
+# 3. Using .at for single value access (fastest)
+print("\n3. Bob's Department using .at (fastest):")
+print(df.at['Bob', 'Department'])
+
+# 4. Using .iat for position-based single value access
+print("\n4. Value at row 1, column 0 using .iat (fastest):")
+print(df.iat[1, 0])
+
+# 5. Performance comparison for large DataFrame
+import time
+
+# Create a larger DataFrame
+large_df = pd.DataFrame(np.random.rand(10000, 100))
+
+# Time comparison
+print("\n5. Performance comparison:")
+
+start = time.time()
+for _ in range(1000):
+    value = large_df.loc[5000, 50]
+loc_time = time.time() - start
+print(f"loc time: {loc_time:.6f} seconds")
+
+start = time.time()
+for _ in range(1000):
+    value = large_df.at[5000, 50]
+at_time = time.time() - start
+print(f"at time: {at_time:.6f} seconds")
+
+print(f".at is approximately {loc_time/at_time:.1f}x faster than .loc for single value access")
+```
+
+:::{Note}
+
+* While `.loc` and `.iloc` are versatile, `.at` and `.iat` are optimized for single value lookup
+* Use `.at` and `.iat` when you need to access individual values repeatedly, such as in a loop.
+* The performance difference becomes significant with larger DataFrames
+* The general rule: Use the most specific tool for the job
+* For single value access: `.at`/`.iat` > `.loc`/`.iloc` > direct indexing with `[]`.
+:::
+:::
+</details>
