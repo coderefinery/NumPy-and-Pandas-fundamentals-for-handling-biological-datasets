@@ -1,0 +1,224 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lesson plan &mdash; NumPy and Pandas for biological data handling  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+      <link rel="stylesheet" type="text/css" href="../_static/sphinx_lesson.css?v=e9df6548" />
+      <link rel="stylesheet" type="text/css" href="../_static/term_role_formatting.css?v=4194e21c" />
+      <link rel="stylesheet" type="text/css" href="../_static/sphinx_rtd_theme_ext_color_contrast.css?v=8e8ea19f" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=187304be"></script>
+      <script src="../_static/doctools.js?v=9a2dae69"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../_static/copybutton.js?v=35a8b989"></script>
+      <script src="../_static/minipres.js?v=a0d29692"></script>
+      <script>let toggleHintShow = 'Click to show';</script>
+      <script>let toggleHintHide = 'Click to hide';</script>
+      <script>let toggleOpenOnPrint = 'true';</script>
+      <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+      <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+      <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex/" />
+    <link rel="search" title="Search" href="../search/" />
+    <link rel="next" title="Introduction to Pandas" href="../8.Introduction_to_pandas/" />
+    <link rel="prev" title="Hands-on: RNA Expression Analysis - alternative method" href="../6.1.Numpy_hands_on/" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../" class="icon icon-home">
+            NumPy and Pandas for biological data handling
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search/" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Numpy for handling biological datasets</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../0.Numpy_for_bioinformatics/">Lesson plan</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1.numpy_intro/">Introduction to NumPy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../2.NumPy_Data_Types/">NumPy Data Types</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3.Indexing_and_Slicing/">Array Indexing and Slicing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../4.Advance_indexing_filtering/">NumPy Boolean Masking and Filtering</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../5.Essential_array_operations/">Essential Array Operations with NumPy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../6.Vectorized_Operations_in_NumPy/">Vectorized Operations in NumPy: Beyond Python Loops</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../6.1.Numpy_hands_on/">Hands-on: RNA Expression Analysis - alternative method</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Pandas for handling biological datasets</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Lesson plan</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#specific-objectives">Specific Objectives</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../8.Introduction_to_pandas/">Introduction to Pandas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../9.Pandas_data_import_export/">Data Import and Export in Pandas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../10.DataFrame_Manipulation/">DataFrame Manipulation &amp; Sorting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../11.Pandas_indexing_slicing/">Indexing, Selection &amp; Slicing in Pandas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../14.Pandas_summary_stats/">Summary Statistics &amp; Aggregations in Pandas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../15.Hands-on_expression_count_analysis/">Hands-on: RNA Expression Analysis - alternative method</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../12.Handling_Missing_Data/">Bonus Lesson 1: Handling Missing Data in Pandas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../13.Merging_DataFrames/">Bonus Lesson 2: Merging DataFrames in Pandas</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../">NumPy and Pandas for biological data handling</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Lesson plan</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/coderefinery/content/blob/main/content/7.Pandas_lesson plan.md" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="lesson-plan">
+<h1>Lesson plan<a class="headerlink" href="#lesson-plan" title="Link to this heading"></a></h1>
+<div class="admonition-objectives objectives admonition" id="objectives-0">
+<p class="admonition-title">Objectives</p>
+<ol class="arabic simple">
+<li><p><strong>Understand the Basics</strong>: Familiarize participants with the fundamentals of the Pandas library and its relationship with NumPy.</p></li>
+<li><p><strong>Data Handling</strong>: Equip participants with the skills to import and export various data formats using Pandas, facilitating easy data manipulation and analysis.</p></li>
+<li><p><strong>Data Manipulation Skills</strong>: Provide practical techniques for data manipulation, including selection, addition, removal, and handling of missing values within DataFrames.</p></li>
+<li><p><strong>Indexing Proficiency</strong>: Enable participants to effectively index and select data from DataFrames using various methods, enhancing their data exploration capabilities.</p></li>
+<li><p><strong>Data Analysis Techniques</strong>: Introduce advanced data transformation, grouping, and aggregation techniques, enabling participants to perform in-depth data analysis and summarization.</p></li>
+</ol>
+</div>
+<section id="specific-objectives">
+<h2>Specific Objectives<a class="headerlink" href="#specific-objectives" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>Introduction to Pandas</p>
+<ul>
+<li><p>Explain the relationship between Pandas and NumPy, highlighting when to use each library effectively.</p></li>
+<li><p>Define and differentiate between Series and DataFrame data structures in Pandas.</p></li>
+<li><p>Demonstrate the creation of Pandas objects from NumPy arrays, solidifying foundational knowledge.</p></li>
+</ul>
+</li>
+<li><p>Data Import and Export</p>
+<ul>
+<li><p>Illustrate how to read data from various formats, including CSV, Excel, and JSON, into Pandas.</p></li>
+<li><p>Show how to export DataFrames to different formats, ensuring participants can save their analyses.</p></li>
+<li><p>Utilize data inspection methods (head, info, describe) to gain an understanding of data structure and content.</p></li>
+</ul>
+</li>
+<li><p>DataFrame Manipulation &amp; Sorting</p>
+<ul>
+<li><p>Demonstrate effective techniques for selecting specific rows and from DataFrames.</p></li>
+<li><p>Equip participants with skills to add and remove columns within a DataFrame.</p></li>
+<li><p>Implement sorting methods by values, by index, and perform multiple column sorting with custom orders.</p></li>
+</ul>
+</li>
+<li><p>Indexing, Selection &amp; Slicing</p>
+<ul>
+<li><p>Differentiate between label-based and position-based indexing and apply each method appropriately.</p></li>
+<li><p>Use Boolean indexing to filter data based on specific conditions, connecting concepts from NumPy.</p></li>
+<li><p>Apply .loc, .iloc, and .at selection methods to extract desired data, and employ multi-level slicing techniques.</p></li>
+</ul>
+</li>
+<li><p>Handling Missing Data</p>
+<ul>
+<li><p>Identify missing values in DataFrames using isna() and notna() methods.</p></li>
+<li><p>Strategize the filling of missing values with fillna() and interpolation methods tailored to scenario needs.</p></li>
+<li><p>Demonstrate how to drop missing data with dropna() and discuss various strategies for handling missing data.</p></li>
+</ul>
+</li>
+<li><p>Merging DataFrames</p>
+<ul>
+<li><p>Illustrate how to concatenate DataFrames using pd.concat() and understand its applications.</p></li>
+<li><p>Explain database-style joins with the merge() function and illustrate the different join types (inner, outer, left, * right).</p></li>
+<li><p>Address challenges faced with duplicate columns and indexes during merging operations.</p></li>
+</ul>
+</li>
+<li><p>Summary Statistics &amp; Aggregations</p>
+<ul>
+<li><p>Calculate basic statistics (mean, median, min, max) to summarize and analyze data.</p></li>
+<li><p>Develop custom aggregation functions for specific needs in data analysis.</p></li>
+<li><p>Apply GroupBy operations effectively, utilizing the Split-Apply-Combine pattern to derive insights from grouped data.</p></li>
+</ul>
+</li>
+<li><p>Advanced Data Transformation</p>
+<ul>
+<li><p>Utilize apply() and map() functions for advanced data transformation on DataFrames.</p></li>
+<li><p>Perform string and datetime operations effectively using Pandas functionality.</p></li>
+<li><p>Construct pivot tables and crosstabs to summarize data visually and contextually.</p></li>
+</ul>
+</li>
+<li><p>Practical Exercises and Q&amp;A</p>
+<ul>
+<li><p>Execute practical exercises using real-world datasets to reinforce concepts learned during the workshop.</p></li>
+<li><p>Connect concepts from both NumPy and Pandas to solidify understanding through application.</p></li>
+<li><p>Engage in a Q&amp;A session to clarify doubts, deepen understanding, and discuss challenges faced during practical sessions</p></li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../6.1.Numpy_hands_on/" class="btn btn-neutral float-left" title="Hands-on: RNA Expression Analysis - alternative method" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../8.Introduction_to_pandas/" class="btn btn-neutral float-right" title="Introduction to Pandas" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025 Norwegian Ai Cloud.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

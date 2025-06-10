@@ -1,0 +1,1216 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Template &mdash; NumPy and Pandas for biological data handling  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+      <link rel="stylesheet" type="text/css" href="../_static/sphinx_lesson.css?v=e9df6548" />
+      <link rel="stylesheet" type="text/css" href="../_static/term_role_formatting.css?v=4194e21c" />
+      <link rel="stylesheet" type="text/css" href="../_static/sphinx_rtd_theme_ext_color_contrast.css?v=8e8ea19f" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=187304be"></script>
+      <script src="../_static/doctools.js?v=9a2dae69"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../_static/copybutton.js?v=35a8b989"></script>
+      <script src="../_static/minipres.js?v=a0d29692"></script>
+      <script>let toggleHintShow = 'Click to show';</script>
+      <script>let toggleHintHide = 'Click to hide';</script>
+      <script>let toggleOpenOnPrint = 'true';</script>
+      <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+      <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+      <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex/" />
+    <link rel="search" title="Search" href="../search/" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../" class="icon icon-home">
+            NumPy and Pandas for biological data handling
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search/" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Numpy for handling biological datasets</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../0.Numpy_for_bioinformatics/">Lesson plan</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1.numpy_intro/">Introduction to NumPy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../2.NumPy_Data_Types/">NumPy Data Types</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3.Indexing_and_Slicing/">Array Indexing and Slicing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../4.Advance_indexing_filtering/">NumPy Boolean Masking and Filtering</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../5.Essential_array_operations/">Essential Array Operations with NumPy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../6.Vectorized_Operations_in_NumPy/">Vectorized Operations in NumPy: Beyond Python Loops</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../6.1.Numpy_hands_on/">Hands-on: RNA Expression Analysis - alternative method</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Pandas for handling biological datasets</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../7.Pandas_lesson plan/">Lesson plan</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8.Introduction_to_pandas/">Introduction to Pandas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../9.Pandas_data_import_export/">Data Import and Export in Pandas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../10.DataFrame_Manipulation/">DataFrame Manipulation &amp; Sorting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../11.Pandas_indexing_slicing/">Indexing, Selection &amp; Slicing in Pandas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../14.Pandas_summary_stats/">Summary Statistics &amp; Aggregations in Pandas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../15.Hands-on_expression_count_analysis/">Hands-on: RNA Expression Analysis - alternative method</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../12.Handling_Missing_Data/">Bonus Lesson 1: Handling Missing Data in Pandas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../13.Merging_DataFrames/">Bonus Lesson 2: Merging DataFrames in Pandas</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../">NumPy and Pandas for biological data handling</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Template</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/coderefinery/content/blob/main/content/Main template.md" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="template">
+<h1>Template<a class="headerlink" href="#template" title="Link to this heading"></a></h1>
+<section id="creating-numpy-arrays">
+<h2>Creating NumPy Arrays<a class="headerlink" href="#creating-numpy-arrays" title="Link to this heading"></a></h2>
+<section id="d-arrays-from-lists">
+<h3>1D Arrays from lists<a class="headerlink" href="#d-arrays-from-lists" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+<span class="c1"># Create from list</span>
+<span class="n">py_list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">5</span><span class="p">))</span>
+<span class="n">np_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">py_list</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">np_array</span><span class="p">)</span>  <span class="c1"># Output: array([1, 2, 3, 4])</span>
+</pre></div>
+</div>
+</section>
+<section id="d-arrays-matrices">
+<h3>2D Arrays (matrices)<a class="headerlink" href="#d-arrays-matrices" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create a 2D array</span>
+<span class="n">rows</span><span class="p">,</span> <span class="n">cols</span> <span class="o">=</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span>
+<span class="n">list_of_list</span> <span class="o">=</span> <span class="p">[[</span><span class="n">j</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">cols</span><span class="p">)]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">rows</span><span class="p">)]</span>
+<span class="n">np_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">list_of_list</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">np_array</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="creating-arrays-from-scratch">
+<h3>Creating arrays from scratch<a class="headerlink" href="#creating-arrays-from-scratch" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Range of values</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;np.arange&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>  <span class="c1"># &lt;start,stop,step&gt;, stop is not included in the array</span>
+
+<span class="c1"># Arrays of zeros</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;np.zeros&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">)))</span>     <span class="c1"># Array of zeros</span>
+
+<span class="c1"># Arrays of ones</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;np.ones&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="mi">5</span><span class="p">))</span>           <span class="c1"># Array of ones</span>
+
+<span class="c1"># 2-D arrays</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;2-D arrays&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">([</span><span class="mi">5</span><span class="p">,</span><span class="mi">2</span><span class="p">]))</span> <span class="c1"># 2-D array of ones </span>
+<span class="nb">print</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">)))</span>  <span class="c1"># 2-D array Random values between 0 and 1</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="examining-numpy-array-structure-and-storage">
+<h2>Examining numpy array structure and storage<a class="headerlink" href="#examining-numpy-array-structure-and-storage" title="Link to this heading"></a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;2-D array&quot;</span><span class="p">)</span>
+<span class="n">np_2d</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">([</span><span class="mi">5</span><span class="p">,</span><span class="mi">2</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">shape&quot;</span><span class="p">,</span> <span class="n">np_2d</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">ndim&quot;</span><span class="p">,</span> <span class="n">np_2d</span><span class="o">.</span><span class="n">ndim</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">size&quot;</span><span class="p">,</span> <span class="n">np_2d</span><span class="o">.</span><span class="n">size</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="type-homogeneity">
+<h2>Type Homogeneity<a class="headerlink" href="#type-homogeneity" title="Link to this heading"></a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Python collections like lists can contain mixed types:</span>
+<span class="n">mixed_list</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;DNA&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="mf">3.14</span><span class="p">]</span>  <span class="c1"># Different types in one list</span>
+<span class="nb">print</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">mixed_list</span><span class="p">),</span> <span class="nb">type</span><span class="p">(</span><span class="n">mixed_list</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="nb">type</span><span class="p">(</span><span class="n">mixed_list</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> <span class="nb">type</span><span class="p">(</span><span class="n">mixed_list</span><span class="p">[</span><span class="mi">2</span><span class="p">]),</span> <span class="nb">type</span><span class="p">(</span><span class="n">mixed_list</span><span class="p">[</span><span class="mi">3</span><span class="p">]))</span>
+
+<span class="c1"># NumPy arrays enforce type homogeneity:</span>
+<span class="c1"># All elements converted to the same type (float64)</span>
+<span class="n">np_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mf">3.14</span><span class="p">,</span> <span class="mi">4</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">np_array</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="key-numpy-data-types">
+<h2>Key NumPy Data Types<a class="headerlink" href="#key-numpy-data-types" title="Link to this heading"></a></h2>
+<section id="integer-types">
+<h3>Integer Types<a class="headerlink" href="#integer-types" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Storing chromosome positions for a set of genes</span>
+<span class="n">gene_positions</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">45123</span><span class="p">,</span> <span class="mi">67845</span><span class="p">,</span> <span class="mi">123456</span><span class="p">,</span> <span class="mi">789012</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int32</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">gene_positions</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;int8 range: </span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">iinfo</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">int8</span><span class="p">)</span><span class="o">.</span><span class="n">min</span><span class="si">}</span><span class="s2"> to </span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">iinfo</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">int8</span><span class="p">)</span><span class="o">.</span><span class="n">max</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;int16 range: </span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">iinfo</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">int16</span><span class="p">)</span><span class="o">.</span><span class="n">min</span><span class="si">}</span><span class="s2"> to </span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">iinfo</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">int16</span><span class="p">)</span><span class="o">.</span><span class="n">max</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="string-types">
+<h3>String Types<a class="headerlink" href="#string-types" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Array of gene IDs</span>
+<span class="n">gene_ids</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="s1">&#39;BRCA1&#39;</span><span class="p">,</span> <span class="s1">&#39;TP53&#39;</span><span class="p">,</span> <span class="s1">&#39;EGFR&#39;</span><span class="p">,</span> <span class="s1">&#39;KRAS&#39;</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">gene_ids</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
+
+<span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="s2">&quot;1234567890&quot;</span><span class="p">,</span> <span class="s2">&quot;12345678901234567890&quot;</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
+
+<span class="c1"># Output</span>
+<span class="c1"># dtype(&#39;&lt;U20&#39;)</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>            <span class="c1"># Creates int64 array</span>
+<span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">,</span> <span class="mf">3.0</span><span class="p">])</span>      <span class="c1"># Creates float64 array</span>
+<span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="kc">True</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">True</span><span class="p">])</span>  <span class="c1"># Creates bool array</span>
+<span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="s1">&#39;C&#39;</span><span class="p">,</span> <span class="s1">&#39;G&#39;</span><span class="p">,</span> <span class="s1">&#39;T&#39;</span><span class="p">])</span> <span class="c1"># Creates string array</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="array-indexing-and-slicing">
+<h2>Array Indexing and Slicing<a class="headerlink" href="#array-indexing-and-slicing" title="Link to this heading"></a></h2>
+<section id="d-array-operations">
+<h3>1D Array Operations<a class="headerlink" href="#d-array-operations" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Example: String sequence converted to numerical representation</span>
+<span class="c1"># A=0, C=1, G=2, T=3</span>
+<span class="n">dna_seq</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">])</span>  <span class="c1"># &quot;ACGTAACG&quot;</span>
+
+<span class="c1"># Single element access through indexing</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Original array&quot;</span><span class="p">,</span> <span class="n">dna_seq</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;First element (0th index)&quot;</span><span class="p">,</span> <span class="n">dna_seq</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>    <span class="c1"># First nucleotide (0 = A)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Fourth element&quot;</span><span class="p">,</span> <span class="n">dna_seq</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span>    <span class="c1"># Fourth nucleotide (3 = T)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Last element&quot;</span><span class="p">,</span><span class="n">dna_seq</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>   <span class="c1"># Last nucleotide (2 = G) using negative indexing</span>
+</pre></div>
+</div>
+</section>
+<section id="d-array-slicing">
+<h3>1D Array Slicing<a class="headerlink" href="#d-array-slicing" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Original array&quot;</span><span class="p">,</span> <span class="n">dna_seq</span><span class="p">)</span>
+
+<span class="c1"># Slicing * extracting subsequences</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;From second to fourth&quot;</span><span class="p">,</span> <span class="n">dna_seq</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="mi">4</span><span class="p">])</span>  <span class="c1"># From second to fourth nucleotide: array([1, 2, 3]) = &quot;CGT&quot;</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;First three nucleotides&quot;</span><span class="p">,</span> <span class="n">dna_seq</span><span class="p">[:</span><span class="mi">3</span><span class="p">])</span>   <span class="c1"># First three nucleotides: array([0, 1, 2]) = &quot;ACG&quot;</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;From sixth nucleotide to the end&quot;</span><span class="p">,</span> <span class="n">dna_seq</span><span class="p">[</span><span class="mi">5</span><span class="p">:])</span>   <span class="c1"># From sixth nucleotide to the end: array([0, 1, 2]) = &quot;ACG&quot;</span>
+
+<span class="c1"># Slicing with negative indices</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Last three nucleotides&quot;</span><span class="p">,</span> <span class="n">dna_seq</span><span class="p">[</span><span class="o">-</span><span class="mi">3</span><span class="p">:])</span>  <span class="c1"># Last three nucleotides: array([0, 1, 2]) = &quot;ACG&quot;</span>
+
+<span class="c1"># Slicing with step</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Every second nucleotide&quot;</span><span class="p">,</span> <span class="n">dna_seq</span><span class="p">[::</span><span class="mi">2</span><span class="p">])</span>  <span class="c1"># Every second nucleotide: array([0, 2, 0, 1]) = &quot;AGAC&quot;</span>
+
+<span class="c1"># Reverse array</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Every second nucleotide&quot;</span><span class="p">,</span> <span class="n">dna_seq</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span> 
+</pre></div>
+</div>
+</section>
+</section>
+<section id="numpy-boolean-masking-and-filtering">
+<h2>NumPy Boolean Masking and Filtering<a class="headerlink" href="#numpy-boolean-masking-and-filtering" title="Link to this heading"></a></h2>
+<section id="boolean-masking-the-concept">
+<h3>Boolean Masking: The Concept<a class="headerlink" href="#boolean-masking-the-concept" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+<span class="c1"># Create a sample array</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Original array:&quot;</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+
+<span class="c1"># Create a boolean mask for elements greater than 3</span>
+<span class="n">mask</span> <span class="o">=</span> <span class="n">data</span> <span class="o">&gt;</span> <span class="mi">3</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Boolean mask (data &gt; 3):&quot;</span><span class="p">,</span> <span class="n">mask</span><span class="p">)</span>
+<span class="c1"># This produces: [False, True, False, True, False]</span>
+
+<span class="c1"># Apply the mask to select elements</span>
+<span class="n">selected_data</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">mask</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Selected elements:&quot;</span><span class="p">,</span> <span class="n">selected_data</span><span class="p">)</span>
+<span class="c1"># This produces: [4, 5]</span>
+
+<span class="c1">## Elegant approach -  mask array has the exact same shape as data array</span>
+<span class="c1">## Each position containing information about whether that element meets our criteria</span>
+</pre></div>
+</div>
+</section>
+<section id="using-np-where-finding-positions">
+<h3>Using np.where(): Finding Positions<a class="headerlink" href="#using-np-where-finding-positions" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create an array with a sequence</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>  <span class="c1"># [0, 3, 6, 9, 12, 15, 18]</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Original array:&quot;</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+
+<span class="c1"># Find indices where elements are even</span>
+<span class="n">indices</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">data</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Indices of even elements:&quot;</span><span class="p">,</span> <span class="n">indices</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="c1"># This produces: [0, 2, 4, 6]</span>
+
+<span class="c1"># Use these indices to get the actual values</span>
+<span class="n">even_elements</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">indices</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Even elements:&quot;</span><span class="p">,</span> <span class="n">even_elements</span><span class="p">)</span>
+<span class="c1"># This produces: [ 0,  6, 12, 18]</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="essential-array-operations-with-numpy">
+<h2>Essential Array Operations with NumPy<a class="headerlink" href="#essential-array-operations-with-numpy" title="Link to this heading"></a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+<span class="c1"># Create a simple 1D array</span>
+<span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="mi">6</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Original array:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Dimensions: </span><span class="si">{</span><span class="n">a</span><span class="o">.</span><span class="n">ndim</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>  <span class="c1"># Number of dimensions</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Shape: </span><span class="si">{</span><span class="n">a</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>      <span class="c1"># Tuple showing size in each dimension</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">7</span><span class="p">))</span>
+<span class="c1"># Reshape our 1D array with 6 elements into a 2D array (2 rows, 3 columns)</span>
+<span class="n">b</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Reshaped to 2x3 array:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Dimensions: </span><span class="si">{</span><span class="n">b</span><span class="o">.</span><span class="n">ndim</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Shape: </span><span class="si">{</span><span class="n">b</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<section id="summary-statistics">
+<h3>Summary Statistics<a class="headerlink" href="#summary-statistics" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create a 2D array</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span>
+                 <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">]])</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Our data:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+
+<span class="c1"># Sum of all elements</span>
+<span class="n">total</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Total sum: </span><span class="si">{</span><span class="n">total</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>  <span class="c1"># 21</span>
+
+<span class="c1"># Column sums (axis=0)</span>
+<span class="n">col_sums</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Column sums: </span><span class="si">{</span><span class="n">col_sums</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>  <span class="c1"># [5 7 9]</span>
+<span class="c1">## Collapse values in rows along the the column 0 and aggregate: [1, 4] = 5</span>
+<span class="c1">## Collapse values in rows along the the column 1 and aggregate: [2, 5] = 7</span>
+<span class="c1">## Collapse values in rows along the the column 2 and aggregate: [3, 6] = 9</span>
+
+<span class="c1"># Row sums (axis=1)</span>
+<span class="n">row_sums</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Row sums: </span><span class="si">{</span><span class="n">row_sums</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>  <span class="c1"># [6 15]</span>
+<span class="c1">## Collapse values in columns along the the row 0 and aggregate: [1, 2, 3] = 6</span>
+<span class="c1">## Collapse values in columns along the the row 1 and aggregate: [4, 5, 6] = 15</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="vectorized-operations-in-numpy-beyond-python-loops">
+<h2>Vectorized Operations in NumPy: Beyond Python Loops<a class="headerlink" href="#vectorized-operations-in-numpy-beyond-python-loops" title="Link to this heading"></a></h2>
+<section id="the-speed-advantage-loops-vs-vectorization">
+<h3>The Speed Advantage: Loops vs. Vectorization<a class="headerlink" href="#the-speed-advantage-loops-vs-vectorization" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
+
+<span class="c1"># Create a large array for testing</span>
+<span class="n">size</span> <span class="o">=</span> <span class="mi">10000000</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">(</span><span class="n">size</span><span class="p">)</span>
+
+<span class="c1"># Method 1: Traditional Python loop</span>
+<span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+<span class="n">result_loop</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
+    <span class="n">result_loop</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">value</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">+</span> <span class="mi">5</span><span class="p">)</span>
+<span class="n">loop_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start_time</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Python loop time: </span><span class="si">{</span><span class="n">loop_time</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2"> seconds&quot;</span><span class="p">)</span>
+
+<span class="c1"># Method 2: NumPy vectorized operation</span>
+<span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+<span class="n">result_vectorized</span> <span class="o">=</span> <span class="n">data</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">+</span> <span class="mi">5</span>
+<span class="n">vector_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start_time</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;NumPy vectorized time: </span><span class="si">{</span><span class="n">vector_time</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2"> seconds&quot;</span><span class="p">)</span>
+
+<span class="c1"># Calculate the speedup</span>
+<span class="n">speedup</span> <span class="o">=</span> <span class="n">loop_time</span> <span class="o">/</span> <span class="n">vector_time</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Vectorized operations are </span><span class="si">{</span><span class="n">speedup</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">x faster!&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+<span class="c1"># Create two arrays</span>
+<span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">])</span>
+<span class="n">b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">40</span><span class="p">,</span> <span class="mi">50</span><span class="p">])</span>
+
+<span class="c1"># Element-wise operations</span>
+<span class="n">addition</span> <span class="o">=</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span>
+<span class="n">subtraction</span> <span class="o">=</span> <span class="n">b</span> <span class="o">-</span> <span class="n">a</span>
+<span class="n">multiplication</span> <span class="o">=</span> <span class="n">a</span> <span class="o">*</span> <span class="n">b</span>
+<span class="n">division</span> <span class="o">=</span> <span class="n">b</span> <span class="o">/</span> <span class="n">a</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Addition: </span><span class="si">{</span><span class="n">addition</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Subtraction: </span><span class="si">{</span><span class="n">subtraction</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Multiplication: </span><span class="si">{</span><span class="n">multiplication</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Division: </span><span class="si">{</span><span class="n">division</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="basic-vectorized-operations-in-numpy">
+<h3>Basic Vectorized Operations in NumPy<a class="headerlink" href="#basic-vectorized-operations-in-numpy" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+<span class="c1"># Create two arrays</span>
+<span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">])</span>
+<span class="n">b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">40</span><span class="p">,</span> <span class="mi">50</span><span class="p">])</span>
+
+<span class="c1"># Element-wise operations</span>
+<span class="n">addition</span> <span class="o">=</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span>
+<span class="n">subtraction</span> <span class="o">=</span> <span class="n">b</span> <span class="o">-</span> <span class="n">a</span>
+<span class="n">multiplication</span> <span class="o">=</span> <span class="n">a</span> <span class="o">*</span> <span class="n">b</span>
+<span class="n">division</span> <span class="o">=</span> <span class="n">b</span> <span class="o">/</span> <span class="n">a</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Addition: </span><span class="si">{</span><span class="n">addition</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Subtraction: </span><span class="si">{</span><span class="n">subtraction</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Multiplication: </span><span class="si">{</span><span class="n">multiplication</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Division: </span><span class="si">{</span><span class="n">division</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="scalar-operations">
+<h3>Scalar Operations<a class="headerlink" href="#scalar-operations" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Scalar operations</span>
+<span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">])</span>
+
+<span class="n">plus_10</span> <span class="o">=</span> <span class="n">a</span> <span class="o">+</span> <span class="mi">10</span>
+<span class="n">times_2</span> <span class="o">=</span> <span class="n">a</span> <span class="o">*</span> <span class="mi">2</span>
+<span class="n">square</span> <span class="o">=</span> <span class="n">a</span> <span class="o">**</span> <span class="mi">2</span>
+<span class="n">reciprocal</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="n">a</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Plus 10: </span><span class="si">{</span><span class="n">plus_10</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Times 2: </span><span class="si">{</span><span class="n">times_2</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Squared: </span><span class="si">{</span><span class="n">square</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Reciprocal: </span><span class="si">{</span><span class="n">reciprocal</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="comparison-operations">
+<h3>Comparison Operations<a class="headerlink" href="#comparison-operations" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Comparison operations</span>
+<span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">])</span>
+
+<span class="n">greater_than_3</span> <span class="o">=</span> <span class="n">a</span> <span class="o">&gt;</span> <span class="mi">3</span>
+<span class="n">less_than_equal_to_2</span> <span class="o">=</span> <span class="n">a</span> <span class="o">&lt;=</span> <span class="mi">2</span>
+<span class="n">equal_to_3</span> <span class="o">=</span> <span class="n">a</span> <span class="o">==</span> <span class="mi">3</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;a &gt; 3: </span><span class="si">{</span><span class="n">greater_than_3</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;a &lt;= 2: </span><span class="si">{</span><span class="n">less_than_equal_to_2</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;a == 3: </span><span class="si">{</span><span class="n">equal_to_3</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># Using boolean masks for filtering</span>
+<span class="n">filtered_data</span> <span class="o">=</span> <span class="n">a</span><span class="p">[</span><span class="n">greater_than_3</span><span class="p">]</span>   <span class="c1"># [4, 5]</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Values greater than 3: </span><span class="si">{</span><span class="n">filtered_data</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="aggregation-functions-and-universal-functions">
+<h3>Aggregation Functions and Universal Functions<a class="headerlink" href="#aggregation-functions-and-universal-functions" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Aggregation functions</span>
+<span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">])</span>
+
+<span class="n">sum_a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>                   <span class="c1"># Sum of all elements (15)</span>
+<span class="n">mean_a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>                 <span class="c1"># Mean of all elements (3.0)</span>
+<span class="n">min_a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>                   <span class="c1"># Minimum value (1)</span>
+<span class="n">max_a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>                   <span class="c1"># Maximum value (5)</span>
+<span class="n">std_a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>                   <span class="c1"># Standard deviation (~1.41)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Sum: </span><span class="si">{</span><span class="n">sum_a</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Mean: </span><span class="si">{</span><span class="n">mean_a</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Min: </span><span class="si">{</span><span class="n">min_a</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Max: </span><span class="si">{</span><span class="n">max_a</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Standard deviation: </span><span class="si">{</span><span class="n">std_a</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="broadcasting-in-numpy">
+<h2>Broadcasting in NumPy<a class="headerlink" href="#broadcasting-in-numpy" title="Link to this heading"></a></h2>
+<p>Example 1: Adding a scalar to an array</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Adding a scalar to an array</span>
+<span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">])</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">a</span> <span class="o">+</span> <span class="mi">10</span>  <span class="c1"># Scalar 10 is broadcast to array [10, 10, 10, 10, 10]</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>    <span class="c1"># [11, 12, 13, 14, 15]</span>
+</pre></div>
+</div>
+</section>
+<section id="pandas-vs-numpy-relationship">
+<h2>Pandas vs NumPy Relationship<a class="headerlink" href="#pandas-vs-numpy-relationship" title="Link to this heading"></a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+
+<span class="c1"># Try to put mixed types in NumPy - notice what happens</span>
+<span class="n">mixed_numpy</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;string&#39;</span><span class="p">,</span> <span class="mf">3.14</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Mixed NumPy array: </span><span class="si">{</span><span class="n">mixed_numpy</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Mixed array dtype: </span><span class="si">{</span><span class="n">mixed_numpy</span><span class="o">.</span><span class="n">dtype</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>  <span class="c1"># Converts to common type</span>
+
+<span class="c1"># Pandas Series - can handle mixed types</span>
+<span class="n">pandas_series</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;string&#39;</span><span class="p">,</span> <span class="mf">3.14</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Pandas Series with mixed types:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">pandas_series</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">([</span><span class="nb">type</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">mixed_numpy</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">([</span><span class="nb">type</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">pandas_series</span><span class="p">])</span>
+</pre></div>
+</div>
+<section id="dataframe-data-structures">
+<h3>DataFrame Data Structures<a class="headerlink" href="#dataframe-data-structures" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Creating a Series</span>
+<span class="n">s</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">40</span><span class="p">],</span> <span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="s1">&#39;c&#39;</span><span class="p">,</span> <span class="s1">&#39;d&#39;</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Pandas Series with custom index:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;The index: </span><span class="si">{</span><span class="n">s</span><span class="o">.</span><span class="n">index</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;The values: </span><span class="si">{</span><span class="n">s</span><span class="o">.</span><span class="n">values</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>  <span class="c1"># Notice this returns a NumPy array</span>
+
+<span class="c1"># Dictionary-like access</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Value at index &#39;b&#39;: </span><span class="si">{</span><span class="n">s</span><span class="p">[</span><span class="s1">&#39;b&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Values at indices &#39;a&#39; and &#39;c&#39;: </span><span class="si">{</span><span class="n">s</span><span class="p">[[</span><span class="s1">&#39;a&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;c&#39;</span><span class="p">]]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># NumPy-like operations</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Adding 5 to all values: </span><span class="se">\n</span><span class="si">{</span><span class="n">s</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">5</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Values greater than 25: </span><span class="se">\n</span><span class="si">{</span><span class="n">s</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">25</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="the-pandas-dataframe">
+<h3>The Pandas DataFrame<a class="headerlink" href="#the-pandas-dataframe" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Creating a DataFrame</span>
+<span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;Name&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;Alice&#39;</span><span class="p">,</span> <span class="s1">&#39;Bob&#39;</span><span class="p">,</span> <span class="s1">&#39;Charlie&#39;</span><span class="p">],</span>
+    <span class="s1">&#39;Age&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">25</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">35</span><span class="p">],</span>
+    <span class="s1">&#39;City&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;New York&#39;</span><span class="p">,</span> <span class="s1">&#39;Boston&#39;</span><span class="p">,</span> <span class="s1">&#39;Chicago&#39;</span><span class="p">]</span>
+<span class="p">}</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Pandas DataFrame:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+
+<span class="c1"># DataFrame info</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">DataFrame shape: </span><span class="si">{</span><span class="n">df</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;DataFrame columns: </span><span class="si">{</span><span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;DataFrame index: </span><span class="si">{</span><span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># Accessing a column (returns a Series)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Accessing the Age column:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;Age&#39;</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Type of column: </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;Age&#39;</span><span class="p">])</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="creating-pandas-objects-from-numpy-arrays">
+<h3>Creating Pandas Objects from NumPy Arrays<a class="headerlink" href="#creating-pandas-objects-from-numpy-arrays" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># NumPy array to Pandas Series</span>
+<span class="n">numpy_data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">100</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="mi">300</span><span class="p">,</span> <span class="mi">400</span><span class="p">])</span>
+<span class="n">s1</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">numpy_data</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Series with default index:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">s1</span><span class="p">)</span>
+
+<span class="n">s2</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">numpy_data</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;w&#39;</span><span class="p">,</span> <span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="s1">&#39;z&#39;</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Series with custom index:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">s2</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="data-import-and-export-in-pandas">
+<h2>Data Import and Export in Pandas<a class="headerlink" href="#data-import-and-export-in-pandas" title="Link to this heading"></a></h2>
+<section id="reading-csv-data">
+<h3>Reading CSV Data<a class="headerlink" href="#reading-csv-data" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">urllib.request</span><span class="w"> </span><span class="kn">import</span> <span class="n">urlopen</span>
+
+<span class="c1"># Basic CSV reading</span>
+
+<span class="n">sample_data_csv_url</span> <span class="o">=</span> <span class="s2">&quot;https://coderefinery.github.io/NumPy-and-Pandas-fundamentals-for-handling-biological-datasets/_downloads/4c11eeffe234e7bc729008f767fe631a/sample_data.csv&quot;</span>
+
+<span class="n">df_csv</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">urlopen</span><span class="p">(</span><span class="n">sample_data_csv_url</span><span class="p">))</span>
+<span class="c1"># df_csv = pd.read_csv(&#39;test_data/sample_data.csv&#39;)</span>
+
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Basic CSV import:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df_csv</span><span class="o">.</span><span class="n">head</span><span class="p">())</span>  <span class="c1"># Show first 3 rows</span>
+
+<span class="c1"># Customizing CSV import</span>
+<span class="n">df_csv_custom</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">urlopen</span><span class="p">(</span><span class="n">sample_data_csv_url</span><span class="p">),</span>
+                           <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;,&#39;</span><span class="p">,</span>            <span class="c1"># Delimiter (comma is default)</span>
+                           <span class="n">header</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>           <span class="c1"># Row to use as column names (0 is default)</span>
+                           <span class="n">index_col</span><span class="o">=</span><span class="s1">&#39;ID&#39;</span><span class="p">,</span>     <span class="c1"># Column to set as index</span>
+                           <span class="n">usecols</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;ID&#39;</span><span class="p">,</span> <span class="s1">&#39;Name&#39;</span><span class="p">,</span> <span class="s1">&#39;Value&#39;</span><span class="p">],</span>  <span class="c1"># Only import specific columns</span>
+                           <span class="n">nrows</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>            <span class="c1"># Only read first 5 rows</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Customized CSV import:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df_csv_custom</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="reading-excel-data">
+<h3>Reading Excel Data<a class="headerlink" href="#reading-excel-data" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Basic Excel reading</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">requests</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">io</span><span class="w"> </span><span class="kn">import</span> <span class="n">BytesIO</span>
+
+<span class="c1">## Read XLSX file directly from a URL</span>
+<span class="c1"># sample_data_xls_url = &quot;https://coderefinery.github.io/NumPy-and-Pandas-fundamentals-for-handling-biological-datasets/_downloads/04c10398f323fcf8ff5ec474e4b22205/sample_data.xlsx&quot;</span>
+
+<span class="c1"># response = requests.get(sample_data_xls_url)</span>
+<span class="c1"># df_excel = pd.read_excel(BytesIO(response.content))</span>
+
+<span class="n">df_excel</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_excel</span><span class="p">(</span><span class="s1">&#39;test_data/sample_data.xlsx&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Basic Excel import:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df_excel</span><span class="o">.</span><span class="n">head</span><span class="p">())</span>
+
+<span class="c1"># Reading specific sheet</span>
+<span class="n">df_excel_sheet2</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_excel</span><span class="p">(</span><span class="s1">&#39;test_data/sample_data.xlsx&#39;</span><span class="p">,</span> 
+                               <span class="n">sheet_name</span><span class="o">=</span><span class="s1">&#39;Sheet 1 - sample_data&#39;</span><span class="p">,</span>
+                               <span class="n">skiprows</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>     <span class="c1"># Skip first row</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Reading specific Excel sheet:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df_excel_sheet2</span><span class="o">.</span><span class="n">head</span><span class="p">())</span>
+
+<span class="c1"># List all sheets in workbook</span>
+<span class="n">xl</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">ExcelFile</span><span class="p">(</span><span class="s1">&#39;test_data/sample_data.xlsx&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">All sheets in workbook: </span><span class="si">{</span><span class="n">xl</span><span class="o">.</span><span class="n">sheet_names</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="writing-data-to-files">
+<h3>Writing Data to Files<a class="headerlink" href="#writing-data-to-files" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create a small DataFrame to export</span>
+<span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;Name&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;Alex&#39;</span><span class="p">,</span> <span class="s1">&#39;Beth&#39;</span><span class="p">,</span> <span class="s1">&#39;Charlie&#39;</span><span class="p">,</span> <span class="s1">&#39;Diana&#39;</span><span class="p">],</span>
+    <span class="s1">&#39;Department&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;Sales&#39;</span><span class="p">,</span> <span class="s1">&#39;HR&#39;</span><span class="p">,</span> <span class="s1">&#39;Tech&#39;</span><span class="p">,</span> <span class="s1">&#39;Finance&#39;</span><span class="p">],</span>
+    <span class="s1">&#39;Salary&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">55000</span><span class="p">,</span> <span class="mi">60000</span><span class="p">,</span> <span class="mi">75000</span><span class="p">,</span> <span class="mi">70000</span><span class="p">],</span>
+    <span class="s1">&#39;Hire_Date&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;2020-01-15&#39;</span><span class="p">,</span> <span class="s1">&#39;2019-07-10&#39;</span><span class="p">,</span> <span class="s1">&#39;2021-03-22&#39;</span><span class="p">,</span> <span class="s1">&#39;2018-11-05&#39;</span><span class="p">]</span>
+<span class="p">}</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;DataFrame to export:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+
+<span class="c1"># Export to CSV</span>
+<span class="n">df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s1">&#39;employees.csv&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Exported to CSV (employees.csv)&quot;</span><span class="p">)</span>
+
+<span class="c1"># Export to Excel</span>
+<span class="n">df</span><span class="o">.</span><span class="n">to_excel</span><span class="p">(</span><span class="s1">&#39;employees.xlsx&#39;</span><span class="p">,</span> <span class="n">sheet_name</span><span class="o">=</span><span class="s1">&#39;Employees&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Exported to Excel (employees.xlsx)&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="data-inspection-methods">
+<h3>Data Inspection Methods<a class="headerlink" href="#data-inspection-methods" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Let&#39;s inspect a more interesting dataset</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+<span class="c1"># Create a sample dataset with different data types</span>
+<span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>  <span class="c1"># For reproducibility</span>
+<span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;Category&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">([</span><span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="s1">&#39;B&#39;</span><span class="p">,</span> <span class="s1">&#39;C&#39;</span><span class="p">,</span> <span class="s1">&#39;D&#39;</span><span class="p">],</span> <span class="n">size</span><span class="o">=</span><span class="mi">1000</span><span class="p">),</span>
+    <span class="s1">&#39;Value&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">1000</span><span class="p">),</span>
+    <span class="s1">&#39;Count&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">1000</span><span class="p">),</span>
+    <span class="s1">&#39;Date&#39;</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">date_range</span><span class="p">(</span><span class="n">start</span><span class="o">=</span><span class="s1">&#39;2023-01-01&#39;</span><span class="p">,</span> <span class="n">periods</span><span class="o">=</span><span class="mi">1000</span><span class="p">),</span>
+    <span class="s1">&#39;Flag&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">([</span><span class="kc">True</span><span class="p">,</span> <span class="kc">False</span><span class="p">],</span> <span class="n">size</span><span class="o">=</span><span class="mi">1000</span><span class="p">)</span>
+<span class="p">}</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+
+<span class="c1"># Add some missing values</span>
+<span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">10</span><span class="p">:</span><span class="mi">20</span><span class="p">,</span> <span class="s1">&#39;Value&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+<span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">500</span><span class="p">:</span><span class="mi">510</span><span class="p">,</span> <span class="s1">&#39;Category&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+
+<span class="c1"># Now let&#39;s inspect</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;First 5 rows with head():&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">())</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Last 3 rows with tail(3):&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">tail</span><span class="p">(</span><span class="mi">3</span><span class="p">))</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">DataFrame information with info():&quot;</span><span class="p">)</span>
+<span class="n">df</span><span class="o">.</span><span class="n">info</span><span class="p">()</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Statistical summary with describe():&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">describe</span><span class="p">())</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Include all columns in describe (even non-numeric):&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">describe</span><span class="p">(</span><span class="n">include</span><span class="o">=</span><span class="s1">&#39;all&#39;</span><span class="p">))</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Data types of each column:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">dtypes</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Shape (rows, columns):&quot;</span><span class="p">,</span> <span class="n">df</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Value counts for &#39;Category&#39;:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;Category&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">())</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="dataframe-manipulation-sorting">
+<h2>DataFrame Manipulation &amp; Sorting<a class="headerlink" href="#dataframe-manipulation-sorting" title="Link to this heading"></a></h2>
+<section id="basic-selection">
+<h3>Basic Selection<a class="headerlink" href="#basic-selection" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+<span class="c1"># Create a sample dataset</span>
+<span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;Name&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;Alice&#39;</span><span class="p">,</span> <span class="s1">&#39;Bob&#39;</span><span class="p">,</span> <span class="s1">&#39;Charlie&#39;</span><span class="p">,</span> <span class="s1">&#39;David&#39;</span><span class="p">,</span> <span class="s1">&#39;Eva&#39;</span><span class="p">],</span>
+    <span class="s1">&#39;Age&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">24</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">35</span><span class="p">,</span> <span class="mi">42</span><span class="p">,</span> <span class="mi">28</span><span class="p">],</span>
+    <span class="s1">&#39;City&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;New York&#39;</span><span class="p">,</span> <span class="s1">&#39;Boston&#39;</span><span class="p">,</span> <span class="s1">&#39;Chicago&#39;</span><span class="p">,</span> <span class="s1">&#39;Seattle&#39;</span><span class="p">,</span> <span class="s1">&#39;Miami&#39;</span><span class="p">],</span>
+    <span class="s1">&#39;Salary&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">65000</span><span class="p">,</span> <span class="mi">72000</span><span class="p">,</span> <span class="mi">85000</span><span class="p">,</span> <span class="mi">92000</span><span class="p">,</span> <span class="mi">70000</span><span class="p">],</span>
+    <span class="s1">&#39;Department&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;HR&#39;</span><span class="p">,</span> <span class="s1">&#39;Sales&#39;</span><span class="p">,</span> <span class="s1">&#39;Tech&#39;</span><span class="p">,</span> <span class="s1">&#39;Tech&#39;</span><span class="p">,</span> <span class="s1">&#39;Finance&#39;</span><span class="p">]</span>
+<span class="p">}</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+<span class="n">df</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;emp001&#39;</span><span class="p">,</span> <span class="s1">&#39;emp002&#39;</span><span class="p">,</span> <span class="s1">&#39;emp003&#39;</span><span class="p">,</span> <span class="s1">&#39;emp004&#39;</span><span class="p">,</span> <span class="s1">&#39;emp005&#39;</span><span class="p">]</span>  <span class="c1"># Custom index</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Original DataFrame:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+
+<span class="c1"># Single column selection - two methods</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">1. Single column as Series:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;Age&#39;</span><span class="p">])</span>  <span class="c1"># Returns a Series</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">2. Alternative syntax for columns without spaces:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">Age</span><span class="p">)</span>  <span class="c1"># Also returns a Series, but only works if column name has no spaces</span>
+
+<span class="c1"># Multiple column selection</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">3. Selecting multiple columns:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="p">[[</span><span class="s1">&#39;Name&#39;</span><span class="p">,</span> <span class="s1">&#39;Salary&#39;</span><span class="p">]])</span>  <span class="c1"># Returns a DataFrame</span>
+
+<span class="c1"># Row selection by index label using .loc</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">4. Selecting row by index label:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">&#39;emp003&#39;</span><span class="p">])</span>  <span class="c1"># Returns a Series representing the row</span>
+
+<span class="c1"># Row selection by position using .iloc</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">5. Selecting row by position (third row):&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>  <span class="c1"># Also returns a Series</span>
+
+<span class="c1"># Selecting a subset of rows</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">6. Selecting multiple rows by position:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="mi">4</span><span class="p">])</span>  <span class="c1"># Row indices 1, 2, and 3 (not including 4)</span>
+
+<span class="c1"># Selecting specific cells</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">7. Selecting specific value (cell):&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">&#39;emp002&#39;</span><span class="p">,</span> <span class="s1">&#39;Salary&#39;</span><span class="p">])</span>  <span class="c1"># Returns the value (72000)</span>
+
+<span class="c1"># Selecting a subset of rows and columns</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">8. Selecting subset of rows and columns:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">&#39;emp001&#39;</span><span class="p">:</span><span class="s1">&#39;emp003&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;Name&#39;</span><span class="p">,</span> <span class="s1">&#39;Age&#39;</span><span class="p">,</span> <span class="s1">&#39;Salary&#39;</span><span class="p">]])</span>
+<span class="c1">## df.iloc[0:3, [0,1,3]] == df.loc[&#39;emp001&#39;:&#39;emp003&#39;, [&#39;Name&#39;, &#39;Age&#39;, &#39;Salary&#39;]] </span>
+</pre></div>
+</div>
+</section>
+<section id="advanced-selection-with-conditions">
+<h3>Advanced Selection with Conditions<a class="headerlink" href="#advanced-selection-with-conditions" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Boolean selection - rows where Age &gt; 30</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">9. Boolean selection - employees over 30:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;Age&#39;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">30</span><span class="p">])</span>
+
+<span class="c1"># Multiple conditions using &amp; (and) and | (or)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">10. Multiple conditions - Tech department with salary &gt; 80000:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="p">[(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;Department&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;Tech&#39;</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;Salary&#39;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">80000</span><span class="p">)])</span>
+
+<span class="c1"># Using .query() method for cleaner syntax</span>
+<span class="c1">## .query() method allows you to use and/or</span>
+<span class="c1">## print(&quot;\n11. Using query method - same condition:&quot;)</span>
+<span class="c1">## print(df.query(&quot;Department == &#39;Tech&#39; and Salary &gt; 80000&quot;))</span>
+
+<span class="c1"># Row selection with .isin()</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">12. Using .isin() - employees in HR or Finance:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;Department&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">([</span><span class="s1">&#39;HR&#39;</span><span class="p">,</span> <span class="s1">&#39;Finance&#39;</span><span class="p">])])</span>
+</pre></div>
+</div>
+</section>
+<section id="adding-and-removing-columns">
+<h3>Adding and Removing Columns<a class="headerlink" href="#adding-and-removing-columns" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>
+<span class="c1"># Create a sample dataset</span>
+<span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;Name&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;Alice&#39;</span><span class="p">,</span> <span class="s1">&#39;Bob&#39;</span><span class="p">,</span> <span class="s1">&#39;Charlie&#39;</span><span class="p">,</span> <span class="s1">&#39;David&#39;</span><span class="p">,</span> <span class="s1">&#39;Eva&#39;</span><span class="p">],</span>
+    <span class="s1">&#39;Age&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">24</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">35</span><span class="p">,</span> <span class="mi">42</span><span class="p">,</span> <span class="mi">28</span><span class="p">],</span>
+    <span class="s1">&#39;City&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;New York&#39;</span><span class="p">,</span> <span class="s1">&#39;Boston&#39;</span><span class="p">,</span> <span class="s1">&#39;Chicago&#39;</span><span class="p">,</span> <span class="s1">&#39;Seattle&#39;</span><span class="p">,</span> <span class="s1">&#39;Miami&#39;</span><span class="p">],</span>
+    <span class="s1">&#39;Salary&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">65000</span><span class="p">,</span> <span class="mi">72000</span><span class="p">,</span> <span class="mi">85000</span><span class="p">,</span> <span class="mi">92000</span><span class="p">,</span> <span class="mi">70000</span><span class="p">],</span>
+    <span class="s1">&#39;Department&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;HR&#39;</span><span class="p">,</span> <span class="s1">&#39;Sales&#39;</span><span class="p">,</span> <span class="s1">&#39;Tech&#39;</span><span class="p">,</span> <span class="s1">&#39;Tech&#39;</span><span class="p">,</span> <span class="s1">&#39;Finance&#39;</span><span class="p">]</span>
+<span class="p">}</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+<span class="n">df</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;emp001&#39;</span><span class="p">,</span> <span class="s1">&#39;emp002&#39;</span><span class="p">,</span> <span class="s1">&#39;emp003&#39;</span><span class="p">,</span> <span class="s1">&#39;emp004&#39;</span><span class="p">,</span> <span class="s1">&#39;emp005&#39;</span><span class="p">]</span>  <span class="c1"># Custom index</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Original DataFrame:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+
+<span class="c1"># 1. Adding a new column with scalar value</span>
+<span class="n">df</span><span class="p">[</span><span class="s1">&#39;Active&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">1. Adding &#39;Active&#39; column with same value for all rows:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+
+<span class="c1"># 2. Adding a column with a list of values</span>
+<span class="n">df</span><span class="p">[</span><span class="s1">&#39;Performance&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="mf">4.5</span><span class="p">,</span> <span class="mf">4.0</span><span class="p">,</span> <span class="mf">3.8</span><span class="p">,</span> <span class="mf">4.7</span><span class="p">,</span> <span class="mf">4.2</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">2. Adding &#39;Performance&#39; column with different values:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+
+<span class="c1"># 3. Adding a calculated column</span>
+<span class="n">df</span><span class="p">[</span><span class="s1">&#39;Bonus&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;Salary&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;Performance&#39;</span><span class="p">]</span> <span class="o">/</span> <span class="mi">100</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">3. Adding calculated &#39;Bonus&#39; column:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+
+<span class="c1"># 4. Adding a column with conditional values</span>
+<span class="n">df</span><span class="p">[</span><span class="s1">&#39;Experience&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;Age&#39;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">30</span><span class="p">,</span> <span class="s1">&#39;Senior&#39;</span><span class="p">,</span> <span class="s1">&#39;Junior&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">4. Adding conditional &#39;Experience&#39; column:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+
+<span class="c1"># 5. Removing a single column</span>
+<span class="n">df_no_city</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="s1">&#39;City&#39;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">5. Removing &#39;City&#39; column:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df_no_city</span><span class="p">)</span>
+
+<span class="c1"># 6. Removing multiple columns</span>
+<span class="n">df_minimal</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">drop</span><span class="p">([</span><span class="s1">&#39;Active&#39;</span><span class="p">,</span> <span class="s1">&#39;Performance&#39;</span><span class="p">,</span> <span class="s1">&#39;Bonus&#39;</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">6. Removing multiple columns:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df_minimal</span><span class="p">)</span>
+
+<span class="c1"># 7. Remove columns in-place</span>
+<span class="n">df</span><span class="o">.</span><span class="n">drop</span><span class="p">([</span><span class="s1">&#39;City&#39;</span><span class="p">,</span> <span class="s1">&#39;Active&#39;</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">7. Removing multiple columns (inplace=True):&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="adding-and-removing-rows">
+<h3>Adding and Removing Rows<a class="headerlink" href="#adding-and-removing-rows" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>
+<span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;Name&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;Alice&#39;</span><span class="p">,</span> <span class="s1">&#39;Bob&#39;</span><span class="p">,</span> <span class="s1">&#39;Charlie&#39;</span><span class="p">,</span> <span class="s1">&#39;David&#39;</span><span class="p">,</span> <span class="s1">&#39;Eva&#39;</span><span class="p">],</span>
+    <span class="s1">&#39;Age&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">24</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">35</span><span class="p">,</span> <span class="mi">42</span><span class="p">,</span> <span class="mi">28</span><span class="p">],</span>
+    <span class="s1">&#39;City&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;New York&#39;</span><span class="p">,</span> <span class="s1">&#39;Boston&#39;</span><span class="p">,</span> <span class="s1">&#39;Chicago&#39;</span><span class="p">,</span> <span class="s1">&#39;Seattle&#39;</span><span class="p">,</span> <span class="s1">&#39;Miami&#39;</span><span class="p">],</span>
+    <span class="s1">&#39;Salary&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">65000</span><span class="p">,</span> <span class="mi">72000</span><span class="p">,</span> <span class="mi">85000</span><span class="p">,</span> <span class="mi">92000</span><span class="p">,</span> <span class="mi">70000</span><span class="p">],</span>
+    <span class="s1">&#39;Department&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;HR&#39;</span><span class="p">,</span> <span class="s1">&#39;Sales&#39;</span><span class="p">,</span> <span class="s1">&#39;Tech&#39;</span><span class="p">,</span> <span class="s1">&#39;Tech&#39;</span><span class="p">,</span> <span class="s1">&#39;Finance&#39;</span><span class="p">]</span>
+<span class="p">}</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+<span class="n">df</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;emp001&#39;</span><span class="p">,</span> <span class="s1">&#39;emp002&#39;</span><span class="p">,</span> <span class="s1">&#39;emp003&#39;</span><span class="p">,</span> <span class="s1">&#39;emp004&#39;</span><span class="p">,</span> <span class="s1">&#39;emp005&#39;</span><span class="p">]</span>  <span class="c1"># Custom index</span>
+
+<span class="c1"># 1. Removing a row by index label</span>
+<span class="n">df_no_bob</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="s1">&#39;emp002&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">1. DataFrame without Bob (emp002):&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df_no_bob</span><span class="p">)</span>
+
+<span class="c1"># 2. Removing multiple rows</span>
+<span class="n">df_reduced</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">drop</span><span class="p">([</span><span class="s1">&#39;emp001&#39;</span><span class="p">,</span> <span class="s1">&#39;emp005&#39;</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">2. DataFrame without emp001 and emp005:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df_reduced</span><span class="p">)</span>
+
+<span class="c1"># 3. Adding a new row with .loc</span>
+<span class="c1"># Create a copy to avoid SettingWithCopyWarning</span>
+<span class="n">df_new</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">df_new</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">&#39;emp006&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Frank&#39;</span><span class="p">,</span> <span class="mi">38</span><span class="p">,</span> <span class="s1">&#39;Dallas&#39;</span><span class="p">,</span> <span class="mi">88000</span><span class="p">,</span> <span class="s1">&#39;Sales&#39;</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">3. DataFrame with new employee:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df_new</span><span class="p">)</span>
+
+<span class="c1"># 4. Adding a row with a Series</span>
+<span class="n">new_employee</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">({</span>
+    <span class="s1">&#39;Name&#39;</span><span class="p">:</span> <span class="s1">&#39;Grace&#39;</span><span class="p">,</span> <span class="s1">&#39;Age&#39;</span><span class="p">:</span> <span class="mi">27</span><span class="p">,</span> <span class="s1">&#39;City&#39;</span><span class="p">:</span> <span class="s1">&#39;Denver&#39;</span><span class="p">,</span> <span class="s1">&#39;Salary&#39;</span><span class="p">:</span> <span class="mi">67000</span><span class="p">,</span> <span class="s1">&#39;Department&#39;</span><span class="p">:</span> <span class="s1">&#39;HR&#39;</span><span class="p">,</span>
+<span class="p">},</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;emp007&#39;</span><span class="p">)</span>
+
+<span class="n">df_newer</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">df_new</span><span class="p">,</span> <span class="n">new_employee</span><span class="o">.</span><span class="n">to_frame</span><span class="p">()</span><span class="o">.</span><span class="n">T</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">4. DataFrame with another new employee:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df_newer</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="basic-sorting">
+<h3>Basic Sorting<a class="headerlink" href="#basic-sorting" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;Name&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;Alice&#39;</span><span class="p">,</span> <span class="s1">&#39;Bob&#39;</span><span class="p">,</span> <span class="s1">&#39;Charlie&#39;</span><span class="p">,</span> <span class="s1">&#39;David&#39;</span><span class="p">,</span> <span class="s1">&#39;Eva&#39;</span><span class="p">],</span>
+    <span class="s1">&#39;Age&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">24</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">35</span><span class="p">,</span> <span class="mi">42</span><span class="p">,</span> <span class="mi">28</span><span class="p">],</span>
+    <span class="s1">&#39;City&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;New York&#39;</span><span class="p">,</span> <span class="s1">&#39;Boston&#39;</span><span class="p">,</span> <span class="s1">&#39;Chicago&#39;</span><span class="p">,</span> <span class="s1">&#39;Seattle&#39;</span><span class="p">,</span> <span class="s1">&#39;Miami&#39;</span><span class="p">],</span>
+    <span class="s1">&#39;Salary&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">65000</span><span class="p">,</span> <span class="mi">72000</span><span class="p">,</span> <span class="mi">85000</span><span class="p">,</span> <span class="mi">92000</span><span class="p">,</span> <span class="mi">70000</span><span class="p">],</span>
+    <span class="s1">&#39;Department&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;HR&#39;</span><span class="p">,</span> <span class="s1">&#39;Sales&#39;</span><span class="p">,</span> <span class="s1">&#39;Tech&#39;</span><span class="p">,</span> <span class="s1">&#39;Tech&#39;</span><span class="p">,</span> <span class="s1">&#39;Finance&#39;</span><span class="p">]</span>
+<span class="p">}</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+<span class="n">df</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;emp001&#39;</span><span class="p">,</span> <span class="s1">&#39;emp002&#39;</span><span class="p">,</span> <span class="s1">&#39;emp003&#39;</span><span class="p">,</span> <span class="s1">&#39;emp004&#39;</span><span class="p">,</span> <span class="s1">&#39;emp005&#39;</span><span class="p">]</span>  <span class="c1"># Custom index</span>
+
+<span class="c1"># Continuing with our employee DataFrame</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Original DataFrame:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+
+<span class="c1"># 1. Sorting by a single column (ascending by default)</span>
+<span class="n">df_by_age</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s1">&#39;Age&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">1. Sorted by Age (ascending):&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df_by_age</span><span class="p">)</span>
+
+<span class="c1"># 2. Sorting by a single column (descending)</span>
+<span class="n">df_by_salary_desc</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s1">&#39;Salary&#39;</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">2. Sorted by Salary (descending):&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df_by_salary_desc</span><span class="p">)</span>
+
+<span class="c1"># 3. Sorting by index</span>
+<span class="n">df_by_index</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">sort_index</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">3. Sorted by index:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df_by_index</span><span class="p">)</span>
+
+<span class="c1"># 4. Sorting by multiple columns</span>
+<span class="n">df_multi_sort</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">sort_values</span><span class="p">([</span><span class="s1">&#39;Department&#39;</span><span class="p">,</span> <span class="s1">&#39;Salary&#39;</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">4. Sorted by Department, then by Salary within each department:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df_multi_sort</span><span class="p">)</span>
+
+<span class="c1"># 5. Sorting with different directions for each column</span>
+<span class="n">df_complex</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">sort_values</span><span class="p">([</span><span class="s1">&#39;Department&#39;</span><span class="p">,</span> <span class="s1">&#39;Salary&#39;</span><span class="p">],</span> 
+                          <span class="n">ascending</span><span class="o">=</span><span class="p">[</span><span class="kc">True</span><span class="p">,</span> <span class="kc">False</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">5. Sorted by Department (asc), then by Salary (desc) within each department:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df_complex</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="indexing-selection-slicing-in-pandas">
+<h2>Indexing, Selection &amp; Slicing in Pandas<a class="headerlink" href="#indexing-selection-slicing-in-pandas" title="Link to this heading"></a></h2>
+<section id="creating-a-dataframe-with-meaningful-indices">
+<h3>Creating a DataFrame with Meaningful Indices<a class="headerlink" href="#creating-a-dataframe-with-meaningful-indices" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create a DataFrame with custom indices</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+
+<span class="c1"># Create a genetic dataset</span>
+<span class="n">genetic_data</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;Gene&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;BRCA1&#39;</span><span class="p">,</span> <span class="s1">&#39;TP53&#39;</span><span class="p">,</span> <span class="s1">&#39;APOE&#39;</span><span class="p">,</span> <span class="s1">&#39;PTEN&#39;</span><span class="p">,</span> <span class="s1">&#39;BRAF&#39;</span><span class="p">,</span> <span class="s1">&#39;KRAS&#39;</span><span class="p">,</span> 
+            <span class="s1">&#39;BRCA2&#39;</span><span class="p">,</span> <span class="s1">&#39;EGFR&#39;</span><span class="p">,</span> <span class="s1">&#39;TNF&#39;</span><span class="p">,</span> <span class="s1">&#39;IL6&#39;</span><span class="p">],</span>
+    <span class="s1">&#39;Chromosome&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;Chr17&#39;</span><span class="p">,</span> <span class="s1">&#39;Chr17&#39;</span><span class="p">,</span> <span class="s1">&#39;Chr19&#39;</span><span class="p">,</span> <span class="s1">&#39;Chr10&#39;</span><span class="p">,</span> <span class="s1">&#39;Chr7&#39;</span><span class="p">,</span> <span class="s1">&#39;Chr12&#39;</span><span class="p">,</span> 
+                  <span class="s1">&#39;Chr13&#39;</span><span class="p">,</span> <span class="s1">&#39;Chr7&#39;</span><span class="p">,</span> <span class="s1">&#39;Chr6&#39;</span><span class="p">,</span> <span class="s1">&#39;Chr7&#39;</span><span class="p">],</span>
+    <span class="s1">&#39;Study&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;Study1&#39;</span><span class="p">,</span> <span class="s1">&#39;Study2&#39;</span><span class="p">,</span> <span class="s1">&#39;Study1&#39;</span><span class="p">,</span> <span class="s1">&#39;Study3&#39;</span><span class="p">,</span> <span class="s1">&#39;Study2&#39;</span><span class="p">,</span> <span class="s1">&#39;Study3&#39;</span><span class="p">,</span> 
+             <span class="s1">&#39;Study1&#39;</span><span class="p">,</span> <span class="s1">&#39;Study2&#39;</span><span class="p">,</span> <span class="s1">&#39;Study3&#39;</span><span class="p">,</span> <span class="s1">&#39;Study1&#39;</span><span class="p">],</span>
+    <span class="s1">&#39;PValue&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.0001</span><span class="p">,</span> <span class="mf">0.0050</span><span class="p">,</span> <span class="mf">0.0200</span><span class="p">,</span> <span class="mf">0.0150</span><span class="p">,</span> <span class="mf">0.0300</span><span class="p">,</span> <span class="mf">0.0400</span><span class="p">,</span> 
+              <span class="mf">0.0005</span><span class="p">,</span> <span class="mf">0.0250</span><span class="p">,</span> <span class="mf">0.0100</span><span class="p">,</span> <span class="mf">0.0450</span><span class="p">],</span>
+    <span class="s1">&#39;EffectSize&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">2.5</span><span class="p">,</span> <span class="mf">1.8</span><span class="p">,</span> <span class="mf">3.2</span><span class="p">,</span> <span class="mf">2.1</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">,</span> <span class="mf">1.2</span><span class="p">,</span> <span class="mf">2.7</span><span class="p">,</span> <span class="mf">1.9</span><span class="p">,</span> <span class="mf">2.3</span><span class="p">,</span> <span class="mf">1.1</span><span class="p">]</span>
+<span class="p">}</span>
+
+<span class="n">genetic_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">genetic_data</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Genetic DataFrame:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">genetic_df</span><span class="p">)</span>
+
+<span class="c1"># Set a meaningful index from an existing column</span>
+<span class="n">genetic_df</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s1">&#39;Gene&#39;</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;DataFrame with &#39;Gene&#39; as index:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">genetic_df</span><span class="p">)</span>
+
+<span class="c1"># Reset index to return to default integer indexing</span>
+<span class="n">df_reset</span> <span class="o">=</span> <span class="n">genetic_df</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">DataFrame with default integer index:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df_reset</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="use-label-and-position-based-indexing">
+<h3>Use Label and Position-based Indexing<a class="headerlink" href="#use-label-and-position-based-indexing" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Using the genetic_df with &#39;Gene&#39; as the index</span>
+
+<span class="c1"># 1. Label-based indexing with .loc</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">1.1. Label-based selection (.loc):&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Data for &#39;BRCA1&#39;:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">genetic_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">&#39;BRCA1&#39;</span><span class="p">])</span>
+
+<span class="c1"># Select multiple rows by label</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">1.2. Data for &#39;TP53&#39; and &#39;APOE&#39;:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">genetic_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[[</span><span class="s1">&#39;TP53&#39;</span><span class="p">,</span> <span class="s1">&#39;APOE&#39;</span><span class="p">]])</span>
+
+<span class="c1"># Select rows and columns by label</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">1.3. Chromosome and PValue for &#39;BRAF&#39; and &#39;KRAS&#39;:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">genetic_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[[</span><span class="s1">&#39;BRAF&#39;</span><span class="p">,</span> <span class="s1">&#39;KRAS&#39;</span><span class="p">],</span> <span class="p">[</span><span class="s1">&#39;Chromosome&#39;</span><span class="p">,</span> <span class="s1">&#39;PValue&#39;</span><span class="p">]])</span>
+
+<span class="c1"># Slicing dataframe using labels</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">1.4. All the rows of Chromosome and PValue columns:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">genetic_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,</span> <span class="p">[</span><span class="s1">&#39;Chromosome&#39;</span><span class="p">,</span> <span class="s1">&#39;PValue&#39;</span><span class="p">]])</span>
+<span class="n">gene_set</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;BRCA1&quot;</span><span class="p">,</span> <span class="s2">&quot;BRCA2&quot;</span><span class="p">,</span> <span class="s2">&quot;TP53&quot;</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">1.5. row indices in gene_set array and column indices - Study, EffectSize:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">genetic_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[[</span><span class="s2">&quot;BRCA1&quot;</span><span class="p">,</span><span class="s2">&quot;BRAF&quot;</span><span class="p">],</span> <span class="p">[</span><span class="s2">&quot;Study&quot;</span><span class="p">,</span><span class="s2">&quot;EffectSize&quot;</span><span class="p">]])</span>
+
+<span class="c1"># 2. Position-based indexing with .iloc</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">2.1. Position-based selection (.iloc):&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Third row (index position 2):&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">genetic_df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+
+<span class="c1"># Select multiple rows by position</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">2.2. First and fourth rows (positions 0 and 3):&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">genetic_df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">]])</span>
+
+<span class="c1"># Slicing dataframe using indices - Select rows and columns by position</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">2.3. Rows 1-3, columns 0-1:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">genetic_df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="mi">4</span><span class="p">,</span> <span class="mi">0</span><span class="p">:</span><span class="mi">2</span><span class="p">])</span>
+
+<span class="c1"># 3. Mixed indexing (direct [])</span>
+<span class="c1"># Mixing approaches (not recommended but sometimes seen)</span>
+<span class="c1"># print(&quot;\nFirst two rows of &#39;Study&#39; column:&quot;)</span>
+<span class="c1"># print(genetic_df[&#39;Study&#39;][0:2])  # Chained indexing - can lead to issues</span>
+</pre></div>
+</div>
+</section>
+<section id="boolean-indexing">
+<h3>Boolean Indexing<a class="headerlink" href="#boolean-indexing" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Reset example</span>
+<span class="n">genetic_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">genetic_data</span><span class="p">)</span>
+<span class="n">genetic_df</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s1">&#39;Gene&#39;</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Original DataFrame:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">genetic_df</span><span class="p">)</span>
+
+<span class="c1"># 1. Simple boolean mask</span>
+<span class="n">low_pvalue_mask</span> <span class="o">=</span> <span class="n">genetic_df</span><span class="p">[</span><span class="s1">&#39;PValue&#39;</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mf">0.01</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">1. Boolean mask for low P-values:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">low_pvalue_mask</span><span class="p">)</span>
+
+<span class="c1"># Using the mask to filter rows</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Genes with low P-values:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">genetic_df</span><span class="p">[</span><span class="n">low_pvalue_mask</span><span class="p">])</span>
+
+<span class="c1"># 2. Inline boolean indexing</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">2. Genes on Chromosome 7:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">genetic_df</span><span class="p">[</span><span class="n">genetic_df</span><span class="p">[</span><span class="s1">&#39;Chromosome&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;Chr7&#39;</span><span class="p">])</span>
+
+<span class="c1"># 3. Multiple conditions with &amp; (and), | (or)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">3a. Genes from Study1 with large effect size:&quot;</span><span class="p">)</span>
+<span class="n">multi_cond_and</span> <span class="o">=</span> <span class="p">(</span><span class="n">genetic_df</span><span class="p">[</span><span class="s1">&#39;Study&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;Study1&#39;</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">genetic_df</span><span class="p">[</span><span class="s1">&#39;EffectSize&#39;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mf">2.5</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">genetic_df</span><span class="p">[</span><span class="n">multi_cond_and</span><span class="p">])</span> <span class="c1"># print(genetic_df.loc[multi_cond_and, :])</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">3b. Genes with either very low P-value or large effect size:&quot;</span><span class="p">)</span>
+<span class="n">multi_cond_or</span> <span class="o">=</span> <span class="p">(</span><span class="n">genetic_df</span><span class="p">[</span><span class="s1">&#39;PValue&#39;</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mf">0.005</span><span class="p">)</span> <span class="o">|</span> <span class="p">(</span><span class="n">genetic_df</span><span class="p">[</span><span class="s1">&#39;EffectSize&#39;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mf">3.0</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">genetic_df</span><span class="p">[</span><span class="n">multi_cond_or</span><span class="p">])</span> <span class="c1"># print(genetic_df.loc[multi_cond_or, :])</span>
+
+<span class="c1"># 4. Using .loc with boolean masks</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">4.a Using .loc with boolean mask:&quot;</span><span class="p">)</span>
+<span class="n">chr17_genes</span> <span class="o">=</span> <span class="p">(</span><span class="n">genetic_df</span><span class="p">[</span><span class="s1">&#39;Chromosome&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;Chr17&#39;</span><span class="p">)</span>
+<span class="n">col_list</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Study&#39;</span><span class="p">,</span> <span class="s1">&#39;EffectSize&#39;</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">genetic_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">chr17_genes</span><span class="p">,</span> <span class="n">col_list</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">4.b Using .loc with boolean mask:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">genetic_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">multi_cond_and</span><span class="p">,</span> <span class="n">col_list</span><span class="p">])</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="summary-statistics-aggregations-in-pandas">
+<h2>Summary Statistics &amp; Aggregations in Pandas<a class="headerlink" href="#summary-statistics-aggregations-in-pandas" title="Link to this heading"></a></h2>
+<section id="basic-statistical-methods">
+<h3>Basic Statistical Methods:<a class="headerlink" href="#basic-statistical-methods" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+<span class="c1"># Create a sample gene expression DataFrame</span>
+<span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>  <span class="c1"># For reproducibility</span>
+
+<span class="c1"># Generate 15 sample genes</span>
+<span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;Gene_ID&#39;</span><span class="p">:</span> <span class="p">[</span><span class="sa">f</span><span class="s1">&#39;GENE</span><span class="si">{</span><span class="n">i</span><span class="si">:</span><span class="s1">03d</span><span class="si">}</span><span class="s1">&#39;</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">16</span><span class="p">)],</span>
+    <span class="s1">&#39;Expression_Level&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">lognormal</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">15</span><span class="p">)</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span>  <span class="c1"># Draw random samples Log-normal distribution for expression values</span>
+    <span class="s1">&#39;Log2_Fold_Change&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">15</span><span class="p">)</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span>  <span class="c1"># Draw random samples from normal distribution for log2 fold changes</span>
+    <span class="s1">&#39;P_Value&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">beta</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">15</span><span class="p">)</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">4</span><span class="p">),</span>  <span class="c1"># Draw random samples Beta distribution for p-values</span>
+    <span class="s1">&#39;Tissue_Type&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">([</span><span class="s1">&#39;Brain&#39;</span><span class="p">,</span> <span class="s1">&#39;Liver&#39;</span><span class="p">,</span> <span class="s1">&#39;Kidney&#39;</span><span class="p">,</span> <span class="s1">&#39;Heart&#39;</span><span class="p">,</span> <span class="s1">&#39;Lung&#39;</span><span class="p">],</span> <span class="mi">15</span><span class="p">),</span>
+    <span class="s1">&#39;Chromosome&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">([</span><span class="s1">&#39;chr1&#39;</span><span class="p">,</span> <span class="s1">&#39;chr2&#39;</span><span class="p">,</span> <span class="s1">&#39;chr3&#39;</span><span class="p">,</span> <span class="s1">&#39;chr4&#39;</span><span class="p">,</span> <span class="s1">&#39;chrX&#39;</span><span class="p">,</span> <span class="s1">&#39;chrY&#39;</span><span class="p">],</span> <span class="mi">15</span><span class="p">)</span>
+<span class="p">}</span>
+
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+
+<span class="c1"># Add some missing values for realism</span>
+<span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="s1">&#39;P_Value&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">9</span><span class="p">,</span> <span class="s1">&#39;Log2_Fold_Change&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+
+<span class="c1"># Add a column for significance based on P_Value and Log2_Fold_Change</span>
+<span class="n">df</span><span class="p">[</span><span class="s1">&#39;Is_Significant&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">((</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;P_Value&#39;</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mf">0.05</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;Log2_Fold_Change&#39;</span><span class="p">])</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">))</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Sample Gene Expression DataFrame:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+
+<span class="c1"># 1. Comprehensive statistical summary</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">1. Comprehensive statistical summary with describe():&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">describe</span><span class="p">())</span>
+
+<span class="c1"># 2. Include all columns (even non-numeric)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">2. Describing all columns (including non-numeric):&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">describe</span><span class="p">(</span><span class="n">include</span><span class="o">=</span><span class="s1">&#39;all&#39;</span><span class="p">))</span>
+
+<span class="c1"># 3. Basic statistical methods</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">3. Basic statistical methods:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Mean expression level: </span><span class="si">{</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;Expression_Level&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Median log2 fold change: </span><span class="si">{</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;Log2_Fold_Change&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">median</span><span class="p">()</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Minimum p-value: </span><span class="si">{</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;P_Value&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">min</span><span class="p">()</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Number of significant genes: </span><span class="si">{</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;Is_Significant&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Standard deviation of expression: </span><span class="si">{</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;Expression_Level&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">std</span><span class="p">()</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># 4. Multiple statistics at once</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">4. Multiple statistics for Expression Level:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;Expression_Level&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">agg</span><span class="p">([</span><span class="s1">&#39;min&#39;</span><span class="p">,</span> <span class="s1">&#39;max&#39;</span><span class="p">,</span> <span class="s1">&#39;mean&#39;</span><span class="p">,</span> <span class="s1">&#39;median&#39;</span><span class="p">,</span> <span class="s1">&#39;std&#39;</span><span class="p">]))</span>
+
+<span class="c1"># 5. Quantiles/percentiles</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">5. Expression level quartiles:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;Expression_Level&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">quantile</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.25</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.75</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">]))</span>
+</pre></div>
+</div>
+</section>
+<section id="aggregation-functions">
+<h3>Aggregation Functions<a class="headerlink" href="#aggregation-functions" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>
+<span class="c1"># Create a sample gene expression DataFrame</span>
+<span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>  <span class="c1"># For reproducibility</span>
+
+<span class="c1"># Generate 15 sample genes</span>
+<span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;Gene_ID&#39;</span><span class="p">:</span> <span class="p">[</span><span class="sa">f</span><span class="s1">&#39;GENE</span><span class="si">{</span><span class="n">i</span><span class="si">:</span><span class="s1">03d</span><span class="si">}</span><span class="s1">&#39;</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">16</span><span class="p">)],</span>
+    <span class="s1">&#39;Expression_Level&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">lognormal</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">15</span><span class="p">)</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span>  <span class="c1"># Log-normal for expression values</span>
+    <span class="s1">&#39;Log2_Fold_Change&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">15</span><span class="p">)</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span>  <span class="c1"># Normal distribution for log2 fold changes</span>
+    <span class="s1">&#39;P_Value&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">beta</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">15</span><span class="p">)</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">4</span><span class="p">),</span>  <span class="c1"># Beta distribution for p-values</span>
+    <span class="s1">&#39;Tissue_Type&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">([</span><span class="s1">&#39;Brain&#39;</span><span class="p">,</span> <span class="s1">&#39;Liver&#39;</span><span class="p">,</span> <span class="s1">&#39;Kidney&#39;</span><span class="p">,</span> <span class="s1">&#39;Heart&#39;</span><span class="p">,</span> <span class="s1">&#39;Lung&#39;</span><span class="p">],</span> <span class="mi">15</span><span class="p">),</span>
+    <span class="s1">&#39;Chromosome&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">([</span><span class="s1">&#39;chr1&#39;</span><span class="p">,</span> <span class="s1">&#39;chr2&#39;</span><span class="p">,</span> <span class="s1">&#39;chr3&#39;</span><span class="p">,</span> <span class="s1">&#39;chr4&#39;</span><span class="p">,</span> <span class="s1">&#39;chrX&#39;</span><span class="p">,</span> <span class="s1">&#39;chrY&#39;</span><span class="p">],</span> <span class="mi">15</span><span class="p">)</span>
+<span class="p">}</span>
+
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Original dataframe&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+
+<span class="c1"># 1. Simple custom aggregation with custom function</span>
+
+<span class="c1"># Define a custom function</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_range</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Get range&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">x</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">-</span> <span class="n">x</span><span class="o">.</span><span class="n">min</span><span class="p">()</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">range_ratio</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Calculate the ratio of max to min value&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">x</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">/</span> <span class="n">x</span><span class="o">.</span><span class="n">min</span><span class="p">()</span>
+
+
+<span class="n">range_calc</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;Expression_Level&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">agg</span><span class="p">(</span><span class="n">get_range</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">1. Expression Level range using lambda function:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">range_calc</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">2. Expression Level max/min ratio using custom function:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;Expression_Level&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">agg</span><span class="p">(</span><span class="n">range_ratio</span><span class="p">)</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># 3. Different aggregations for different columns</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">3. Different aggregations per column:&quot;</span><span class="p">)</span>
+<span class="n">mixed_aggs</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">agg</span><span class="p">({</span>
+    <span class="s1">&#39;Expression_Level&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;min&#39;</span><span class="p">,</span> <span class="s1">&#39;max&#39;</span><span class="p">,</span> <span class="s1">&#39;mean&#39;</span><span class="p">],</span>
+    <span class="s1">&#39;Log2_Fold_Change&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;median&#39;</span><span class="p">,</span> <span class="s1">&#39;std&#39;</span><span class="p">],</span>
+    <span class="s1">&#39;P_Value&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;min&#39;</span><span class="p">,</span> <span class="s1">&#39;mean&#39;</span><span class="p">],</span>
+    <span class="s1">&#39;Is_Significant&#39;</span><span class="p">:</span> <span class="s1">&#39;sum&#39;</span>
+<span class="p">})</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">mixed_aggs</span><span class="p">)</span>
+
+<span class="c1"># 4. Genomics-specific custom aggregation</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">differential_expression_score</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Calculate a custom score based on fold change magnitude and significance&quot;&quot;&quot;</span>
+    <span class="c1"># Higher absolute fold change and lower p-values yield higher scores</span>
+    <span class="k">return</span> <span class="n">x</span><span class="o">.</span><span class="n">abs</span><span class="p">()</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span> <span class="o">*</span> <span class="p">(</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;P_Value&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">dropna</span><span class="p">()</span><span class="o">.</span><span class="n">mean</span><span class="p">()))</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">4. Custom differential expression score:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;Log2_Fold_Change&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">agg</span><span class="p">(</span><span class="n">differential_expression_score</span><span class="p">)</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="group-dataframes-on-columns">
+<h3>Group dataframes on columns<a class="headerlink" href="#group-dataframes-on-columns" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create a genetic dataset</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+<span class="n">genetic_data</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;Gene&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;BRCA1&#39;</span><span class="p">,</span> <span class="s1">&#39;TP53&#39;</span><span class="p">,</span> <span class="s1">&#39;APOE&#39;</span><span class="p">,</span> <span class="s1">&#39;PTEN&#39;</span><span class="p">,</span> <span class="s1">&#39;BRAF&#39;</span><span class="p">,</span> <span class="s1">&#39;KRAS&#39;</span><span class="p">,</span> 
+            <span class="s1">&#39;BRCA2&#39;</span><span class="p">,</span> <span class="s1">&#39;EGFR&#39;</span><span class="p">,</span> <span class="s1">&#39;TNF&#39;</span><span class="p">,</span> <span class="s1">&#39;IL6&#39;</span><span class="p">],</span>
+    <span class="s1">&#39;Chromosome&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;Chr17&#39;</span><span class="p">,</span> <span class="s1">&#39;Chr17&#39;</span><span class="p">,</span> <span class="s1">&#39;Chr19&#39;</span><span class="p">,</span> <span class="s1">&#39;Chr10&#39;</span><span class="p">,</span> <span class="s1">&#39;Chr7&#39;</span><span class="p">,</span> <span class="s1">&#39;Chr12&#39;</span><span class="p">,</span> 
+                  <span class="s1">&#39;Chr13&#39;</span><span class="p">,</span> <span class="s1">&#39;Chr7&#39;</span><span class="p">,</span> <span class="s1">&#39;Chr6&#39;</span><span class="p">,</span> <span class="s1">&#39;Chr7&#39;</span><span class="p">],</span>
+    <span class="s1">&#39;Study&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;Study1&#39;</span><span class="p">,</span> <span class="s1">&#39;Study2&#39;</span><span class="p">,</span> <span class="s1">&#39;Study1&#39;</span><span class="p">,</span> <span class="s1">&#39;Study3&#39;</span><span class="p">,</span> <span class="s1">&#39;Study2&#39;</span><span class="p">,</span> <span class="s1">&#39;Study3&#39;</span><span class="p">,</span> 
+             <span class="s1">&#39;Study1&#39;</span><span class="p">,</span> <span class="s1">&#39;Study2&#39;</span><span class="p">,</span> <span class="s1">&#39;Study3&#39;</span><span class="p">,</span> <span class="s1">&#39;Study1&#39;</span><span class="p">],</span>
+    <span class="s1">&#39;PValue&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.0001</span><span class="p">,</span> <span class="mf">0.0050</span><span class="p">,</span> <span class="mf">0.0200</span><span class="p">,</span> <span class="mf">0.0150</span><span class="p">,</span> <span class="mf">0.0300</span><span class="p">,</span> <span class="mf">0.0400</span><span class="p">,</span> 
+              <span class="mf">0.0005</span><span class="p">,</span> <span class="mf">0.0250</span><span class="p">,</span> <span class="mf">0.0100</span><span class="p">,</span> <span class="mf">0.0450</span><span class="p">],</span>
+    <span class="s1">&#39;EffectSize&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">2.5</span><span class="p">,</span> <span class="mf">1.8</span><span class="p">,</span> <span class="mf">3.2</span><span class="p">,</span> <span class="mf">2.1</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">,</span> <span class="mf">1.2</span><span class="p">,</span> <span class="mf">2.7</span><span class="p">,</span> <span class="mf">1.9</span><span class="p">,</span> <span class="mf">2.3</span><span class="p">,</span> <span class="mf">1.1</span><span class="p">]</span>
+<span class="p">}</span>
+
+<span class="n">genetic_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">genetic_data</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Genetic DataFrame:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">genetic_df</span><span class="p">)</span>
+
+<span class="c1"># Group by Chromosome</span>
+<span class="n">chromosome_groups</span> <span class="o">=</span> <span class="n">genetic_df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;Chromosome&#39;</span><span class="p">)</span>
+
+<span class="c1"># View the groups</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Available groups:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">chromosome_groups</span><span class="o">.</span><span class="n">groups</span><span class="o">.</span><span class="n">keys</span><span class="p">()))</span>
+
+<span class="c1"># Access a specific group</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Genes on Chr17:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">chromosome_groups</span><span class="o">.</span><span class="n">get_group</span><span class="p">(</span><span class="s1">&#39;Chr17&#39;</span><span class="p">))</span>
+</pre></div>
+</div>
+</section>
+<section id="aggregations-the-core-of-groupby">
+<h3>Aggregations - The Core of GroupBy<a class="headerlink" href="#aggregations-the-core-of-groupby" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Calculate mean effect size and p-value for each chromosome</span>
+<span class="n">chromosome_stats</span> <span class="o">=</span> <span class="n">genetic_df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;Chromosome&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">agg</span><span class="p">({</span>
+    <span class="s1">&#39;PValue&#39;</span><span class="p">:</span> <span class="s1">&#39;mean&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;EffectSize&#39;</span><span class="p">:</span> <span class="s1">&#39;mean&#39;</span>
+<span class="p">})</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Mean statistics by chromosome:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">chromosome_stats</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025 Norwegian Ai Cloud.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

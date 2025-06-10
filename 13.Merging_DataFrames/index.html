@@ -1,0 +1,497 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bonus Lesson 2: Merging DataFrames in Pandas &mdash; NumPy and Pandas for biological data handling  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+      <link rel="stylesheet" type="text/css" href="../_static/sphinx_lesson.css?v=e9df6548" />
+      <link rel="stylesheet" type="text/css" href="../_static/term_role_formatting.css?v=4194e21c" />
+      <link rel="stylesheet" type="text/css" href="../_static/sphinx_rtd_theme_ext_color_contrast.css?v=8e8ea19f" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=187304be"></script>
+      <script src="../_static/doctools.js?v=9a2dae69"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../_static/copybutton.js?v=35a8b989"></script>
+      <script src="../_static/minipres.js?v=a0d29692"></script>
+      <script>let toggleHintShow = 'Click to show';</script>
+      <script>let toggleHintHide = 'Click to hide';</script>
+      <script>let toggleOpenOnPrint = 'true';</script>
+      <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+      <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+      <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex/" />
+    <link rel="search" title="Search" href="../search/" />
+    <link rel="prev" title="Bonus Lesson 1: Handling Missing Data in Pandas" href="../12.Handling_Missing_Data/" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../" class="icon icon-home">
+            NumPy and Pandas for biological data handling
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search/" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Numpy for handling biological datasets</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../0.Numpy_for_bioinformatics/">Lesson plan</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1.numpy_intro/">Introduction to NumPy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../2.NumPy_Data_Types/">NumPy Data Types</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3.Indexing_and_Slicing/">Array Indexing and Slicing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../4.Advance_indexing_filtering/">NumPy Boolean Masking and Filtering</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../5.Essential_array_operations/">Essential Array Operations with NumPy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../6.Vectorized_Operations_in_NumPy/">Vectorized Operations in NumPy: Beyond Python Loops</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../6.1.Numpy_hands_on/">Hands-on: RNA Expression Analysis - alternative method</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Pandas for handling biological datasets</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../7.Pandas_lesson plan/">Lesson plan</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8.Introduction_to_pandas/">Introduction to Pandas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../9.Pandas_data_import_export/">Data Import and Export in Pandas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../10.DataFrame_Manipulation/">DataFrame Manipulation &amp; Sorting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../11.Pandas_indexing_slicing/">Indexing, Selection &amp; Slicing in Pandas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../14.Pandas_summary_stats/">Summary Statistics &amp; Aggregations in Pandas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../15.Hands-on_expression_count_analysis/">Hands-on: RNA Expression Analysis - alternative method</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../12.Handling_Missing_Data/">Bonus Lesson 1: Handling Missing Data in Pandas</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Bonus Lesson 2: Merging DataFrames in Pandas</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#concatenation-with-pd-concat">Concatenation with pd.concat()</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#key-takeaways">Key Takeaways</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../">NumPy and Pandas for biological data handling</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Bonus Lesson 2: Merging DataFrames in Pandas</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/coderefinery/content/blob/main/content/13.Merging_DataFrames.md" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="bonus-lesson-2-merging-dataframes-in-pandas">
+<h1>Bonus Lesson 2: Merging DataFrames in Pandas<a class="headerlink" href="#bonus-lesson-2-merging-dataframes-in-pandas" title="Link to this heading"></a></h1>
+<div class="admonition-objectives objectives admonition" id="objectives-0">
+<p class="admonition-title">Objectives</p>
+<ul class="simple">
+<li><p>Illustrate how to concatenate DataFrames using <code class="docutils literal notranslate"><span class="pre">pd.concat()</span></code> and understand its applications.</p></li>
+<li><p>Explain database-style joins with the <code class="docutils literal notranslate"><span class="pre">merge()</span></code> function and illustrate the different join types (inner, outer, left, * right).</p></li>
+</ul>
+</div>
+<div class="admonition-instructor-note instructor-note admonition" id="instructor-note-0">
+<p class="admonition-title">Instructor note</p>
+<ul class="simple">
+<li><p>This lesson is not intended to cover in live session</p></li>
+<li><p>Lesson material is available only for the course participants to follow on their own time</p></li>
+</ul>
+</div>
+<ul class="simple">
+<li><p>In real-world data analysis, you rarely have all the data you need in a single file or table.</p></li>
+<li><p>Combining data from multiple sources is a fundamental data wrangling skill.</p></li>
+<li><p>Pandas gives us two main approaches: stacking data (concatenation) and joining data on common keys (merging)</p></li>
+<li><p><strong>Concatenation</strong>: Stacking similar datasets (vertically or horizontally)</p></li>
+<li><p><strong>Merging/Joining</strong>: Combining related datasets based on common keys</p></li>
+</ul>
+<section id="concatenation-with-pd-concat">
+<h2>Concatenation with pd.concat()<a class="headerlink" href="#concatenation-with-pd-concat" title="Link to this heading"></a></h2>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Parameter</p></th>
+<th class="head"><p>Purpose</p></th>
+<th class="head"><p>Common Values</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">objs</span></code></p></td>
+<td><p>List of DataFrames</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">[df1,</span> <span class="pre">df2,</span> <span class="pre">...]</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">axis</span></code></p></td>
+<td><p>Direction</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">0</span></code> (vertical, default), <code class="docutils literal notranslate"><span class="pre">1</span></code> (horizontal)</p></td>
+</tr>
+</tbody>
+</table>
+<div class="admonition-demo demo admonition" id="demo-0">
+<p class="admonition-title">Demo</p>
+<ul class="simple">
+<li><p>Vertical concatenation (stacking)</p></li>
+<li><p>Horizontal concatenation (side by side)</p></li>
+</ul>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+
+<span class="c1"># Create sample DataFrames</span>
+<span class="n">df1</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span>
+    <span class="s1">&#39;A&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;A0&#39;</span><span class="p">,</span> <span class="s1">&#39;A1&#39;</span><span class="p">,</span> <span class="s1">&#39;A2&#39;</span><span class="p">],</span>
+    <span class="s1">&#39;B&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;B0&#39;</span><span class="p">,</span> <span class="s1">&#39;B1&#39;</span><span class="p">,</span> <span class="s1">&#39;B2&#39;</span><span class="p">]</span>
+<span class="p">},</span> <span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;K0&#39;</span><span class="p">,</span> <span class="s1">&#39;K1&#39;</span><span class="p">,</span> <span class="s1">&#39;K2&#39;</span><span class="p">])</span>
+
+<span class="n">df2</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span>
+    <span class="s1">&#39;A&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;A3&#39;</span><span class="p">,</span> <span class="s1">&#39;A4&#39;</span><span class="p">,</span> <span class="s1">&#39;A5&#39;</span><span class="p">],</span>
+    <span class="s1">&#39;B&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;B3&#39;</span><span class="p">,</span> <span class="s1">&#39;B4&#39;</span><span class="p">,</span> <span class="s1">&#39;B5&#39;</span><span class="p">]</span>
+<span class="p">},</span> <span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;K3&#39;</span><span class="p">,</span> <span class="s1">&#39;K4&#39;</span><span class="p">,</span> <span class="s1">&#39;K5&#39;</span><span class="p">])</span>
+
+<span class="n">df3</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span>
+    <span class="s1">&#39;C&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;C6&#39;</span><span class="p">,</span> <span class="s1">&#39;C7&#39;</span><span class="p">,</span> <span class="s1">&#39;C8&#39;</span><span class="p">],</span>
+    <span class="s1">&#39;D&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;D6&#39;</span><span class="p">,</span> <span class="s1">&#39;D7&#39;</span><span class="p">,</span> <span class="s1">&#39;D8&#39;</span><span class="p">]</span>
+<span class="p">},</span> <span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;K6&#39;</span><span class="p">,</span> <span class="s1">&#39;K7&#39;</span><span class="p">,</span> <span class="s1">&#39;K8&#39;</span><span class="p">])</span>
+
+<span class="c1"># Vertical concatenation (stacking)</span>
+<span class="n">result1</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">df1</span><span class="p">,</span> <span class="n">df2</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;1. Vertical concatenation (stacking)&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">result1</span><span class="p">)</span>
+
+<span class="c1"># Horizontal concatenation (side by side)</span>
+<span class="n">result2</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">df1</span><span class="p">,</span> <span class="n">df3</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;2. Horizontal concatenation (side by side)&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">result2</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="admonition-output solution important dropdown admonition" id="solution-0">
+<p class="admonition-title">Output</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>1. Vertical concatenation (stacking)
+     A   B
+K0  A0  B0
+K1  A1  B1
+K2  A2  B2
+K3  A3  B3
+K4  A4  B4
+K5  A5  B5
+2. Horizontal concatenation (side by side)
+      A    B    C    D
+K0   A0   B0  NaN  NaN
+K1   A1   B1  NaN  NaN
+K2   A2   B2  NaN  NaN
+K6  NaN  NaN   C6   D6
+K7  NaN  NaN   C7   D7
+K8  NaN  NaN   C8   D8
+</pre></div>
+</div>
+</div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<ul class="simple">
+<li><p>Concatenation is like stacking datasets either vertically (axis=0) or horizontally (axis=1).</p></li>
+<li><p>Vertical concatenation is useful when you have data from different dataframes in the same format.</p></li>
+<li><p>Horizontal concatenation is useful when you have different features for the same observations</p></li>
+<li><p>Use <code class="docutils literal notranslate"><span class="pre">ignore_index=True</span></code> when original indices aren’t meaningful after combining</p>
+<ul>
+<li><p>e.g., <code class="docutils literal notranslate"><span class="pre">pd.concat([df1,</span> <span class="pre">df2],</span> <span class="pre">ignore_index=True)</span></code></p></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="admonition-more-info instructor-note admonition" id="instructor-note-1">
+<p class="admonition-title">More info</p>
+<details>
+<summary>Additional info</summary>
+<p><strong>Database-Style Joins with merge():</strong></p>
+<p><em>Key Parameters for pd.merge():</em></p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Parameter</p></th>
+<th class="head"><p>Purpose</p></th>
+<th class="head"><p>Common Values</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">left</span></code>, <code class="docutils literal notranslate"><span class="pre">right</span></code></p></td>
+<td><p>DataFrames to merge</p></td>
+<td><p>DataFrame objects</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">how</span></code></p></td>
+<td><p>Type of join</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">'inner'</span></code> (default), <code class="docutils literal notranslate"><span class="pre">'outer'</span></code>, <code class="docutils literal notranslate"><span class="pre">'left'</span></code>, <code class="docutils literal notranslate"><span class="pre">'right'</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">on</span></code></p></td>
+<td><p>Column(s) to join on</p></td>
+<td><p>Column name or list of names</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">left_on</span></code>, <code class="docutils literal notranslate"><span class="pre">right_on</span></code></p></td>
+<td><p>Column(s) when names differ</p></td>
+<td><p>Column name(s) for each DataFrame</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">suffixes</span></code></p></td>
+<td><p>For duplicate columns</p></td>
+<td><p>Tuple of strings, default <code class="docutils literal notranslate"><span class="pre">('_x',</span> <span class="pre">'_y')</span></code></p></td>
+</tr>
+</tbody>
+</table>
+<p>Basic Merge Examples</p>
+<div class="admonition-demo demo admonition" id="demo-1">
+<p class="admonition-title">Demo</p>
+<ul class="simple">
+<li><p>Inner join (default) - only matching rows (intersect)</p></li>
+<li><p>Left join - keep all rows from left DataFrame</p></li>
+<li><p>Right join - keep all rows from right DataFrame</p></li>
+<li><p>Outer join - keep all rows from both DataFrames (union)</p></li>
+</ul>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create sample DataFrames for merging</span>
+<span class="n">employees</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span>
+    <span class="s1">&#39;employee_id&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">],</span>
+    <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;Alice&#39;</span><span class="p">,</span> <span class="s1">&#39;Bob&#39;</span><span class="p">,</span> <span class="s1">&#39;Charlie&#39;</span><span class="p">,</span> <span class="s1">&#39;David&#39;</span><span class="p">,</span> <span class="s1">&#39;Eva&#39;</span><span class="p">],</span>
+    <span class="s1">&#39;department_id&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">101</span><span class="p">,</span> <span class="mi">102</span><span class="p">,</span> <span class="mi">101</span><span class="p">,</span> <span class="mi">103</span><span class="p">,</span> <span class="mi">102</span><span class="p">]</span>
+<span class="p">})</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Original dataframe&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">employees</span><span class="p">)</span>
+
+<span class="n">departments</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span>
+    <span class="s1">&#39;department_id&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">101</span><span class="p">,</span> <span class="mi">102</span><span class="p">,</span> <span class="mi">103</span><span class="p">,</span> <span class="mi">104</span><span class="p">],</span>
+    <span class="s1">&#39;department_name&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;HR&#39;</span><span class="p">,</span> <span class="s1">&#39;Engineering&#39;</span><span class="p">,</span> <span class="s1">&#39;Finance&#39;</span><span class="p">,</span> <span class="s1">&#39;Marketing&#39;</span><span class="p">],</span>
+    <span class="s1">&#39;location&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;New York&#39;</span><span class="p">,</span> <span class="s1">&#39;San Francisco&#39;</span><span class="p">,</span> <span class="s1">&#39;Chicago&#39;</span><span class="p">,</span> <span class="s1">&#39;Boston&#39;</span><span class="p">]</span>
+<span class="p">})</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Original dataframe&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">departments</span><span class="p">)</span>
+
+<span class="c1"># Inner join (default) - only matching rows</span>
+<span class="n">inner_merge</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">employees</span><span class="p">,</span> <span class="n">departments</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="s1">&#39;department_id&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;1. Inner join (default) - only matching rows&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">inner_merge</span><span class="p">)</span>
+
+<span class="c1"># Left join - keep all rows from left DataFrame</span>
+<span class="n">left_merge</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">employees</span><span class="p">,</span> <span class="n">departments</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="s1">&#39;department_id&#39;</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s1">&#39;left&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;2. Left join - keep all rows from left DataFrame&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">left_merge</span><span class="p">)</span>
+
+<span class="c1"># Right join - keep all rows from right DataFrame</span>
+<span class="n">right_merge</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">employees</span><span class="p">,</span> <span class="n">departments</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="s1">&#39;department_id&#39;</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s1">&#39;right&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;3. Right join - keep all rows from right DataFrame&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">right_merge</span><span class="p">)</span>
+
+<span class="c1"># Outer join - keep all rows from both DataFrames</span>
+<span class="n">outer_merge</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">employees</span><span class="p">,</span> <span class="n">departments</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="s1">&#39;department_id&#39;</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s1">&#39;outer&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;4. Outer join - keep all rows from both DataFrames&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">outer_merge</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Output</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Original dataframe
+   employee_id     name  department_id
+0            1    Alice            101
+1            2      Bob            102
+2            3  Charlie            101
+3            4    David            103
+4            5      Eva            102
+
+Original dataframe
+   department_id department_name       location
+0            101              HR       New York
+1            102     Engineering  San Francisco
+2            103         Finance        Chicago
+3            104       Marketing         Boston
+
+1. Inner join (default) - only matching rows
+   employee_id     name  department_id department_name       location
+0            1    Alice            101              HR       New York
+1            3  Charlie            101              HR       New York
+2            2      Bob            102     Engineering  San Francisco
+3            5      Eva            102     Engineering  San Francisco
+4            4    David            103         Finance        Chicago
+
+2. Left join - keep all rows from left DataFrame
+   employee_id     name  department_id department_name       location
+0            1    Alice            101              HR       New York
+1            2      Bob            102     Engineering  San Francisco
+2            3  Charlie            101              HR       New York
+3            4    David            103         Finance        Chicago
+4            5      Eva            102     Engineering  San Francisco
+
+3. Right join - keep all rows from right DataFrame
+   employee_id     name  department_id department_name       location
+0          1.0    Alice            101              HR       New York
+1          3.0  Charlie            101              HR       New York
+2          2.0      Bob            102     Engineering  San Francisco
+3          5.0      Eva            102     Engineering  San Francisco
+4          4.0    David            103         Finance        Chicago
+5          NaN      NaN            104       Marketing         Boston
+
+4. Outer join - keep all rows from both DataFrames
+   employee_id     name  department_id department_name       location
+0          1.0    Alice            101              HR       New York
+1          3.0  Charlie            101              HR       New York
+2          2.0      Bob            102     Engineering  San Francisco
+3          5.0      Eva            102     Engineering  San Francisco
+4          4.0    David            103         Finance        Chicago
+5          NaN      NaN            104       Marketing         Boston
+</pre></div>
+</div>
+<p>Notes:</p>
+<ul class="simple">
+<li><p>The <code class="docutils literal notranslate"><span class="pre">merge()</span></code> function is modeled after SQL joins and is used to combine DataFrames based on common columns or indices.</p></li>
+<li><p>The ‘how’ parameter determines which rows to keep: ‘inner’ (matching rows only), ‘left’ (all left rows), ‘right’ (all right rows), or ‘outer’ (all rows).</p></li>
+<li><p>You can merge on multiple columns by passing lists to ‘on’, ‘left_on’, or ‘right_on’.</p></li>
+<li><p>When merging on indices instead of columns, use ‘left_index=True’ and/or ‘right_index=True’.</p></li>
+<li><p>Merging is a powerful way to enrich your dataset with additional information from other sources.</p></li>
+</ul>
+</div>
+</div>
+</details>
+<div class="admonition-more-info instructor-note admonition" id="instructor-note-2">
+<p class="admonition-title">More info</p>
+<details>
+<summary>Additional info</summary>
+<div class="admonition-demo demo admonition" id="demo-2">
+<p class="admonition-title">Demo</p>
+<p><strong>Handling Duplicate Columns:</strong></p>
+<p>When merging DataFrames with overlapping column names, you need to handle duplicates:</p>
+<ul class="simple">
+<li><p>Default behavior adds <code class="docutils literal notranslate"><span class="pre">_x</span></code> and <code class="docutils literal notranslate"><span class="pre">_y</span></code> suffixes or</p></li>
+<li><p>Add custom suffixes</p></li>
+</ul>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># DataFrames with overlapping column names</span>
+<span class="n">df_a</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span>
+    <span class="s1">&#39;key&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;K0&#39;</span><span class="p">,</span> <span class="s1">&#39;K1&#39;</span><span class="p">,</span> <span class="s1">&#39;K2&#39;</span><span class="p">],</span>
+    <span class="s1">&#39;A&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;A0&#39;</span><span class="p">,</span> <span class="s1">&#39;A1&#39;</span><span class="p">,</span> <span class="s1">&#39;A2&#39;</span><span class="p">],</span>
+    <span class="s1">&#39;B&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;B0&#39;</span><span class="p">,</span> <span class="s1">&#39;B1&#39;</span><span class="p">,</span> <span class="s1">&#39;B2&#39;</span><span class="p">]</span>
+<span class="p">})</span>
+
+<span class="n">df_b</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span>
+    <span class="s1">&#39;key&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;K0&#39;</span><span class="p">,</span> <span class="s1">&#39;K2&#39;</span><span class="p">,</span> <span class="s1">&#39;K3&#39;</span><span class="p">],</span>
+    <span class="s1">&#39;B&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;B3&#39;</span><span class="p">,</span> <span class="s1">&#39;B4&#39;</span><span class="p">,</span> <span class="s1">&#39;B5&#39;</span><span class="p">],</span>
+    <span class="s1">&#39;C&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;C3&#39;</span><span class="p">,</span> <span class="s1">&#39;C4&#39;</span><span class="p">,</span> <span class="s1">&#39;C5&#39;</span><span class="p">]</span>
+<span class="p">})</span>
+
+<span class="c1"># Default behavior adds _x and _y suffixes</span>
+<span class="n">merged_default</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">df_a</span><span class="p">,</span> <span class="n">df_b</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="s1">&#39;key&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;1. Default behavior adds _x and _y suffixes&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">merged_default</span><span class="p">)</span>
+
+<span class="c1"># Custom suffixes</span>
+<span class="n">merged_custom</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">df_a</span><span class="p">,</span> <span class="n">df_b</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="s1">&#39;key&#39;</span><span class="p">,</span> <span class="n">suffixes</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;_left&#39;</span><span class="p">,</span> <span class="s1">&#39;_right&#39;</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;2. Custom suffixes&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">merged_custom</span><span class="p">)</span>
+
+</pre></div>
+</div>
+<p>Output</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>1. Default behavior adds _x and _y suffixes
+  key   A B_x B_y   C
+0  K0  A0  B0  B3  C3
+1  K2  A2  B2  B4  C4
+
+2. Custom suffixes
+  key   A B_left B_right   C
+0  K0  A0     B0      B3  C3
+1  K2  A2     B2      B4  C4
+</pre></div>
+</div>
+<p>Notes:</p>
+<ul class="simple">
+<li><p>When merging DataFrames with duplicate column names, Pandas adds suffixes to make them unique.</p></li>
+<li><p>You can customize these suffixes to make the result more readable.</p></li>
+<li><p>Another approach is to select only the columns you need, either before or after merging</p></li>
+<li><p>Duplicate indices can cause unexpected behavior, especially with joins.</p>
+<ul>
+<li><p>Be careful with duplicate values in join keys - each duplicate in one DataFrame will join with all matches in the other DataFrame, potentially creating many rows.</p></li>
+</ul>
+</li>
+<li><p>Always inspect the result after merging, especially checking the row count to ensure it matches expectations.</p></li>
+</ul>
+<p><strong>Key Takeaways:</strong></p>
+<ol class="arabic simple">
+<li><p><strong>Join Types:</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">inner</span></code>: Keep only matching data (default)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">outer</span></code>: Keep everything</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">left</span></code>/<code class="docutils literal notranslate"><span class="pre">right</span></code>: Keep all rows from one DataFrame</p></li>
+</ul>
+</li>
+<li><p><strong>Best Practices:</strong></p>
+<ul class="simple">
+<li><p>Clean join keys before merging</p></li>
+<li><p>Handle duplicate columns with suffixes or column selection</p></li>
+<li><p>Always verify the shape of the result</p></li>
+</ul>
+</li>
+</ol>
+</div>
+</div>
+</details>
+</section>
+<section id="key-takeaways">
+<h2>Key Takeaways<a class="headerlink" href="#key-takeaways" title="Link to this heading"></a></h2>
+<div class="admonition-keypoints keypoints admonition" id="keypoints-0">
+<p class="admonition-title">Keypoints</p>
+<ol class="arabic simple">
+<li><p><strong>Concatenation vs. Merging:</strong></p>
+<ul class="simple">
+<li><p>Use concatenation for stacking similar data</p></li>
+<li><p>Use merging for combining related data on keys</p></li>
+</ul>
+</li>
+</ol>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../12.Handling_Missing_Data/" class="btn btn-neutral float-left" title="Bonus Lesson 1: Handling Missing Data in Pandas" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025 Norwegian Ai Cloud.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

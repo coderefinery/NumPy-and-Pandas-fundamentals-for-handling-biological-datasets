@@ -1,0 +1,409 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Introduction to NumPy &mdash; NumPy and Pandas for biological data handling  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+      <link rel="stylesheet" type="text/css" href="../_static/sphinx_lesson.css?v=e9df6548" />
+      <link rel="stylesheet" type="text/css" href="../_static/term_role_formatting.css?v=4194e21c" />
+      <link rel="stylesheet" type="text/css" href="../_static/sphinx_rtd_theme_ext_color_contrast.css?v=8e8ea19f" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=187304be"></script>
+      <script src="../_static/doctools.js?v=9a2dae69"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../_static/copybutton.js?v=35a8b989"></script>
+      <script src="../_static/minipres.js?v=a0d29692"></script>
+      <script>let toggleHintShow = 'Click to show';</script>
+      <script>let toggleHintHide = 'Click to hide';</script>
+      <script>let toggleOpenOnPrint = 'true';</script>
+      <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+      <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+      <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex/" />
+    <link rel="search" title="Search" href="../search/" />
+    <link rel="next" title="NumPy Data Types" href="../2.NumPy_Data_Types/" />
+    <link rel="prev" title="Lesson plan" href="../0.Numpy_for_bioinformatics/" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../" class="icon icon-home">
+            NumPy and Pandas for biological data handling
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search/" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Numpy for handling biological datasets</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../0.Numpy_for_bioinformatics/">Lesson plan</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Introduction to NumPy</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#what-is-numpy">What is <code class="docutils literal notranslate"><span class="pre">numpy</span></code>?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#why-numpy-is-essential-for-bioinformatics">Why NumPy is Essential for Bioinformatics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#numpy-arrays-vs-python-lists">NumPy Arrays vs Python Lists</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#creating-numpy-arrays">Creating NumPy Arrays</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../2.NumPy_Data_Types/">NumPy Data Types</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3.Indexing_and_Slicing/">Array Indexing and Slicing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../4.Advance_indexing_filtering/">NumPy Boolean Masking and Filtering</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../5.Essential_array_operations/">Essential Array Operations with NumPy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../6.Vectorized_Operations_in_NumPy/">Vectorized Operations in NumPy: Beyond Python Loops</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../6.1.Numpy_hands_on/">Hands-on: RNA Expression Analysis - alternative method</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Pandas for handling biological datasets</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../7.Pandas_lesson plan/">Lesson plan</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8.Introduction_to_pandas/">Introduction to Pandas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../9.Pandas_data_import_export/">Data Import and Export in Pandas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../10.DataFrame_Manipulation/">DataFrame Manipulation &amp; Sorting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../11.Pandas_indexing_slicing/">Indexing, Selection &amp; Slicing in Pandas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../14.Pandas_summary_stats/">Summary Statistics &amp; Aggregations in Pandas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../15.Hands-on_expression_count_analysis/">Hands-on: RNA Expression Analysis - alternative method</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../12.Handling_Missing_Data/">Bonus Lesson 1: Handling Missing Data in Pandas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../13.Merging_DataFrames/">Bonus Lesson 2: Merging DataFrames in Pandas</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../">NumPy and Pandas for biological data handling</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Introduction to NumPy</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/coderefinery/content/blob/main/content/1.numpy_intro.md" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="introduction-to-numpy">
+<h1>Introduction to NumPy<a class="headerlink" href="#introduction-to-numpy" title="Link to this heading"></a></h1>
+<div class="admonition-objectives objectives admonition" id="objectives-0">
+<p class="admonition-title">Objectives</p>
+<ul class="simple">
+<li><p>What is NumPy and why it’s important for bioinformatics</p></li>
+<li><p>Performance advantages over Python lists</p></li>
+<li><p>Foundation for other scientific libraries</p></li>
+</ul>
+</div>
+<div class="admonition-instructor-note instructor-note admonition" id="instructor-note-0">
+<p class="admonition-title">Instructor note</p>
+<ul class="simple">
+<li><p>Teaching : 10 min</p></li>
+<li><p>Demo: 10 min</p></li>
+</ul>
+</div>
+<section id="what-is-numpy">
+<h2>What is <code class="docutils literal notranslate"><span class="pre">numpy</span></code>?<a class="headerlink" href="#what-is-numpy" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">NumPy</span></code> is short for “Numerical Python”</p></li>
+<li><p>Core python library for scientific computing</p></li>
+<li><p>Useful for processing large quantities of same-type data</p></li>
+<li><p>Foundation for:</p>
+<ul>
+<li><p>Data manipulation, analysis and visualization libraries (<code class="docutils literal notranslate"><span class="pre">Pandas</span></code>, <code class="docutils literal notranslate"><span class="pre">Matplotlib</span></code>, <code class="docutils literal notranslate"><span class="pre">scipy</span></code>)</p></li>
+<li><p>Machine learning libraries (<code class="docutils literal notranslate"><span class="pre">scikit-learn</span></code>, <code class="docutils literal notranslate"><span class="pre">TensorFlow</span></code>, <code class="docutils literal notranslate"><span class="pre">PyTorch</span></code>)</p></li>
+</ul>
+</li>
+<li><p>NumPy operations are written in compiled C, significantly speeding up mathematical operations</p></li>
+</ul>
+<p><img alt="Array programming with NumPy" src="../_images/image.png" /></p>
+<p><a class="reference external" href="https://doi.org/10.1038/s41586-020-2649-2">Ref: Array programming with NumPy</a></p>
+</section>
+<section id="why-numpy-is-essential-for-bioinformatics">
+<h2>Why NumPy is Essential for Bioinformatics<a class="headerlink" href="#why-numpy-is-essential-for-bioinformatics" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>Bioinformatics involves processing and analyzing vast amounts of biological data, from genomic sequences to protein structures</p></li>
+<li><p>NumPy’s efficient N-dimensional arrays allow for fast and memory-efficient processing of these large datasets</p>
+<ul>
+<li><p>C-optimized operations: NumPy’s compiled C backend makes processing of big-data feasible without having C programming knowledge</p></li>
+<li><p>Reduced memory footprint help optimize the big-data processing: <a class="reference external" href="https://dl.acm.org/doi/10.1145/3437359.3465562">Accelerating Key Bioinformatics Tasks 100-fold by Improving Memory Access</a></p></li>
+</ul>
+</li>
+<li><p>Run statistical analysis/operations using Biological Data effectively (low barrier to entry)</p></li>
+<li><p>Numpy is essential for Python-based machine learning applications on biological datasets</p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>In essence, NumPy bridges the gap between high-level Python programming and the performance requirements of modern bioinformatics, making it possible to analyze the increasingly large datasets generated by modern biological research techniques.</p>
+</div>
+</section>
+<section id="numpy-arrays-vs-python-lists">
+<h2>NumPy Arrays vs Python Lists<a class="headerlink" href="#numpy-arrays-vs-python-lists" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>Lists are data structures used to store collections of elements</p></li>
+<li><p>NumPy arrays enforce a single data type for all elements</p></li>
+<li><p>Benefits of NumPy arrays:</p>
+<ul>
+<li><p>Homogeneity removes need for type checking during operations</p></li>
+<li><p>Contiguous memory allocation (faster than Python’s scattered storage)</p></li>
+<li><p>Vectorization allows operations on entire arrays without loops</p></li>
+<li><p>Rich set of mathematical functions and operations</p></li>
+</ul>
+</li>
+</ul>
+<p><img alt="NumPy Arrays" src="../_images/image-1.png" /></p>
+</section>
+<section id="creating-numpy-arrays">
+<h2>Creating NumPy Arrays<a class="headerlink" href="#creating-numpy-arrays" title="Link to this heading"></a></h2>
+<div class="admonition-demo demo admonition" id="demo-0">
+<p class="admonition-title">Demo</p>
+<p class="rubric" id="d-arrays-from-lists">1D Arrays from lists</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+<span class="c1"># Create from list</span>
+<span class="n">py_list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">5</span><span class="p">))</span>
+<span class="n">np_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">py_list</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">np_array</span><span class="p">)</span>  <span class="c1"># Output: array([1, 2, 3, 4])</span>
+</pre></div>
+</div>
+<p class="rubric" id="d-arrays-matrices">2D Arrays (matrices)</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create a 2D array</span>
+<span class="n">rows</span><span class="p">,</span> <span class="n">cols</span> <span class="o">=</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span>
+<span class="n">list_of_list</span> <span class="o">=</span> <span class="p">[[</span><span class="n">j</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">cols</span><span class="p">)]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">rows</span><span class="p">)]</span>
+<span class="n">np_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">list_of_list</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">np_array</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="admonition-output solution important dropdown admonition" id="solution-0">
+<p class="admonition-title">Output:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>[1 2 3 4]
+
+array([[0, 1, 2, 3],
+       [0, 1, 2, 3],
+       [0, 1, 2, 3]])
+</pre></div>
+</div>
+</div>
+</div>
+<div class="docutils">
+<p class="rubric" id="creating-arrays-from-scratch">Creating arrays from scratch</p>
+<div class="admonition-demo demo admonition" id="demo-1">
+<p class="admonition-title">Demo</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Range of values</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;np.arange&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>  <span class="c1"># &lt;start,stop,step&gt;, stop is not included in the array</span>
+
+<span class="c1"># Arrays of zeros</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;np.zeros&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">)))</span>     <span class="c1"># Array of zeros</span>
+
+<span class="c1"># Arrays of ones</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;np.ones&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="mi">5</span><span class="p">))</span>           <span class="c1"># Array of ones</span>
+
+<span class="c1"># 2-D arrays</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;2-D arrays&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">([</span><span class="mi">5</span><span class="p">,</span><span class="mi">2</span><span class="p">]))</span> <span class="c1"># 2-D array of ones </span>
+<span class="nb">print</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">)))</span>  <span class="c1"># 2-D array Random values between 0 and 1</span>
+</pre></div>
+</div>
+<div class="admonition-output solution important dropdown admonition" id="solution-1">
+<p class="admonition-title">Output</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>np.arange
+[1 3 5 7 9]
+np.zeros
+[[0. 0.]
+ [0. 0.]]
+np.ones
+[1. 1. 1. 1. 1.]
+2-D arrays
+[[1. 1.]
+ [1. 1.]
+ [1. 1.]
+ [1. 1.]
+ [1. 1.]]
+[[0.76528238 0.95473465]
+ [0.81062275 0.14766793]]
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="docutils">
+<p class="rubric" id="examining-numpy-array-structure-and-storage">Examining numpy array structure and storage</p>
+<ul class="simple">
+<li><p>NumPy arrays come with several attributes that provide important information about their structure and data storage.</p></li>
+</ul>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Attribute</p></th>
+<th class="head"><p>Description</p></th>
+<th class="head"><p>Example</p></th>
+<th class="head"><p>Purpose</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">shape</span></code></p></td>
+<td><p>A tuple of integers representing the size of each dimension of the array</p></td>
+<td><p>(3, 4) (2D array with 3 rows and 4 columns)</p></td>
+<td><p>Understands the layout and number of elements within the array.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">ndim</span></code></p></td>
+<td><p>An integer indicating the dimensionality of the array (number of dimensions)</p></td>
+<td><p>2 (for a 2D array), 1 (for a vector)</p></td>
+<td><p>Clarifies how many axes are used to access elements.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">size</span></code></p></td>
+<td><p>An integer representing the total number of elements within the array</p></td>
+<td><p>12 (for a 2D array with shape (3, 4))</p></td>
+<td><p>Provides a quick way to determine the total number of elements.</p></td>
+</tr>
+</tbody>
+</table>
+<div class="admonition-demo demo admonition" id="demo-2">
+<p class="admonition-title">Demo</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;2-D array&quot;</span><span class="p">)</span>
+<span class="n">np_2d</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">([</span><span class="mi">5</span><span class="p">,</span><span class="mi">2</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">shape&quot;</span><span class="p">,</span> <span class="n">np_2d</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">ndim&quot;</span><span class="p">,</span> <span class="n">np_2d</span><span class="o">.</span><span class="n">ndim</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">size&quot;</span><span class="p">,</span> <span class="n">np_2d</span><span class="o">.</span><span class="n">size</span><span class="p">)</span>
+
+</pre></div>
+</div>
+<div class="admonition-output solution important dropdown admonition" id="solution-2">
+<p class="admonition-title">Output</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>2-D array
+	shape (5, 2)
+	ndim 2
+	size 10
+
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="docutils">
+<div class="admonition-more-info instructor-note admonition" id="instructor-note-1">
+<p class="admonition-title">More info</p>
+<details>
+<summary>Additional notes: Exercise</summary>
+<p><strong>Exercise 1: Creating Arrays from Scratch:</strong></p>
+<p>In this exercise, you’ll practice creating NumPy arrays using different built-in functions.</p>
+<p>Tasks:</p>
+<ol class="arabic simple">
+<li><p>Create a 1D array containing integers from 5 to 50 with a step size of 5 using <code class="docutils literal notranslate"><span class="pre">np.arange()</span></code>.</p></li>
+<li><p>Create an array of 8 evenly spaced values between 0 and 1 (inclusive) using <code class="docutils literal notranslate"><span class="pre">np.linspace()</span></code>.</p></li>
+<li><p>Create an array of 10 random integers between 1 and 100 using <code class="docutils literal notranslate"><span class="pre">np.random.randint()</span></code>.</p></li>
+<li><p>Create an array of shape (3,3) filled with the value 3.14 using <code class="docutils literal notranslate"><span class="pre">np.full()</span></code>.</p></li>
+</ol>
+<p>Expected Output:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># After task 1</span>
+<span class="n">array</span><span class="p">([</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">35</span><span class="p">,</span> <span class="mi">40</span><span class="p">,</span> <span class="mi">45</span><span class="p">,</span> <span class="mi">50</span><span class="p">])</span>
+
+<span class="c1"># After task 2</span>
+<span class="n">array</span><span class="p">([</span><span class="mf">0.</span>        <span class="p">,</span> <span class="mf">0.14285714</span><span class="p">,</span> <span class="mf">0.28571429</span><span class="p">,</span> <span class="mf">0.42857143</span><span class="p">,</span> <span class="mf">0.57142857</span><span class="p">,</span>
+       <span class="mf">0.71428571</span><span class="p">,</span> <span class="mf">0.85714286</span><span class="p">,</span> <span class="mf">1.</span>        <span class="p">])</span>
+
+<span class="c1"># After task 3 (your values will differ due to randomness)</span>
+<span class="n">array</span><span class="p">([</span><span class="mi">42</span><span class="p">,</span> <span class="mi">67</span><span class="p">,</span> <span class="mi">89</span><span class="p">,</span> <span class="mi">14</span><span class="p">,</span> <span class="mi">53</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">95</span><span class="p">,</span> <span class="mi">78</span><span class="p">,</span> <span class="mi">37</span><span class="p">,</span> <span class="mi">51</span><span class="p">])</span>
+
+<span class="c1"># After task 4</span>
+<span class="n">array</span><span class="p">([[</span><span class="mf">3.14</span><span class="p">,</span> <span class="mf">3.14</span><span class="p">,</span> <span class="mf">3.14</span><span class="p">],</span>
+       <span class="p">[</span><span class="mf">3.14</span><span class="p">,</span> <span class="mf">3.14</span><span class="p">,</span> <span class="mf">3.14</span><span class="p">],</span>
+       <span class="p">[</span><span class="mf">3.14</span><span class="p">,</span> <span class="mf">3.14</span><span class="p">,</span> <span class="mf">3.14</span><span class="p">]])</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>Test <code class="docutils literal notranslate"><span class="pre">shape</span></code>, <code class="docutils literal notranslate"><span class="pre">ndim</span></code>, <code class="docutils literal notranslate"><span class="pre">size</span></code> attributes of the Numpy arrays created in above tasks</p></li>
+</ul>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Exercise 1: Creating Arrays from Scratch&quot;</span><span class="p">)</span>
+
+<span class="c1"># Task 1: Create array from 5 to 50 with step size of 5</span>
+<span class="n">array1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">51</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Task 1 - Array with integers from 5 to 50, step 5:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">array1</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">()</span>
+
+<span class="c1"># Task 2: Create array of 8 evenly spaced values between 0 and 1</span>
+<span class="n">array2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">8</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Task 2 - 8 evenly spaced values between 0 and 1:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">array2</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">()</span>
+
+<span class="c1"># Task 3: Create array of 10 random integers between 1 and 100</span>
+<span class="n">array3</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">101</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Task 3 - 10 random integers between 1 and 100:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">array3</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">()</span>
+
+<span class="c1"># Task 4: Create 3x3 array filled with 3.14</span>
+<span class="n">array4</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">((</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="mf">3.14</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Task 4 - 3x3 array filled with 3.14:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">array4</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="s2">&quot;-&quot;</span><span class="o">*</span><span class="mi">50</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</details>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../0.Numpy_for_bioinformatics/" class="btn btn-neutral float-left" title="Lesson plan" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../2.NumPy_Data_Types/" class="btn btn-neutral float-right" title="NumPy Data Types" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025 Norwegian Ai Cloud.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

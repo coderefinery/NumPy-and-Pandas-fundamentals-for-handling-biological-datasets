@@ -1,0 +1,49 @@
+# Lesson plan
+
+:::{objectives}
+
+1. **Understand the Basics**: Familiarize participants with the fundamentals of the Pandas library and its relationship with NumPy.
+2. **Data Handling**: Equip participants with the skills to import and export various data formats using Pandas, facilitating easy data manipulation and analysis.
+3. **Data Manipulation Skills**: Provide practical techniques for data manipulation, including selection, addition, removal, and handling of missing values within DataFrames.
+4. **Indexing Proficiency**: Enable participants to effectively index and select data from DataFrames using various methods, enhancing their data exploration capabilities.
+5. **Data Analysis Techniques**: Introduce advanced data transformation, grouping, and aggregation techniques, enabling participants to perform in-depth data analysis and summarization.
+:::
+
+## Specific Objectives
+
+* Introduction to Pandas
+  * Explain the relationship between Pandas and NumPy, highlighting when to use each library effectively.
+  * Define and differentiate between Series and DataFrame data structures in Pandas.
+  * Demonstrate the creation of Pandas objects from NumPy arrays, solidifying foundational knowledge.
+* Data Import and Export
+  * Illustrate how to read data from various formats, including CSV, Excel, and JSON, into Pandas.
+  * Show how to export DataFrames to different formats, ensuring participants can save their analyses.
+  * Utilize data inspection methods (head, info, describe) to gain an understanding of data structure and content.
+* DataFrame Manipulation & Sorting
+  * Demonstrate effective techniques for selecting specific rows and from DataFrames.
+  * Equip participants with skills to add and remove columns within a DataFrame.
+  * Implement sorting methods by values, by index, and perform multiple column sorting with custom orders.
+* Indexing, Selection & Slicing
+  * Differentiate between label-based and position-based indexing and apply each method appropriately.
+  * Use Boolean indexing to filter data based on specific conditions, connecting concepts from NumPy.
+  * Apply .loc, .iloc, and .at selection methods to extract desired data, and employ multi-level slicing techniques.
+* Handling Missing Data
+  * Identify missing values in DataFrames using isna() and notna() methods.
+  * Strategize the filling of missing values with fillna() and interpolation methods tailored to scenario needs.
+  * Demonstrate how to drop missing data with dropna() and discuss various strategies for handling missing data.
+* Merging DataFrames
+  * Illustrate how to concatenate DataFrames using pd.concat() and understand its applications.
+  * Explain database-style joins with the merge() function and illustrate the different join types (inner, outer, left, * right).
+  * Address challenges faced with duplicate columns and indexes during merging operations.
+* Summary Statistics & Aggregations
+  * Calculate basic statistics (mean, median, min, max) to summarize and analyze data.
+  * Develop custom aggregation functions for specific needs in data analysis.
+  * Apply GroupBy operations effectively, utilizing the Split-Apply-Combine pattern to derive insights from grouped data.
+* Advanced Data Transformation
+  * Utilize apply() and map() functions for advanced data transformation on DataFrames.
+  * Perform string and datetime operations effectively using Pandas functionality.
+  * Construct pivot tables and crosstabs to summarize data visually and contextually.
+* Practical Exercises and Q&A
+  * Execute practical exercises using real-world datasets to reinforce concepts learned during the workshop.
+  * Connect concepts from both NumPy and Pandas to solidify understanding through application.
+  * Engage in a Q&A session to clarify doubts, deepen understanding, and discuss challenges faced during practical sessions
